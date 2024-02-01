@@ -29,6 +29,9 @@ const config: Config = {
       backgroundColor: {
         primary: "#0C8C6B",
       },
+      borderColor: {
+        primary: "#0C8C6B",
+      },
     },
   },
   plugins: [],

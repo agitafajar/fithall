@@ -19,9 +19,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Header />
-        <div className="px-24 bg-red-200 font-plus-jakarta-sans">
-          {children}
-        </div>
+        <div className="px-24 font-plus-jakarta-sans">{children}</div>
       </body>
     </html>
   );

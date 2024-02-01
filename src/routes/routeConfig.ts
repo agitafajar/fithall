@@ -20,4 +20,9 @@ export const routeConfig: RouteConfig[] = [
     label: "Lapangan",
     isActive: false,
   },
+  {
+    path: "/about-us",
+    label: "About Us",
+    isActive: false,
+  },
 ];
