@@ -2,6 +2,7 @@
 import CabangLapanganCard from "./components/cards/CabangLapanganCard";
 import FilterCard from "./components/cards/FilterCards";
 import JoinMemberCard from "./components/cards/JoinMemberCard";
+import KeunggulanFitcallCard from "./components/cards/KeunggulanFitcallCard";
 
 /* eslint-disable @next/next/no-img-element */
 export default function Home() {
@@ -212,7 +213,6 @@ export default function Home() {
         </div>
       </div>
       <JoinMemberCard />
-
       <div>
         <div className="flex justify-between items-center mb-4">
           <p className="font-bold flex">
@@ -257,6 +257,7 @@ export default function Home() {
           })}
         </div>
       </div>
+      <KeunggulanFitcallCard />
     </main>
   );
 }
