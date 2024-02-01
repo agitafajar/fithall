@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/alt-text */
 import CabangLapanganCard from "./components/cards/CabangLapanganCard";
 import FilterCard from "./components/cards/FilterCards";
+import JoinMemberCard from "./components/cards/JoinMemberCard";
 
 /* eslint-disable @next/next/no-img-element */
 export default function Home() {
@@ -170,6 +171,52 @@ export default function Home() {
         <div className="flex justify-between items-center mb-4">
           <p className="font-bold flex">
             Most Played Sports
+            <span className="text-primary flex items-center pl-8 text-sm cursor-pointer">
+              Lihat Semua
+              <img
+                src="./assets/png/next.png"
+                width="6px"
+                className="ml-1 pt-1"
+              />
+            </span>
+          </p>
+          <div className="flex gap-4">
+            <img
+              src="./assets/png/back-icon.png"
+              width="40px"
+              className="ml-1 pt-1 cursor-pointer"
+            />
+            <img
+              src="./assets/png/next-icon.png"
+              width="40px"
+              className="ml-1 pt-1 cursor-pointer"
+            />
+          </div>
+        </div>
+        <div className="flex gap-6 mb-12 justify-between">
+          {dataSport.map((dataList, key) => {
+            return (
+              <>
+                <div key={key}>
+                  <CabangLapanganCard
+                    pic={dataList.pic}
+                    label={dataList.location}
+                    location={dataList.label}
+                    price={dataList.price}
+                    time={dataList.time}
+                  />
+                </div>
+              </>
+            );
+          })}
+        </div>
+      </div>
+      <JoinMemberCard />
+
+      <div>
+        <div className="flex justify-between items-center mb-4">
+          <p className="font-bold flex">
+            Sport Training
             <span className="text-primary flex items-center pl-8 text-sm cursor-pointer">
               Lihat Semua
               <img

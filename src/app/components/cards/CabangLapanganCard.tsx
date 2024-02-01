@@ -13,7 +13,7 @@ export default function CabangLapanganCard(props: Props) {
 
   return (
     <>
-      <div className="flex flex-col p-4 border-2 w-[350px] rounded-xl gap-4">
+      <div className="flex flex-col p-4 border-2 rounded-xl gap-4">
         <img src={pic} alt="" width="full" />
         <p className="font-bold">{label}</p>
         <div className="flex items-center gap-2 text-xs font-semibold text-[#808080]">
