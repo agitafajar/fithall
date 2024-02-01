@@ -9,7 +9,7 @@ export default function Header() {
   const currentPath = usePathname();
 
   return (
-    <div className="flex">
+    <div className="flex font-plus-jakarta-sans">
       {routeConfig.map((route, key) => {
         const isActive =
           currentPath === route.path ||
