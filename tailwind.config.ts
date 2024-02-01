@@ -20,6 +20,12 @@ const config: Config = {
         xl: "1280px",
         "2xl": "1536px",
       },
+      textColor: {
+        primary: "#3A8375",
+      },
+      backgroundColor: {
+        primary: "#0C8C6B",
+      },
     },
   },
   plugins: [],
