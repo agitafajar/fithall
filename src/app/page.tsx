@@ -1,4 +1,5 @@
 /* eslint-disable jsx-a11y/alt-text */
+import CabangLapanganCard from "./components/cards/CabangLapanganCard";
 import FilterCard from "./components/cards/FilterCards";
 
 /* eslint-disable @next/next/no-img-element */
@@ -18,6 +19,68 @@ export default function Home() {
       title: "Date",
       desc: "Pilih Tanggal",
       icon: "./assets/png/calendar.png",
+    },
+  ];
+
+  const dataCabang = [
+    {
+      pic: "./assets/png/contoh-cabang.png",
+      label: "Mampang",
+      location: "Pancoran, Jakarta Selatan",
+      price: "Rp. 35.000",
+      time: "06:00 - 23:59",
+    },
+    {
+      pic: "./assets/png/contoh-cabang.png",
+      label: "Kalibata",
+      location: "Pancoran, Jakarta Selatan",
+      price: "Rp. 35.000",
+      time: "06:00 - 23:59",
+    },
+    {
+      pic: "./assets/png/contoh-cabang.png",
+      label: "Pancoran",
+      location: "Pancoran, Jakarta Selatan",
+      price: "Rp. 35.000",
+      time: "06:00 - 23:59",
+    },
+    {
+      pic: "./assets/png/contoh-cabang.png",
+      location: "Gandaria",
+      label: "Pancoran, Jakarta Selatan",
+      price: "Rp. 35.000",
+      time: "06:00 - 23:59",
+    },
+  ];
+
+  const dataSport = [
+    {
+      pic: "./assets/png/contoh-sport.png",
+      label: "Mampang",
+      location: "Pancoran, Jakarta Selatan",
+      price: "Rp. 35.000",
+      time: "06:00 - 23:59",
+    },
+    {
+      pic: "./assets/png/contoh-sport.png",
+      label: "Kalibata",
+      location: "Pancoran, Jakarta Selatan",
+      price: "Rp. 35.000",
+      time: "06:00 - 23:59",
+    },
+    {
+      pic: "./assets/png/contoh-sport.png",
+      label: "Pancoran",
+      location: "Pancoran, Jakarta Selatan",
+      price: "Rp. 35.000",
+      time: "06:00 - 23:59",
+    },
+    {
+      pic: "./assets/png/contoh-sport.png",
+      location: "Gandaria",
+      label: "Pancoran, Jakarta Selatan",
+      price: "Rp. 35.000",
+      time: "06:00 - 23:59",
     },
   ];
 
@@ -84,7 +147,68 @@ export default function Home() {
             />
           </div>
         </div>
-        <div>cek</div>
+        <div className="flex gap-6 mb-12 justify-between">
+          {dataCabang.map((dataList, key) => {
+            return (
+              <>
+                <div key={key}>
+                  <CabangLapanganCard
+                    pic={dataList.pic}
+                    label={dataList.location}
+                    location={dataList.label}
+                    price={dataList.price}
+                    time={dataList.time}
+                  />
+                </div>
+              </>
+            );
+          })}
+        </div>
+      </div>
+
+      <div>
+        <div className="flex justify-between items-center mb-4">
+          <p className="font-bold flex">
+            Most Played Sports
+            <span className="text-primary flex items-center pl-8 text-sm cursor-pointer">
+              Lihat Semua
+              <img
+                src="./assets/png/next.png"
+                width="6px"
+                className="ml-1 pt-1"
+              />
+            </span>
+          </p>
+          <div className="flex gap-4">
+            <img
+              src="./assets/png/back-icon.png"
+              width="40px"
+              className="ml-1 pt-1 cursor-pointer"
+            />
+            <img
+              src="./assets/png/next-icon.png"
+              width="40px"
+              className="ml-1 pt-1 cursor-pointer"
+            />
+          </div>
+        </div>
+        <div className="flex gap-6 mb-12 justify-between">
+          {dataSport.map((dataList, key) => {
+            return (
+              <>
+                <div key={key}>
+                  <CabangLapanganCard
+                    pic={dataList.pic}
+                    label={dataList.location}
+                    location={dataList.label}
+                    price={dataList.price}
+                    time={dataList.time}
+                  />
+                </div>
+              </>
+            );
+          })}
+        </div>
       </div>
     </main>
   );
