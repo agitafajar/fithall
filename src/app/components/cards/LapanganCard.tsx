@@ -19,7 +19,7 @@ const LapanganCard: React.FC<SportTrainingSectionProps> = ({ dataSport }) => {
   return (
     <div>
       <div className="flex justify-between items-center mb-4">
-        <p className="font-bold flex">
+        <p className="font-bold flex text-[22px]">
           Sport Training
           <span className="text-primary flex items-center pl-8 text-sm cursor-pointer">
             Lihat Semua

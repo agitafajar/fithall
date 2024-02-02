@@ -1,24 +1,29 @@
 /* eslint-disable jsx-a11y/alt-text */
-import CabangLapanganCard from "./components/cards/CabangLapanganCard";
+"use client";
 import FilterCard from "./components/cards/FilterCards";
 import JoinMemberCard from "./components/cards/JoinMemberCard";
 import KeunggulanFitcallCard from "./components/cards/KeunggulanFitcallCard";
 import LapanganCard from "./components/cards/LapanganCard";
+import { useEffect } from "react";
+import { useFetchLapangan } from "@/features/lapangan/index";
 
 /* eslint-disable @next/next/no-img-element */
 export default function Home() {
   const dataFilter = [
     {
+      id: "1",
       title: "Location",
       desc: "Lokasi lapangan",
       icon: "./assets/png/location.png",
     },
     {
+      id: "2",
       title: "Field Type",
       desc: "Tipe lapangan",
       icon: "./assets/png/store.png",
     },
     {
+      id: "3",
       title: "Date",
       desc: "Pilih Tanggal",
       icon: "./assets/png/calendar.png",
@@ -27,6 +32,7 @@ export default function Home() {
 
   const dataCabang = [
     {
+      id: "1",
       pic: "./assets/png/contoh-cabang.png",
       label: "Mampang",
       location: "Pancoran, Jakarta Selatan",
@@ -34,6 +40,7 @@ export default function Home() {
       time: "06:00 - 23:59",
     },
     {
+      id: "1",
       pic: "./assets/png/contoh-cabang.png",
       label: "Kalibata",
       location: "Pancoran, Jakarta Selatan",
@@ -41,6 +48,7 @@ export default function Home() {
       time: "06:00 - 23:59",
     },
     {
+      id: "1",
       pic: "./assets/png/contoh-cabang.png",
       label: "Pancoran",
       location: "Pancoran, Jakarta Selatan",
@@ -48,6 +56,7 @@ export default function Home() {
       time: "06:00 - 23:59",
     },
     {
+      id: "1",
       pic: "./assets/png/contoh-cabang.png",
       location: "Gandaria",
       label: "Pancoran, Jakarta Selatan",
@@ -58,6 +67,7 @@ export default function Home() {
 
   const dataSport = [
     {
+      id: "1",
       pic: "./assets/png/contoh-sport.png",
       label: "Mampang",
       location: "Pancoran, Jakarta Selatan",
@@ -65,6 +75,7 @@ export default function Home() {
       time: "06:00 - 23:59",
     },
     {
+      id: "1",
       pic: "./assets/png/contoh-sport.png",
       label: "Kalibata",
       location: "Pancoran, Jakarta Selatan",
@@ -72,6 +83,7 @@ export default function Home() {
       time: "06:00 - 23:59",
     },
     {
+      id: "1",
       pic: "./assets/png/contoh-sport.png",
       label: "Pancoran",
       location: "Pancoran, Jakarta Selatan",
@@ -79,6 +91,7 @@ export default function Home() {
       time: "06:00 - 23:59",
     },
     {
+      id: "1",
       pic: "./assets/png/contoh-sport.png",
       location: "Gandaria",
       label: "Pancoran, Jakarta Selatan",
@@ -86,6 +99,21 @@ export default function Home() {
       time: "06:00 - 23:59",
     },
   ];
+
+  const { data, error, isError, isLoading } = useFetchLapangan();
+
+  useEffect(() => {
+    if (isError) {
+      alert(`Gagal mengambil data !`);
+    }
+  }, [isError, error]);
+
+  const postsData = data ? data.data : null;
+
+  console.log("postsData", postsData);
+  console.log("error", error);
+  console.log("isError", isError);
+  console.log("isLoading", isLoading);
 
   return (
     <main>
@@ -95,7 +123,7 @@ export default function Home() {
           style={{ backgroundImage: "url('./assets/png/home-banner.png')" }}
         >
           <div className="w-[30%] relative z-10">
-            <p className="font-bold text-5xl text-white mb-6">
+            <p className="font-bold text-5xl md:text-4xl text-white mb-6">
               Pesan Lapangan, Main Tanpa Ribet!
             </p>
             <p className="font-bold text-white">
@@ -111,6 +139,7 @@ export default function Home() {
               <>
                 <div key={key}></div>
                 <FilterCard
+                  key={listData.id}
                   desc={listData.desc}
                   icon={listData.icon}
                   title={listData.title}
