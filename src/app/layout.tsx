@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
 import TanstackProvider from "@/providers/TanstackProvider";
+import { Toaster } from "sonner";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,6 +22,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <TanstackProvider>
+          <Toaster position="top-right" richColors closeButton />
           <Header />
           <div className="px-24 font-plus-jakarta-sans min-h-screen">
             {children}

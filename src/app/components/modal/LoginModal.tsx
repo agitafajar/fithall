@@ -4,6 +4,7 @@ import { usePostUser } from "@/features/users/usePostUser";
 import { useFormik } from "formik";
 import React, { useState } from "react";
 import * as Yup from "yup";
+import { toast } from "sonner";
 
 type LoginModalProps = {
   closeModal: () => void;
@@ -18,14 +19,21 @@ const LoginModal: React.FC<LoginModalProps> = ({
   const [isLoading, setIsLoading] = useState(false);
 
   const { mutate: postUserMutation } = usePostUser({
-    onSuccess: (data) => {
+    onSuccess: () => {
       closeModal();
-      alert("Login successful");
+      toast.success("Congratulation !", {
+        className: "my-classname",
+        description: "Login success",
+        duration: 3000,
+      });
     },
-    onError: (error) => {
-      // Handle error
-      alert("Login failed");
-      // You can also show an alert or perform other error handling here
+    onError: () => {
+      closeModal();
+      toast.error("Login failed", {
+        className: "my-classname",
+        description: "Please check your credentials and try again !",
+        duration: 3000,
+      });
     },
   });
 
@@ -44,6 +52,7 @@ const LoginModal: React.FC<LoginModalProps> = ({
     }),
     onSubmit: async (values, { resetForm }) => {
       try {
+        resetForm();
         setIsLoading(true);
         postUserMutation(values);
       } catch (error) {

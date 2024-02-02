@@ -1,6 +1,6 @@
+import axiosInstance from "@/lib/axios";
 import { useMutation } from "@tanstack/react-query";
 import axios, { AxiosResponse } from "axios";
-import { axiosInstance } from "@/lib/axios";
 
 type FormData = {
   email: string;

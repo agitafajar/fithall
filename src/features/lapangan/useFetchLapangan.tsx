@@ -1,6 +1,6 @@
+import axiosInstance from "@/lib/axios";
 import { useQuery, UseQueryOptions } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
-import { axiosInstance } from "@/lib/axios";
 
 export const useFetchLapangan = (
   options?: UseQueryOptions<
