@@ -2,16 +2,16 @@ import axiosInstance from "@/lib/axios";
 import { useQuery, UseQueryOptions } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
 
-export const useFetchLapangan = (
+export const useGetCabang = (
   options?: UseQueryOptions<
     AxiosResponse,
     unknown,
     AxiosResponse,
-    ["fetch.cabang"]
+    ["get.cabang"]
   >
 ) => {
   return useQuery({
-    queryKey: ["fetch.cabang"],
+    queryKey: ["get.cabang"],
     queryFn: async () => {
       const token = localStorage.getItem("token");
       const headers = token ? { Authorization: `Bearer ${token}` } : {};
@@ -22,4 +22,4 @@ export const useFetchLapangan = (
   });
 };
 
-export default useFetchLapangan;
+export default useGetCabang;

@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable @next/next/no-img-element */
-import { usePostUser } from "@/features/users/usePostUser";
+import { usePostLogin } from "@/features/users/usePostUser";
 import { useFormik } from "formik";
 import React, { useState } from "react";
 import * as Yup from "yup";
@@ -18,7 +18,7 @@ const LoginModal: React.FC<LoginModalProps> = ({
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const { mutate: postUserMutation } = usePostUser({
+  const { mutate: postUserMutation } = usePostLogin({
     onSuccess: () => {
       closeModal();
       toast.success("Congratulation !", {

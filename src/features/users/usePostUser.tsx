@@ -7,7 +7,7 @@ type FormData = {
   password: string;
 };
 
-export const usePostUser = ({
+export const usePostLogin = ({
   onSuccess,
   onError,
 }: {

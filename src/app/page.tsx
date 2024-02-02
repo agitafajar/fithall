@@ -1,11 +1,11 @@
 /* eslint-disable jsx-a11y/alt-text */
 "use client";
+import useGetCabang from "@/features/cabang/useGetCabang";
 import FilterCard from "./components/cards/FilterCards";
 import JoinMemberCard from "./components/cards/JoinMemberCard";
 import KeunggulanFitcallCard from "./components/cards/KeunggulanFitcallCard";
 import LapanganCard from "./components/cards/LapanganCard";
 import { useEffect, useState } from "react";
-import { useFetchLapangan } from "@/features/lapangan/index";
 
 /* eslint-disable @next/next/no-img-element */
 export default function Home() {
@@ -100,7 +100,7 @@ export default function Home() {
     },
   ];
 
-  const { data, error, isError, isLoading } = useFetchLapangan();
+  const { data, error, isError } = useGetCabang();
 
   useEffect(() => {
     if (isError) {
