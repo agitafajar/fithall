@@ -14,7 +14,7 @@ export default function Header() {
       <div>
         <img
           src="./assets/png/fithall-logo.png"
-          width="125px"
+          className="w-[125px] md:w-[100px]"
           alt="fithall-logo"
         />
       </div>
