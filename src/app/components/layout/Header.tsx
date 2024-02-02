@@ -4,10 +4,30 @@
 import { routeConfig } from "@/routes/routeConfig";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
+import LoginModal from "../modal/LoginModal";
+import RegisterModal from "../modal/RegisterModal";
 
 export default function Header() {
   const currentPath = usePathname();
+
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
+
+  const openLoginModal = () => {
+    closeRegisterModal();
+    setIsLoginModalOpen(true);
+  };
+  const closeLoginModal = () => {
+    setIsLoginModalOpen(false);
+  };
+  const openRegisterModal = () => {
+    closeLoginModal();
+    setIsRegisterModalOpen(true);
+  };
+  const closeRegisterModal = () => {
+    setIsRegisterModalOpen(false);
+  };
 
   return (
     <div className="flex font-plus-jakarta-sans justify-between px-24 items-center border-b-2 mb-12 sticky top-0 bg-white z-20">
@@ -42,9 +62,25 @@ export default function Header() {
           <img src="../assets/png/cart-icon.png" width="20px" alt="cart-icon" />
           <p>Cart</p>
         </div>
-        <div className="cursor-pointer mr-4 border-2 border-primary py-2 text-white bg-primary px-8 rounded-md font-semibold text-sm">
+        <div
+          className="cursor-pointer mr-4 border-2 border-primary py-2 text-white bg-primary px-8 rounded-md font-semibold text-sm"
+          onClick={openLoginModal}
+        >
           Login
         </div>
+        {isLoginModalOpen && (
+          <LoginModal
+            closeModal={closeLoginModal}
+            registerModal={openRegisterModal}
+          />
+        )}
+
+        {isRegisterModalOpen && (
+          <RegisterModal
+            closeModal={closeRegisterModal}
+            loginModal={openLoginModal}
+          />
+        )}
       </div>
     </div>
   );
