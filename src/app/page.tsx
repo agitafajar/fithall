@@ -14,26 +14,26 @@ export default function Home() {
       id: "1",
       title: "Location",
       desc: "Lokasi lapangan",
-      icon: "./assets/png/location.png",
+      icon: "../assets/png/location.png",
     },
     {
       id: "2",
       title: "Field Type",
       desc: "Tipe lapangan",
-      icon: "./assets/png/store.png",
+      icon: "../assets/png/store.png",
     },
     {
       id: "3",
       title: "Date",
       desc: "Pilih Tanggal",
-      icon: "./assets/png/calendar.png",
+      icon: "../assets/png/calendar.png",
     },
   ];
 
   const dataCabang = [
     {
       id: "1",
-      pic: "./assets/png/contoh-cabang.png",
+      pic: "../assets/png/contoh-cabang.png",
       label: "Mampang",
       location: "Pancoran, Jakarta Selatan",
       price: "Rp. 35.000",
@@ -41,7 +41,7 @@ export default function Home() {
     },
     {
       id: "1",
-      pic: "./assets/png/contoh-cabang.png",
+      pic: "../assets/png/contoh-cabang.png",
       label: "Kalibata",
       location: "Pancoran, Jakarta Selatan",
       price: "Rp. 35.000",
@@ -49,7 +49,7 @@ export default function Home() {
     },
     {
       id: "1",
-      pic: "./assets/png/contoh-cabang.png",
+      pic: "../assets/png/contoh-cabang.png",
       label: "Pancoran",
       location: "Pancoran, Jakarta Selatan",
       price: "Rp. 35.000",
@@ -57,7 +57,7 @@ export default function Home() {
     },
     {
       id: "1",
-      pic: "./assets/png/contoh-cabang.png",
+      pic: "../assets/png/contoh-cabang.png",
       location: "Gandaria",
       label: "Pancoran, Jakarta Selatan",
       price: "Rp. 35.000",
@@ -68,7 +68,7 @@ export default function Home() {
   const dataSport = [
     {
       id: "1",
-      pic: "./assets/png/contoh-sport.png",
+      pic: "../assets/png/contoh-sport.png",
       label: "Mampang",
       location: "Pancoran, Jakarta Selatan",
       price: "Rp. 35.000",
@@ -76,7 +76,7 @@ export default function Home() {
     },
     {
       id: "1",
-      pic: "./assets/png/contoh-sport.png",
+      pic: "../assets/png/contoh-sport.png",
       label: "Kalibata",
       location: "Pancoran, Jakarta Selatan",
       price: "Rp. 35.000",
@@ -84,7 +84,7 @@ export default function Home() {
     },
     {
       id: "1",
-      pic: "./assets/png/contoh-sport.png",
+      pic: "../assets/png/contoh-sport.png",
       label: "Pancoran",
       location: "Pancoran, Jakarta Selatan",
       price: "Rp. 35.000",
@@ -92,7 +92,7 @@ export default function Home() {
     },
     {
       id: "1",
-      pic: "./assets/png/contoh-sport.png",
+      pic: "../assets/png/contoh-sport.png",
       location: "Gandaria",
       label: "Pancoran, Jakarta Selatan",
       price: "Rp. 35.000",
@@ -120,7 +120,7 @@ export default function Home() {
       <div className="w-full flex flex-col items-center justify-center h-[450px] mb-12">
         <div
           className="relative bg-cover bg-center w-full h-full rounded-3xl items-center p-24 -mb-12"
-          style={{ backgroundImage: "url('./assets/png/home-banner.png')" }}
+          style={{ backgroundImage: "url('../assets/png/home-banner.png')" }}
         >
           <div className="w-[30%] relative z-10">
             <p className="font-bold text-5xl md:text-4xl text-white mb-6">
@@ -149,7 +149,7 @@ export default function Home() {
           })}
           <div className="flex gap-2 cursor-pointer mr-4 items-center border-2 border-primary py-2 text-white bg-primary px-12 rounded-md font-semibold text-sm">
             <p>Search</p>
-            <img src="./assets/png/search.png" width="18px" alt="cart-icon" />
+            <img src="../assets/png/search.png" width="18px" alt="cart-icon" />
           </div>
         </div>
       </div>

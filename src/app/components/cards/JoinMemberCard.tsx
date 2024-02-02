@@ -18,7 +18,7 @@ export default function JoinMemberCard() {
           </div>
         </div>
         <div className="flex justify-center">
-          <img src="./assets/png/join-member.png" />
+          <img src="../assets/png/join-member.png" />
         </div>
       </div>
     </>

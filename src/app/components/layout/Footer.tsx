@@ -4,17 +4,17 @@ export default function Footer() {
   return (
     <div className="grid grid-cols-5 font-plus-jakarta-sans justify-center px-24 py-12 items-center border-b-2 mt-12 bg-primary text-white">
       <div className="col-span-2 flex flex-col gap-6 ">
-        <img src="./assets/png/logo-fithall2.png" width="100px" />
+        <img src="../assets/png/logo-fithall2.png" width="100px" />
         <p className="pr-24">
           Lörem ipsum od ohet dilogi. Bell trabel, samuligt, ohöbel utom diska.
           Jinesade bel när feras redorade i belogi. FAR paratyp i muvåning, och
           pesask vyfisat. Viktiga poddradio har un mad och inde.
         </p>
         <div className="flex gap-6">
-          <img src="./assets/png/fb.png" className="pt-1 cursor-pointer" />
-          <img src="./assets/png/tw.png" className="pt-1 cursor-pointer" />
-          <img src="./assets/png/ln.png" className="pt-1 cursor-pointer" />
-          <img src="./assets/png/ig.png" className="pt-1 cursor-pointer" />
+          <img src="../assets/png/fb.png" className="pt-1 cursor-pointer" />
+          <img src="../assets/png/tw.png" className="pt-1 cursor-pointer" />
+          <img src="../assets/png/ln.png" className="pt-1 cursor-pointer" />
+          <img src="../assets/png/ig.png" className="pt-1 cursor-pointer" />
         </div>
       </div>
       <div className="col-span-1 flex flex-col gap-6">
@@ -36,11 +36,11 @@ export default function Footer() {
           <p>(021) 555-0120</p>
         </div>
         <div className="flex gap-2 items-center cursor-pointer">
-          <img src="./assets/png/mail.png" />
+          <img src="../assets/png/mail.png" />
           <p>fithall@gmail.com</p>
         </div>
         <div className="flex gap-2 items-start cursor-pointer">
-          <img src="./assets/png/white-location.png" className="pt-1" />
+          <img src="../assets/png/white-location.png" className="pt-1" />
           <p>2972 Westheimer Rd. Santa Ana, Illinois 85486 </p>
         </div>
       </div>

@@ -24,7 +24,7 @@ const LapanganCard: React.FC<SportTrainingSectionProps> = ({ dataSport }) => {
           <span className="text-primary flex items-center pl-8 text-sm cursor-pointer">
             Lihat Semua
             <img
-              src="./assets/png/next.png"
+              src="../assets/png/next.png"
               width="6px"
               className="ml-1 pt-1"
             />
@@ -32,12 +32,12 @@ const LapanganCard: React.FC<SportTrainingSectionProps> = ({ dataSport }) => {
         </p>
         <div className="flex gap-4">
           <img
-            src="./assets/png/back-icon.png"
+            src="../assets/png/back-icon.png"
             width="40px"
             className="ml-1 pt-1 cursor-pointer"
           />
           <img
-            src="./assets/png/next-icon.png"
+            src="../assets/png/next-icon.png"
             width="40px"
             className="ml-1 pt-1 cursor-pointer"
           />
