@@ -22,7 +22,9 @@ export default function RootLayout({
       <body className={inter.className}>
         <TanstackProvider>
           <Header />
-          <div className="px-24 font-plus-jakarta-sans">{children}</div>
+          <div className="px-24 font-plus-jakarta-sans min-h-screen">
+            {children}
+          </div>
           <Footer />
         </TanstackProvider>
       </body>

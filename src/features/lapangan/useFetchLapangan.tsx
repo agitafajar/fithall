@@ -13,7 +13,9 @@ export const useFetchLapangan = (
   return useQuery({
     queryKey: ["fetch.cabang"],
     queryFn: async () => {
-      const cabangResponse = await axiosInstance.get("/cabang");
+      const token = localStorage.getItem("token");
+      const headers = token ? { Authorization: `Bearer ${token}` } : {};
+      const cabangResponse = await axiosInstance.get("/cabang", { headers });
       return cabangResponse;
     },
     ...options,

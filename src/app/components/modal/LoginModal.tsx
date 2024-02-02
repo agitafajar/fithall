@@ -44,14 +44,10 @@ const LoginModal: React.FC<LoginModalProps> = ({
     }),
     onSubmit: async (values, { resetForm }) => {
       try {
-        // Trigger loading state
         setIsLoading(true);
         postUserMutation(values);
-
-        console.log("Login initiated");
       } catch (error) {
         alert("Login failed. Please check your credentials and try again.");
-        console.error("Login failed", error);
       }
     },
   });

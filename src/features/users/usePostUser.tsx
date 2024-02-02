@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { AxiosResponse } from "axios";
+import axios, { AxiosResponse } from "axios";
 import { axiosInstance } from "@/lib/axios";
 
 type FormData = {
@@ -24,7 +24,7 @@ export const usePostUser = ({
       onSuccess({ token, user });
       localStorage.setItem("token", token);
       localStorage.setItem("is-guest", false.toString());
-      console.log("datalist", data.data);
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     },
     onError: (error) => {
       if (onError) {

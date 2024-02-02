@@ -100,20 +100,14 @@ export default function Home() {
     },
   ];
 
-  // const { data, error, isError, isLoading } = useFetchLapangan();
+  const { data, error, isError, isLoading } = useFetchLapangan();
 
-  // useEffect(() => {
-  //   if (isError) {
-  //     alert(`Gagal mengambil data !`);
-  //   }
-  // }, [isError, error]);
-
-  // const postsData = data ? data.data : null;
-
-  // console.log("postsData", postsData);
-  // console.log("error", error);
-  // console.log("isError", isError);
-  // console.log("isLoading", isLoading);
+  useEffect(() => {
+    if (isError) {
+      alert(`Gagal mengambil data !`);
+    }
+  }, [isError, error]);
+  const postsData = data ? data.data : null;
 
   return (
     <main>
