@@ -4,7 +4,7 @@ import FilterCard from "./components/cards/FilterCards";
 import JoinMemberCard from "./components/cards/JoinMemberCard";
 import KeunggulanFitcallCard from "./components/cards/KeunggulanFitcallCard";
 import LapanganCard from "./components/cards/LapanganCard";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useFetchLapangan } from "@/features/lapangan/index";
 
 /* eslint-disable @next/next/no-img-element */
@@ -100,20 +100,20 @@ export default function Home() {
     },
   ];
 
-  const { data, error, isError, isLoading } = useFetchLapangan();
+  // const { data, error, isError, isLoading } = useFetchLapangan();
 
-  useEffect(() => {
-    if (isError) {
-      alert(`Gagal mengambil data !`);
-    }
-  }, [isError, error]);
+  // useEffect(() => {
+  //   if (isError) {
+  //     alert(`Gagal mengambil data !`);
+  //   }
+  // }, [isError, error]);
 
-  const postsData = data ? data.data : null;
+  // const postsData = data ? data.data : null;
 
-  console.log("postsData", postsData);
-  console.log("error", error);
-  console.log("isError", isError);
-  console.log("isLoading", isLoading);
+  // console.log("postsData", postsData);
+  // console.log("error", error);
+  // console.log("isError", isError);
+  // console.log("isLoading", isLoading);
 
   return (
     <main>
@@ -137,13 +137,14 @@ export default function Home() {
           {dataFilter.map((listData, key) => {
             return (
               <>
-                <div key={key}></div>
-                <FilterCard
-                  key={listData.id}
-                  desc={listData.desc}
-                  icon={listData.icon}
-                  title={listData.title}
-                />
+                <div key={key}>
+                  <FilterCard
+                    key={listData.id}
+                    desc={listData.desc}
+                    icon={listData.icon}
+                    title={listData.title}
+                  />
+                </div>
               </>
             );
           })}

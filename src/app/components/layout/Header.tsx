@@ -10,7 +10,6 @@ import RegisterModal from "../modal/RegisterModal";
 
 export default function Header() {
   const currentPath = usePathname();
-
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
 
@@ -27,6 +26,10 @@ export default function Header() {
   };
   const closeRegisterModal = () => {
     setIsRegisterModalOpen(false);
+  };
+
+  const logout = () => {
+    localStorage.clear();
   };
 
   return (
@@ -68,6 +71,7 @@ export default function Header() {
         >
           Login
         </div>
+        <div onClick={logout}>clear</div>
         {isLoginModalOpen && (
           <LoginModal
             closeModal={closeLoginModal}

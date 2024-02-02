@@ -7,14 +7,14 @@ export const useFetchLapangan = (
     AxiosResponse,
     unknown,
     AxiosResponse,
-    ["fetch.products"]
+    ["fetch.cabang"]
   >
 ) => {
   return useQuery({
-    queryKey: ["fetch.products"],
+    queryKey: ["fetch.cabang"],
     queryFn: async () => {
-      const productsResponse = await axiosInstance.get("/pokemon/ditto");
-      return productsResponse;
+      const cabangResponse = await axiosInstance.get("/cabang");
+      return cabangResponse;
     },
     ...options,
   });
