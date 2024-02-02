@@ -32,7 +32,7 @@ export default function Footer() {
       <div className="col-span-1 flex flex-col gap-6">
         <p className="font-bold text-lg">Contact</p>
         <div className="flex gap-2 items-center cursor-pointer">
-          <img src="./assets/png/call.png" />
+          <img src="../assets/png/call.png" />
           <p>(021) 555-0120</p>
         </div>
         <div className="flex gap-2 items-center cursor-pointer">
