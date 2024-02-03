@@ -108,7 +108,7 @@ export default function Home() {
     }
   }, [isError, error]);
   const postsData = data ? data.data : null;
-
+  console.log("postsData", postsData);
   return (
     <main>
       <div className="w-full flex flex-col items-center justify-center h-[450px] mb-12">

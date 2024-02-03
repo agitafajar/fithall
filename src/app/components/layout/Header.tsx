@@ -1,14 +1,17 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { routeConfig } from "@/routes/routeConfig";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import React, { useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
 import LoginModal from "../modal/LoginModal";
 import RegisterModal from "../modal/RegisterModal";
+import useGetUser from "@/features/users/useGetUser";
 
 export default function Header() {
+  const isGuest = localStorage.getItem("is-guest");
   const currentPath = usePathname();
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
@@ -30,7 +33,11 @@ export default function Header() {
 
   const logout = () => {
     localStorage.clear();
+    window.location.reload();
   };
+
+  const { data, error, isError } = useGetUser();
+  console.log("listuser", data?.data);
 
   return (
     <div className="flex font-plus-jakarta-sans justify-between px-24 items-center border-b-2 mb-12 sticky top-0 bg-white z-20">
@@ -65,13 +72,17 @@ export default function Header() {
           <img src="../assets/png/cart-icon.png" width="20px" alt="cart-icon" />
           <p>Cart</p>
         </div>
-        <div
-          className="cursor-pointer mr-4 border-2 border-primary py-2 text-white bg-primary px-8 rounded-md font-semibold text-sm"
-          onClick={openLoginModal}
-        >
-          Login
-        </div>
-        <div onClick={logout}>clear</div>
+        {isGuest === null ? (
+          <div
+            className="cursor-pointer mr-4 border-2 border-primary py-2 text-white bg-primary px-8 rounded-md font-semibold text-sm"
+            onClick={openLoginModal}
+          >
+            Login
+          </div>
+        ) : (
+          <div onClick={logout}>{data?.data.name} Keluar</div>
+        )}
+
         {isLoginModalOpen && (
           <LoginModal
             closeModal={closeLoginModal}
