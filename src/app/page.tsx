@@ -86,18 +86,16 @@ export default function Home() {
         </div>
 
         <div className="flex justify-between max-w-4xl shadow-md p-6 rounded-lg gap-6 z-10 bg-white">
-          {dataFilter.map((listData, key) => {
+          {dataFilter.map((listData) => {
             return (
-              <>
-                <div key={key}>
-                  <FilterCard
-                    id={listData.id}
-                    desc={listData.desc}
-                    icon={listData.icon}
-                    title={listData.title}
-                  />
-                </div>
-              </>
+              <div key={listData.id}>
+                <FilterCard
+                  id={listData.id}
+                  desc={listData.desc}
+                  icon={listData.icon}
+                  title={listData.title}
+                />
+              </div>
             );
           })}
           <div className="flex gap-2 cursor-pointer mr-4 items-center border-2 border-primary py-2 text-white bg-primary px-12 rounded-md font-semibold text-sm">
