@@ -5,13 +5,17 @@ type Props = {
   title: string;
   desc: string;
   icon: string;
+  id: string;
 };
 export default function FilterCard(props: Props) {
-  const { title, desc, icon } = props;
+  const { title, desc, icon, id } = props;
 
   return (
     <>
-      <div className="flex items-center gap-2 pr-12 border-r-2 cursor-pointer">
+      <div
+        className="flex items-center gap-2 pr-12 border-r-2 cursor-pointer"
+        key={id}
+      >
         <img src={icon} alt="" width="20px" height="20px" />
         <div className="flex flex-col -gap-4">
           <p className="font-bold">{title}</p>
