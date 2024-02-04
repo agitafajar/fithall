@@ -91,7 +91,7 @@ export default function Home() {
               <>
                 <div key={key}>
                   <FilterCard
-                    key={listData.id}
+                    id={listData.id}
                     desc={listData.desc}
                     icon={listData.icon}
                     title={listData.title}

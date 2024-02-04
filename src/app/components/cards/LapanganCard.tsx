@@ -16,13 +16,11 @@ interface SportTrainingSectionProps {
   dataList: Props[];
 }
 
-const LapanganCard: React.FC<SportTrainingSectionProps> = ({
-  dataList: dataSport,
-}) => {
+const LapanganCard: React.FC<SportTrainingSectionProps> = ({ dataList }) => {
   return (
     <div>
       <div className="flex gap-6 mb-12">
-        {dataSport.map((dataList, key) => (
+        {dataList.map((dataList, key) => (
           <div key={key}>
             <CabangLapanganCard
               pic={dataList.cover_image}
