@@ -1,11 +1,12 @@
+/* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { routeConfig } from "@/routes/routeConfig";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+import React, { useState } from "react";
 import LoginModal from "../modal/LoginModal";
 import RegisterModal from "../modal/RegisterModal";
 import useGetUser from "@/features/users/useGetUser";
@@ -15,6 +16,8 @@ export default function Header() {
   const currentPath = usePathname();
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
+  const [isProfileVisible, setProfileVisibility] = useState(false);
+  const { data } = useGetUser();
 
   const openLoginModal = () => {
     closeRegisterModal();
@@ -31,16 +34,17 @@ export default function Header() {
     setIsRegisterModalOpen(false);
   };
 
+  const handleProfileClick = () => {
+    setProfileVisibility(!isProfileVisible);
+  };
+
   const logout = () => {
     localStorage.clear();
     window.location.reload();
   };
 
-  const { data, error, isError } = useGetUser();
-  console.log("listuser", data?.data);
-
   return (
-    <div className="flex font-plus-jakarta-sans justify-between px-24 items-center border-b-2 mb-12 sticky top-0 bg-white z-20">
+    <div className="flex font-plus-jakarta-sans justify-between px-24 items-center border-b-2 mb-12 sticky top-0 bg-white z-50">
       <Link href="/">
         <img
           src="../assets/png/fithall-logo.png"
@@ -68,11 +72,13 @@ export default function Header() {
           );
         })}
 
-        <div className="cursor-pointer mr-4 border-2 border-primary py-2 text-primary px-8 rounded-md font-semibold text-sm flex gap-1">
-          <img src="../assets/png/cart-icon.png" width="20px" alt="cart-icon" />
-          <p>Cart</p>
+        <div className=" border-r-2 mr-4">
+          <div className="p-3 bg-[#F5F7FA] rounded-full mr-4">
+            <img src="../assets/png/shopping-cart.png" />
+          </div>
         </div>
-        {isGuest === null ? (
+
+        {!isGuest ? (
           <div
             className="cursor-pointer mr-4 border-2 border-primary py-2 text-white bg-primary px-8 rounded-md font-semibold text-sm"
             onClick={openLoginModal}
@@ -80,7 +86,37 @@ export default function Header() {
             Login
           </div>
         ) : (
-          <div onClick={logout}>{data?.data.name} Keluar</div>
+          <div className="flex gap-1">
+            <div className="p-3 bg-[#F5F7FA] rounded-full mr-4">
+              <img src="../assets/png/profile.png" />
+            </div>
+            <div
+              className="flex flex-col gap cursor-pointer"
+              onClick={handleProfileClick}
+            >
+              <p className="-mb-1 text-sm">Hello</p>
+              <p className="font-bold">
+                {" "}
+                {data?.data.name.length > 10
+                  ? `${data?.data.name.substring(0, 11)}...`
+                  : data?.data.name}
+              </p>
+            </div>
+            {isProfileVisible && (
+              <div className="bg-white text-xs border-2 p-4 rounded-xl absolute top-[70px] right-24 z-0">
+                <p>
+                  Welcome, <span className="font-bold">{data?.data.name}</span>
+                </p>
+                <p className="border-b-2 mb-4 pb-1">{data?.data.email}</p>
+                <p
+                  className="font-bold text-sm cursor-pointer"
+                  onClick={logout}
+                >
+                  Logout
+                </p>
+              </div>
+            )}
+          </div>
         )}
 
         {isLoginModalOpen && (

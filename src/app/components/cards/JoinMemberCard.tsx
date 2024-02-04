@@ -1,6 +1,8 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable @next/next/no-img-element */
 
+import Link from "next/link";
+
 export default function JoinMemberCard() {
   return (
     <>
@@ -13,9 +15,12 @@ export default function JoinMemberCard() {
             Keistimewaan Eksklusif: Bergabunglah dengan Membership, Raih
             Privilege Penuh di Booking Lapangan!
           </p>
-          <div className="flex w-[40%] gap-2 cursor-pointer mr-4 items-center border-2 border-primary py-4 text-white bg-primary px-12 md:px-8 rounded-md font-semibold text-xs justify-center">
+          <Link
+            href="/members"
+            className="flex w-[40%] gap-2 cursor-pointer mr-4 items-center border-2 border-primary py-4 text-white bg-primary px-12 md:px-8 rounded-md font-semibold text-xs justify-center"
+          >
             <p>Join Member</p>
-          </div>
+          </Link>
         </div>
         <div className="flex justify-center">
           <img src="../assets/png/join-member.png" />

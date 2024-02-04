@@ -9,6 +9,10 @@ import { useEffect, useState } from "react";
 
 /* eslint-disable @next/next/no-img-element */
 export default function Home() {
+  const { data, error, isError } = useGetCabang();
+  const [startIndex, setStartIndex] = useState(0);
+  const cardsPerPage = 4;
+
   const dataFilter = [
     {
       id: "1",
@@ -49,8 +53,16 @@ export default function Home() {
     },
     {
       id: "1",
-      pic: "../assets/png/contoh-cabang.png",
-      label: "Pancoran",
+      pic: "../assets/png/contoh-sport.png",
+      label: "Mampang",
+      location: "Pancoran, Jakarta Selatan",
+      price: "Rp. 35.000",
+      time: "06:00 - 23:59",
+    },
+    {
+      id: "1",
+      pic: "../assets/png/contoh-sport.png",
+      label: "Kalibata",
       location: "Pancoran, Jakarta Selatan",
       price: "Rp. 35.000",
       time: "06:00 - 23:59",
@@ -58,8 +70,16 @@ export default function Home() {
     {
       id: "1",
       pic: "../assets/png/contoh-cabang.png",
-      location: "Gandaria",
-      label: "Pancoran, Jakarta Selatan",
+      label: "Mampang",
+      location: "Pancoran, Jakarta Selatan",
+      price: "Rp. 35.000",
+      time: "06:00 - 23:59",
+    },
+    {
+      id: "1",
+      pic: "../assets/png/contoh-cabang.png",
+      label: "Kalibata",
+      location: "Pancoran, Jakarta Selatan",
       price: "Rp. 35.000",
       time: "06:00 - 23:59",
     },
@@ -100,15 +120,29 @@ export default function Home() {
     },
   ];
 
-  const { data, error, isError } = useGetCabang();
-
   useEffect(() => {
     if (isError) {
       alert(`Gagal mengambil data !`);
     }
   }, [isError, error]);
-  const postsData = data ? data.data : null;
-  console.log("postsData", postsData);
+
+  const listCabangLapangan = data ? data.data : null;
+  console.log("listCabangLapangan", listCabangLapangan);
+  console.log(Array.isArray(listCabangLapangan)); // Seharusnya mencetak `true` jika listCabangLapangan adalah array.
+
+  const handleNextClick = () => {
+    setStartIndex(startIndex + cardsPerPage);
+  };
+  const handlePrevClick = () => {
+    setStartIndex(Math.max(0, startIndex - cardsPerPage));
+  };
+
+  const visibleDataSport = dataCabang.slice(
+    startIndex,
+    startIndex + cardsPerPage
+  );
+  const isNextDisabled = startIndex + cardsPerPage >= dataCabang.length;
+
   return (
     <main>
       <div className="w-full flex flex-col items-center justify-center h-[450px] mb-12">
@@ -148,7 +182,40 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <LapanganCard dataSport={dataCabang} />
+      <div>
+        <div className="flex justify-between items-center mb-4">
+          <p className="font-bold flex text-[22px]">
+            Sport Training
+            <span className="text-primary flex items-center pl-8 text-sm cursor-pointer">
+              Lihat Semua
+              <img
+                src="../assets/png/next.png"
+                width="6px"
+                className="ml-1 pt-1"
+              />
+            </span>
+          </p>
+          <div className="flex gap-4">
+            <img
+              src="../assets/png/back-icon.png"
+              width="40px"
+              className="ml-1 pt-1 cursor-pointer"
+              onClick={handlePrevClick}
+            />
+            <img
+              src="../assets/png/next-icon.png"
+              width="40px"
+              className={`ml-1 pt-1 cursor-pointer ${
+                isNextDisabled
+                  ? "opacity-50 cursor-not-allowed pointer-events-none"
+                  : ""
+              }`}
+              onClick={handleNextClick}
+            />
+          </div>
+        </div>
+        <LapanganCard dataSport={visibleDataSport} />
+      </div>
       <LapanganCard dataSport={dataSport} />
       <JoinMemberCard />
       <LapanganCard dataSport={dataCabang} />
