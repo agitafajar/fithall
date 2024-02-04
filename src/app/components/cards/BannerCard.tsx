@@ -19,7 +19,7 @@ const BannerCard: React.FC<BannerCardProps> = ({ icon, title }) => {
         >
           <div className="flex flex-col justify-center items-center relative z-10">
             <img src={icon} className="font-bold text-white mb-4" />
-            <p className="font-bold text-4xl md:text-4xl text-white mb-6">
+            <p className="font-bold text-4xl md:text-4xl text-white mb-6 capitalize">
               {title}
             </p>
           </div>

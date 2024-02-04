@@ -10,6 +10,7 @@ interface Props {
   price: string;
   waktu_buka: string;
   waktu_tutup: string;
+  slug: string;
 }
 
 interface SportTrainingSectionProps {
@@ -29,6 +30,7 @@ const LapanganCard: React.FC<SportTrainingSectionProps> = ({ dataList }) => {
               price={dataList.price}
               openTime={dataList.waktu_buka.substring(0, 5)}
               closeTime={dataList.waktu_tutup.substring(0, 5)}
+              slug={dataList.slug}
             />
           </div>
         ))}

@@ -10,14 +10,16 @@ type Props = {
   price: string;
   openTime: string;
   closeTime: string;
+  slug: string;
 };
 export default function CabangLapanganCard(props: Props) {
-  const { pic, label, location, price, openTime, closeTime } = props;
+  const { pic, label, location, price, openTime, closeTime, slug } = props;
 
   return (
     <>
       <Link
-        href="/lapangan/list"
+        href={`/lapangan/${slug}`}
+        passHref
         className="flex flex-col p-4 border-2 rounded-xl gap-4 cursor-pointer w-[320px]"
       >
         <img src={pic} alt="" className=" w-full h-[200px] rounded-lg" />
