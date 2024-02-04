@@ -25,10 +25,6 @@ const BannerCard: React.FC<BannerCardProps> = ({ icon, title }) => {
           </div>
           <div className="absolute inset-0 bg-gradient-to-r from-black to-transparent rounded-3xl"></div>
         </div>
-
-        <div className="flex justify-between max-w-4xl shadow-md p-6 rounded-lg gap-6 z-10 bg-white">
-          <FilterBannerCard />
-        </div>
       </div>
     </>
   );
