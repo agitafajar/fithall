@@ -114,10 +114,11 @@ export default function ListLapanganPage({
           {cabangDataLapangan?.data.lapangan.map((lapangan: any) => (
             <ListLapanganCard
               key={lapangan.id}
-              id={lapangan.cabang_id}
+              id={lapangan.id}
               imageSrc={lapangan.cover_image}
               name={lapangan.full_name}
               size={lapangan.ukuran}
+              slug={lapangan.slug}
             />
           ))}
         </div>
