@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 /* eslint-disable jsx-a11y/alt-text */
 "use client";
 import useGetCabang from "@/features/cabang/useGetCabang";
@@ -5,13 +6,16 @@ import FilterCard from "./components/cards/FilterCards";
 import JoinMemberCard from "./components/cards/JoinMemberCard";
 import KeunggulanFitcallCard from "./components/cards/KeunggulanFitcallCard";
 import LapanganCard from "./components/cards/LapanganCard";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import React from "react";
+import LoadingPage from "./loading";
+import ErrorPage from "./error";
 
-/* eslint-disable @next/next/no-img-element */
 export default function Home() {
-  const { data, error, isError } = useGetCabang();
+  const { data, isLoading, error } = useGetCabang();
   const [startIndex, setStartIndex] = useState(0);
   const cardsPerPage = 4;
+  const cabangData = data?.data || [];
 
   const dataFilter = [
     {
@@ -34,102 +38,6 @@ export default function Home() {
     },
   ];
 
-  const dataCabang = [
-    {
-      id: "1",
-      pic: "../assets/png/contoh-cabang.png",
-      label: "Mampang",
-      location: "Pancoran, Jakarta Selatan",
-      price: "Rp. 35.000",
-      time: "06:00 - 23:59",
-    },
-    {
-      id: "1",
-      pic: "../assets/png/contoh-cabang.png",
-      label: "Kalibata",
-      location: "Pancoran, Jakarta Selatan",
-      price: "Rp. 35.000",
-      time: "06:00 - 23:59",
-    },
-    {
-      id: "1",
-      pic: "../assets/png/contoh-sport.png",
-      label: "Mampang",
-      location: "Pancoran, Jakarta Selatan",
-      price: "Rp. 35.000",
-      time: "06:00 - 23:59",
-    },
-    {
-      id: "1",
-      pic: "../assets/png/contoh-sport.png",
-      label: "Kalibata",
-      location: "Pancoran, Jakarta Selatan",
-      price: "Rp. 35.000",
-      time: "06:00 - 23:59",
-    },
-    {
-      id: "1",
-      pic: "../assets/png/contoh-cabang.png",
-      label: "Mampang",
-      location: "Pancoran, Jakarta Selatan",
-      price: "Rp. 35.000",
-      time: "06:00 - 23:59",
-    },
-    {
-      id: "1",
-      pic: "../assets/png/contoh-cabang.png",
-      label: "Kalibata",
-      location: "Pancoran, Jakarta Selatan",
-      price: "Rp. 35.000",
-      time: "06:00 - 23:59",
-    },
-  ];
-
-  const dataSport = [
-    {
-      id: "1",
-      pic: "../assets/png/contoh-sport.png",
-      label: "Mampang",
-      location: "Pancoran, Jakarta Selatan",
-      price: "Rp. 35.000",
-      time: "06:00 - 23:59",
-    },
-    {
-      id: "1",
-      pic: "../assets/png/contoh-sport.png",
-      label: "Kalibata",
-      location: "Pancoran, Jakarta Selatan",
-      price: "Rp. 35.000",
-      time: "06:00 - 23:59",
-    },
-    {
-      id: "1",
-      pic: "../assets/png/contoh-sport.png",
-      label: "Pancoran",
-      location: "Pancoran, Jakarta Selatan",
-      price: "Rp. 35.000",
-      time: "06:00 - 23:59",
-    },
-    {
-      id: "1",
-      pic: "../assets/png/contoh-sport.png",
-      location: "Gandaria",
-      label: "Pancoran, Jakarta Selatan",
-      price: "Rp. 35.000",
-      time: "06:00 - 23:59",
-    },
-  ];
-
-  useEffect(() => {
-    if (isError) {
-      alert(`Gagal mengambil data !`);
-    }
-  }, [isError, error]);
-
-  const listCabangLapangan = data ? data.data : null;
-  console.log("listCabangLapangan", listCabangLapangan);
-  console.log(Array.isArray(listCabangLapangan)); // Seharusnya mencetak `true` jika listCabangLapangan adalah array.
-
   const handleNextClick = () => {
     setStartIndex(startIndex + cardsPerPage);
   };
@@ -137,11 +45,27 @@ export default function Home() {
     setStartIndex(Math.max(0, startIndex - cardsPerPage));
   };
 
-  const visibleDataSport = dataCabang.slice(
+  const visibleDataSport = cabangData.slice(
     startIndex,
     startIndex + cardsPerPage
   );
-  const isNextDisabled = startIndex + cardsPerPage >= dataCabang.length;
+  const isNextDisabled = startIndex + cardsPerPage >= cabangData.length;
+
+  if (isLoading) {
+    return (
+      <div>
+        <LoadingPage />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div>
+        <ErrorPage />
+      </div>
+    );
+  }
 
   return (
     <main>
@@ -214,11 +138,9 @@ export default function Home() {
             />
           </div>
         </div>
-        <LapanganCard dataSport={visibleDataSport} />
+        <LapanganCard dataList={visibleDataSport} />
       </div>
-      <LapanganCard dataSport={dataSport} />
       <JoinMemberCard />
-      <LapanganCard dataSport={dataCabang} />
       <KeunggulanFitcallCard />
     </main>
   );

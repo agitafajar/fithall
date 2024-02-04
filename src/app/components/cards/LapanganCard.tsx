@@ -3,30 +3,34 @@
 import React from "react";
 import CabangLapanganCard from "./CabangLapanganCard";
 
-interface SportData {
-  pic: string;
-  label: string;
-  location: string;
+interface Props {
+  cover_image: string;
+  alamat: string;
+  nama: string;
   price: string;
-  time: string;
+  waktu_buka: string;
+  waktu_tutup: string;
 }
 
 interface SportTrainingSectionProps {
-  dataSport: SportData[];
+  dataList: Props[];
 }
 
-const LapanganCard: React.FC<SportTrainingSectionProps> = ({ dataSport }) => {
+const LapanganCard: React.FC<SportTrainingSectionProps> = ({
+  dataList: dataSport,
+}) => {
   return (
     <div>
       <div className="flex gap-6 mb-12">
         {dataSport.map((dataList, key) => (
           <div key={key}>
             <CabangLapanganCard
-              pic={dataList.pic}
-              label={dataList.location}
-              location={dataList.label}
+              pic={dataList.cover_image}
+              label={dataList.nama}
+              location={dataList.alamat}
               price={dataList.price}
-              time={dataList.time}
+              openTime={dataList.waktu_buka.substring(0, 5)}
+              closeTime={dataList.waktu_tutup.substring(0, 5)}
             />
           </div>
         ))}

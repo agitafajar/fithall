@@ -6,8 +6,13 @@ const axiosInstance = axios.create({
   baseURL: "https://fithall.id/api",
 });
 
-const isGuest = localStorage.getItem("is-guest");
-const token = localStorage.getItem("token");
+let isGuest;
+let token;
+
+if (typeof window !== "undefined") {
+  isGuest = localStorage.getItem("is-guest");
+  token = localStorage.getItem("token");
+}
 
 {
   isGuest === null
