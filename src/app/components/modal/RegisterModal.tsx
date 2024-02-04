@@ -1,6 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable jsx-a11y/alt-text */
+import { usePostRegister } from "@/features/users/usePostRegister";
+import { useFormik } from "formik";
 import React, { useState } from "react";
+import { toast } from "sonner";
+import * as Yup from "yup";
 
 type LoginModalProps = {
   closeModal: () => void;
@@ -11,6 +15,27 @@ export default function RegisterModal(props: LoginModalProps) {
   const { closeModal, loginModal } = props;
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const { mutate: postRegisterMutation } = usePostRegister({
+    onSuccess: () => {
+      closeModal();
+      window.location.reload();
+      toast.success("Congratulation !", {
+        className: "my-classname",
+        description: "Register success",
+        duration: 3000,
+      });
+    },
+    onError: () => {
+      closeModal();
+      toast.error("Register failed", {
+        className: "my-classname",
+        description: "User already exists !",
+        duration: 3000,
+      });
+    },
+  });
 
   const togglePasswordVisibility = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
@@ -18,6 +43,32 @@ export default function RegisterModal(props: LoginModalProps) {
   const toggleConfirmPasswordVisibility = () => {
     setShowConfirmPassword((prevShowPassword) => !prevShowPassword);
   };
+
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+      confirmPassword: "",
+      name: "",
+    },
+    validationSchema: Yup.object({
+      email: Yup.string().email("Invalid email address").required("Required"),
+      password: Yup.string().required("Required"),
+      confirmPassword: Yup.string()
+        .oneOf([Yup.ref("password")], "Passwords must match")
+        .required("Required"),
+      name: Yup.string().required("Required"),
+    }),
+    onSubmit: async (values, { resetForm }) => {
+      try {
+        resetForm();
+        setIsLoading(true);
+        postRegisterMutation(values);
+      } catch (error) {
+        alert("Register failed. Please check your credentials and try again.");
+      }
+    },
+  });
 
   return (
     <>
@@ -37,30 +88,46 @@ export default function RegisterModal(props: LoginModalProps) {
           <p className="text-sm text-gray-600 mb-6 text-center">
             Please fill in the following data correctly
           </p>
-          <form>
+          <form onSubmit={formik.handleSubmit}>
             <label className="block mb-6 md:mb-4 font-bold text-xs">
               Full Name:
+              {formik.touched.name && formik.errors.name ? (
+                <div className="text-red-500 text-xs">{formik.errors.name}</div>
+              ) : null}
               <input
-                type="email"
+                type="text"
                 className="border border-gray-300 rounded-md p-3 mt-2 w-full"
                 placeholder="Masukkan nama anda"
+                {...formik.getFieldProps("name")}
               />
             </label>
             <label className="block mb-6 md:mb-4 font-bold text-xs">
               Email:
+              {formik.touched.email && formik.errors.email ? (
+                <div className="text-red-500 text-xs">
+                  {formik.errors.email}
+                </div>
+              ) : null}
               <input
                 type="email"
                 className="border border-gray-300 rounded-md p-3 mt-2 w-full"
                 placeholder="Masukkan email anda"
+                {...formik.getFieldProps("email")}
               />
             </label>
             <label className="block mb-8 md:mb-4 font-bold text-xs">
               Password:
+              {formik.touched.password && formik.errors.password ? (
+                <div className="text-red-500 text-xs">
+                  {formik.errors.email}
+                </div>
+              ) : null}
               <div className="relative">
                 <input
                   type={showPassword ? "text" : "password"}
                   className="border border-gray-300 rounded-md p-3 mt-2 w-full"
                   placeholder="Password"
+                  {...formik.getFieldProps("password")}
                 />
                 <button
                   type="button"
@@ -73,11 +140,18 @@ export default function RegisterModal(props: LoginModalProps) {
             </label>
             <label className="block mb-8 font-bold text-xs">
               Confirm Password:
+              {formik.touched.confirmPassword &&
+              formik.errors.confirmPassword ? (
+                <div className="text-red-500 text-xs">
+                  {formik.errors.confirmPassword}
+                </div>
+              ) : null}
               <div className="relative">
                 <input
                   type={showConfirmPassword ? "text" : "password"}
                   className="border border-gray-300 rounded-md p-3 mt-2 w-full"
-                  placeholder="Password"
+                  placeholder="Confirm Password"
+                  {...formik.getFieldProps("confirmPassword")}
                 />
                 <button
                   type="button"
@@ -91,9 +165,12 @@ export default function RegisterModal(props: LoginModalProps) {
             <div className="flex flex-col gap-3 font-bold">
               <button
                 type="submit"
-                className="bg-primary text-white py-2 md:py-3 rounded-md text-sm border-2 border-primary"
+                className={`bg-primary text-white py-2 md:py-3 rounded-md text-sm border-2 border-primary ${
+                  isLoading ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+                disabled={isLoading}
               >
-                Register
+                {isLoading ? "Register in..." : "Register"}
               </button>
               <button
                 type="button"
