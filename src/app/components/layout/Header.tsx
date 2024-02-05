@@ -10,6 +10,7 @@ import React, { useState } from "react";
 import LoginModal from "../modal/LoginModal";
 import RegisterModal from "../modal/RegisterModal";
 import useGetUser from "@/features/users/useGetUser";
+import useGetCart from "@/features/cabang/useGetCart";
 
 export default function Header() {
   const isGuest = localStorage.getItem("is-guest");
@@ -43,6 +44,9 @@ export default function Header() {
     window.location.reload();
   };
 
+  const { data: dataCart } = useGetCart();
+  //console.log("dataCart?.data.length", dataCart?.data?.cart);
+  const totalCart = dataCart?.data?.cart.length || "";
   return (
     <div className="flex font-plus-jakarta-sans justify-between px-24 items-center border-b-2 mb-12 sticky top-0 bg-white z-50">
       <Link href="/">
@@ -72,11 +76,16 @@ export default function Header() {
           );
         })}
 
-        <div className=" border-r-2 mr-4">
-          <div className="p-3 bg-[#F5F7FA] rounded-full mr-4">
+        <Link href="/checkout" className="relative mr-4">
+          <div className="p-3 bg-[#F5F7FA] rounded-full mr-4 cursor-pointer">
             <img src="../assets/png/shopping-cart.png" />
           </div>
-        </div>
+          {totalCart && totalCart > 0 && (
+            <div className="absolute text-xs w-[20px] h-[20px] text-center top-0 right-4 bg-red-500 text-white rounded-full p-1">
+              {totalCart}
+            </div>
+          )}
+        </Link>
 
         {!isGuest ? (
           <div
