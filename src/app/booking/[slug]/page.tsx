@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, use } from "react";
+import React, { useState } from "react";
 import BannerCard from "@/app/components/cards/BannerCard";
 import ErrorPage from "@/app/error";
 import LoadingPage from "@/app/loading";
@@ -37,36 +37,22 @@ export default function ListBookingPage({
 
     try {
       if (isIdInLoggedIds && !noIsIdInLoggedIds) {
-        // Jika id ada di loggedIds dan bukan di duplicatedIds, tambahkan ke selectedBookingIds
         setSelectedBookingIds((prevSelectedIds) => [...prevSelectedIds, id]);
-
         const token = localStorage.getItem("token");
         const headers = token ? { Authorization: `Bearer ${token}` } : {};
-
-        // Lakukan pemanggilan API untuk menambahkan ke keranjang
         const cabangResponse = await axiosInstance.get(`/add-cart/${id}`, {
           headers,
         });
-
-        // Lakukan sesuatu dengan cabangResponse jika perlu
       } else {
-        // Jika id tidak ada di loggedIds atau ada di duplicatedIds, hapus dari selectedBookingIds
         setSelectedBookingIds((prevSelectedIds) =>
           prevSelectedIds.filter((selectedId) => selectedId !== id)
         );
-
         const token = localStorage.getItem("token");
         const headers = token ? { Authorization: `Bearer ${token}` } : {};
-
-        // Lakukan pemanggilan API untuk menghapus dari keranjang
         const cabangResponse = await axiosInstance.get(`/remove-cart/${id}`, {
           headers,
         });
-
-        // Lakukan sesuatu dengan cabangResponse jika perlu
       }
-
-      // Lakukan sesuatu setelah pemanggilan API selesai
     } catch (error) {
       console.error("Error:", error);
     } finally {
