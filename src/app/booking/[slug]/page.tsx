@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import BannerCard from "@/app/components/cards/BannerCard";
 import ErrorPage from "@/app/error";
 import LoadingPage from "@/app/loading";
 import useGetDetailLapangan from "@/features/cabang/useGetDetailLapangan";
@@ -9,14 +8,13 @@ import useGetListHarga from "@/features/cabang/useGetListHarga";
 import useGetCart from "@/features/cabang/useGetCart";
 import axiosInstance from "@/lib/axios";
 import ClipLoader from "react-spinners/ClipLoader";
+import DateFilter from "@/app/components/cards/BannerDateFilter";
 
 export default function ListBookingPage({
   params,
 }: {
   params: { slug: string };
 }) {
-  const title = params.slug;
-  const icon = "../assets/png/fithall-circle.png";
   const [selectedBookingIds, setSelectedBookingIds] = useState<string[]>([]);
   const { data: dataCart, refetch: refetchCart } = useGetCart();
   const [isLoadingMap, setIsLoadingMap] = useState<{ [id: string]: boolean }>(
@@ -29,7 +27,6 @@ export default function ListBookingPage({
   const handleToggleToCart = async (id: any) => {
     console.log("Item toggled to cart with id:", id);
 
-    // Cek apakah id ada di dalam loggedIds
     const isIdInLoggedIds = loggedIds.includes(id);
     const noIsIdInLoggedIds = duplicatedIds.includes(id);
 
@@ -121,18 +118,11 @@ export default function ListBookingPage({
 
   return (
     <>
-      <BannerCard icon={icon} title={title} />
-      <div className="my-4">
-        <label htmlFor="dateFilter" className="mr-2">
-          Filter by Date:
-        </label>
-        <input
-          type="date"
-          id="dateFilter"
-          value={selectedDate}
-          onChange={handleDateChange}
-        />
-      </div>
+      <DateFilter
+        selectedDate={selectedDate}
+        onDateChange={handleDateChange}
+        title={cabangDataLapangan?.data.nama}
+      />
 
       <div className="flex gap-4 font-bold text-center justify-between">
         {Object.keys(groupedBookings).map((date) => (

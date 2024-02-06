@@ -9,8 +9,14 @@ import LoadingPage from "../loading";
 import useGetRemoveCart from "@/features/cabang/useGetRemoveCart";
 import { useEffect, useState } from "react";
 import ClipLoader from "react-spinners/ClipLoader";
+import BookingDetailCard from "../components/cards/BookingDetailCard";
+import { formatToCurrency } from "@/lib/formatTimeCurrency";
+import ProfileFormCard from "../components/cards/ProfileFormCard";
 
 export default function CheckoutPage() {
+  const [isDeleteLoadingMap, setIsDeleteLoadingMap] = useState<{
+    [id: string]: boolean;
+  }>({});
   const [isGetId, setIsGetId] = useState<string>("");
   const [isAgreed, setIsAgreed] = useState(false);
   let totalSubTotal = 0;
@@ -33,6 +39,26 @@ export default function CheckoutPage() {
 
   const isLoading = isGetCart || isDeleteLoading;
 
+  const handleDeleteItem = async (id: string) => {
+    setIsGetId(id);
+    setIsDeleteLoadingMap((prevLoadingMap) => ({
+      ...prevLoadingMap,
+      [id]: true,
+    }));
+
+    try {
+      await refetchDataRemove();
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+      setIsDeleteLoadingMap((prevLoadingMap) => ({
+        ...prevLoadingMap,
+        [id]: false,
+      }));
+      refetchCart();
+    }
+  };
+
   if (isLoading) {
     return (
       <div>
@@ -49,17 +75,6 @@ export default function CheckoutPage() {
     );
   }
 
-  const formatToCurrency = (value: any) => {
-    const formattedValue = new Intl.NumberFormat("id-ID", {
-      style: "currency",
-      currency: "IDR",
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(value);
-
-    return formattedValue;
-  };
-
   return (
     <>
       <div className="grid grid-cols-3 gap-3">
@@ -67,84 +82,11 @@ export default function CheckoutPage() {
           <p className="mb-4 border-b-2 font-bold text-4xl pb-4">Checkout</p>
           <p className="text-xl font-bold mb-2">Data Perwakilan Pemain</p>
           <div className="rounded-md">
-            <div className="mb-4">
-              <label
-                htmlFor="profile"
-                className="block text-sm font-bold text-gray-700"
-              >
-                Pilih Profile
-              </label>
-              <select
-                id="profile"
-                name="profile"
-                className="mt-1 p-2 block w-full border border-gray-300 rounded-md bg-[#F0F1F5]"
-              >
-                <option value="option1">Option 1</option>
-                <option value="option2">Option 2</option>
-                <option value="option3">Option 3</option>
-              </select>
-            </div>
-
-            <div className="mb-4">
-              <label
-                htmlFor="nama"
-                className="block text-sm font-bold text-gray-700"
-              >
-                Nama
-              </label>
-              <input
-                type="text"
-                id="nama"
-                name="nama"
-                className="mt-1 p-2 block w-full border border-gray-300 rounded-md bg-[#F0F1F5]"
-              />
-            </div>
-
-            <div className="mb-4">
-              <label
-                htmlFor="instansi"
-                className="block text-sm font-bold text-gray-700"
-              >
-                Nama Instansi
-              </label>
-              <input
-                type="text"
-                id="instansi"
-                name="instansi"
-                className="mt-1 p-2 block w-full border border-gray-300 rounded-md bg-[#F0F1F5]"
-              />
-            </div>
-
-            <div className="mb-4">
-              <label
-                htmlFor="wa"
-                className="block text-sm font-bold text-gray-700"
-              >
-                Nomor WA
-              </label>
-              <input
-                type="tel"
-                id="wa"
-                name="wa"
-                className="mt-1 p-2 block w-full border border-gray-300 rounded-md bg-[#F0F1F5]"
-              />
-            </div>
-
-            <div className="mb-4">
-              <label
-                htmlFor="email"
-                className="block text-sm font-bold text-gray-700"
-              >
-                Email
-              </label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                className="mt-1 p-2 block w-full border border-gray-300 rounded-md bg-[#F0F1F5]"
-              />
-            </div>
-
+            <ProfileFormCard label="Pilih Profile" id="profile" />
+            <ProfileFormCard label="Nama" id="nama" />
+            <ProfileFormCard label="Nama Instansi" id="instansi" />
+            <ProfileFormCard label="Nomor WA" id="wa" type="tel" />
+            <ProfileFormCard label="Email" id="email" type="email" />
             <div className="mb-4">
               <label className="block text-sm font-bold text-gray-700">
                 Jenis Kelamin
@@ -197,25 +139,15 @@ export default function CheckoutPage() {
                   key={bookingItem.booking.id}
                   className="mb-4 flex justify-between items-center"
                 >
-                  <div className="text-[#323F4B]">
-                    <p className="font-bold text-sm mb-1">{full_name}</p>
-                    <p>{pretty_date}</p>
-                    <p>{formatToCurrency(harga_visit)}</p>
-                  </div>
-                  <div>
-                    {isDeleteLoading ? (
-                      <ClipLoader color="red" />
-                    ) : (
-                      <img
-                        src="../assets/png/trash.png"
-                        className="cursor-pointer"
-                        onClick={() => {
-                          setIsGetId(id);
-                          refetchDataRemove();
-                        }}
-                      />
-                    )}
-                  </div>
+                  <BookingDetailCard
+                    key={bookingItem.booking.id}
+                    full_name={bookingItem.booking.lapangan.full_name}
+                    pretty_date={bookingItem.booking.pretty_date}
+                    harga_visit={bookingItem.booking.harga_visit}
+                    id={bookingItem.booking_id}
+                    isDeleteLoading={isDeleteLoadingMap[bookingItem.booking_id]}
+                    onDelete={handleDeleteItem}
+                  />
                 </div>
               );
             })}
@@ -261,7 +193,7 @@ export default function CheckoutPage() {
               }`}
               disabled={!isAgreed}
             >
-              {isLoading ? "Logging in..." : "Proses Pembayaran"}
+              {isLoading ? "Submitting..." : "Proses Pembayaran"}
             </button>
             <div className="flex gap-2 items-center mt-4 text-sm">
               <img src="../assets/png/info-checkout.png" />
