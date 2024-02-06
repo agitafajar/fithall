@@ -95,6 +95,22 @@ export default function ListBookingPage({
   const groupedBookings: { [date: string]: any[] } = {};
   listHarga?.data.forEach((listDataHarga: any) => {
     const date = listDataHarga.tanggal;
+    const tanggal = new Date(date);
+    const hari = tanggal.toLocaleDateString("id-ID", { weekday: "long" });
+
+    listDataHarga.hari = hari;
+
+    const dateString = new Date(date);
+
+    const timeFormat: Intl.DateTimeFormatOptions = {
+      month: "numeric",
+      day: "2-digit",
+      year: "numeric",
+      timeZone: "Asia/Jakarta",
+    };
+
+    const formattedDate = dateString.toLocaleDateString("id-ID", timeFormat);
+    listDataHarga.formattedDate = formattedDate;
 
     if (!groupedBookings[date]) {
       groupedBookings[date] = [listDataHarga];
@@ -121,7 +137,16 @@ export default function ListBookingPage({
       <div className="flex gap-4 font-bold text-center justify-between">
         {Object.keys(groupedBookings).map((date) => (
           <div key={date}>
-            <p className="mb-2 bg-red-400 ">{date}</p>
+            <div className="mb-6 pb-6 border-b-2">
+              <div className="mb-2 border-2 rounded-xl px-4 py-2">
+                <p className="mb-4 font-bold text-xl">
+                  {groupedBookings[date][0].hari}
+                </p>
+                <p className="text-sm text-[#7F7F7F]">
+                  {groupedBookings[date][0].formattedDate}
+                </p>
+              </div>
+            </div>
             {groupedBookings[date].map((booking) => {
               const isLoadingForCard = isLoadingMap[booking.id];
 
@@ -137,7 +162,7 @@ export default function ListBookingPage({
               return (
                 <div
                   key={booking.id}
-                  className={`py-2 px-6 rounded-xl border-2 mb-8 ${
+                  className={`py-2 px-6 rounded-xl border-2 mb-8  ${
                     booking.status === "BOOKED"
                       ? "bg-[#F99C9C]"
                       : booking.status === "AVAILABLE"
