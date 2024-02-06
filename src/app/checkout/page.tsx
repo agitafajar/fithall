@@ -13,6 +13,7 @@ import BookingDetailCard from "../components/cards/BookingDetailCard";
 import { formatToCurrency } from "@/lib/formatTimeCurrency";
 import ProfileFormCard from "../components/cards/ProfileFormCard";
 import EmptyStatePage from "../components/cards/EmptyStateCard";
+import FormCheckout from "../components/cards/FormCheckout";
 
 export default function CheckoutPage() {
   const [isDeleteLoadingMap, setIsDeleteLoadingMap] = useState<{
@@ -84,7 +85,8 @@ export default function CheckoutPage() {
             <p className="mb-4 border-b-2 font-bold text-4xl pb-4">Checkout</p>
             <p className="text-xl font-bold mb-2">Data Perwakilan Pemain</p>
             <div className="rounded-md">
-              <ProfileFormCard label="Pilih Profile" id="profile" />
+              <FormCheckout />
+              {/* <ProfileFormCard label="Pilih Profile" id="profile" />
               <ProfileFormCard label="Nama" id="nama" />
               <ProfileFormCard label="Nama Instansi" id="instansi" />
               <ProfileFormCard label="Nomor WA" id="wa" type="tel" />
@@ -113,7 +115,7 @@ export default function CheckoutPage() {
                     <span className="ml-2">Perempuan</span>
                   </label>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
           <div className="col-span-1 bg-[#F7F7FC] p-6">
