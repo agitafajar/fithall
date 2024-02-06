@@ -9,6 +9,8 @@ import useGetCart from "@/features/cabang/useGetCart";
 import axiosInstance from "@/lib/axios";
 import ClipLoader from "react-spinners/ClipLoader";
 import DateFilter from "@/app/components/cards/BannerDateFilter";
+import Link from "next/link";
+import { formatToCurrency } from "@/lib/formatTimeCurrency";
 
 export default function ListBookingPage({
   params,
@@ -23,6 +25,8 @@ export default function ListBookingPage({
   const listData = dataCart?.data?.cart;
   const duplicatedIds: any[] = [];
   const loggedIds: any[] = [];
+  const totalCart = dataCart?.data?.cart.length || "";
+  let totalSubTotal = 0;
 
   const handleToggleToCart = async (id: any) => {
     console.log("Item toggled to cart with id:", id);
@@ -194,6 +198,35 @@ export default function ListBookingPage({
           </div>
         ))}
       </div>
+      {listData.map((index: any) => {
+        const harga_visit = index.booking.harga_visit;
+        const subTotal = (harga_visit * listData.length) / listData.length;
+
+        totalSubTotal += subTotal;
+      })}
+
+      {duplicatedIds.length > 0 ? (
+        <div className="w-full border-t-2 fixed items-center bottom-0 left-0  px-4 md:px-24 bg-white z-[3000] flex gap-2 justify-end">
+          <div className="mr-4">
+            <p className="text-xs">Total Amount</p>
+            <p className="font-bold text-primary">
+              {formatToCurrency(totalSubTotal)}
+            </p>
+          </div>
+          <Link
+            href="/checkout"
+            className="cursor-pointer mr-4 my-4 border-2 border-primary py-3 text-primary bg-white px-8 rounded-md font-semibold text-sm"
+          >
+            + Keranjang
+          </Link>
+          <Link
+            href="/checkout"
+            className="cursor-pointer mr-4 my-4 border-2 border-primary py-3 text-white bg-primary px-8 rounded-md font-semibold text-sm"
+          >
+            Checkout ({totalCart} Items)
+          </Link>
+        </div>
+      ) : null}
     </>
   );
 }

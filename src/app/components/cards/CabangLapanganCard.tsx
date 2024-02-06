@@ -34,7 +34,7 @@ export default function CabangLapanganCard(props: Props) {
             <p className="text-md font-bold text-primary">{price}</p>
           </div>
           <div className="text-xs text-[#808080] flex">
-            <p className="mr-1">{openTime}</p> -{" "}
+            <p className="mr-1">{openTime}</p> -
             <p className="ml-1">{closeTime}</p>
           </div>
         </div>

@@ -105,7 +105,6 @@ export default function Header() {
             >
               <p className="-mb-1 text-sm">Hello</p>
               <p className="font-bold">
-                {" "}
                 {data?.data.name.length > 10
                   ? `${data?.data.name.substring(0, 11)}...`
                   : data?.data.name}

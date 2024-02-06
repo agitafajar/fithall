@@ -22,7 +22,7 @@ const BookingDetailCard: React.FC<BookingDetailProps> = ({
   isDeleteLoading,
   onDelete,
 }) => (
-  <div className="mb-4 flex justify-between items-center">
+  <div className="mb-4 flex justify-between items-center w-full">
     <div className="text-[#323F4B]">
       <p className="font-bold text-sm mb-1">{full_name}</p>
       <p>{pretty_date}</p>
