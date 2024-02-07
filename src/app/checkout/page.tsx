@@ -448,9 +448,10 @@ export default function CheckoutPage() {
               <button
                 type="submit"
                 className={`bg-primary mb-4 text-white py-2 md:py-3 rounded-md text-sm border-2 border-primary w-full font-semibold ${
-                  !isAgreed && "opacity-50 cursor-not-allowed"
+                  (!formik.isValid || !isAgreed) &&
+                  "opacity-50 cursor-not-allowed"
                 }`}
-                disabled={!isAgreed}
+                disabled={!formik.isValid || !isAgreed}
               >
                 {isLoading ? "Submitting..." : "Proses Pembayaran"}
               </button>
