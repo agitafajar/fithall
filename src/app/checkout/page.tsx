@@ -3,20 +3,18 @@
 "use client";
 
 import useGetCart from "@/features/cabang/useGetCart";
-import error from "next/error";
 import ErrorPage from "../error";
 import LoadingPage from "../loading";
 import useGetRemoveCart from "@/features/cabang/useGetRemoveCart";
-import { useEffect, useState } from "react";
-import ClipLoader from "react-spinners/ClipLoader";
+import { useState } from "react";
 import BookingDetailCard from "../components/cards/BookingDetailCard";
 import { formatToCurrency } from "@/lib/formatTimeCurrency";
-import ProfileFormCard from "../components/cards/ProfileFormCard";
 import EmptyStatePage from "../components/cards/EmptyStateCard";
-import FormCheckout from "../components/cards/FormCheckout";
 import useGetProfiles from "@/features/cabang/useGetProfiles";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import ConfirmationModal from "../components/modal/ConfirmationModal";
+import { usePostGeneratePayment } from "@/features/cabang/usePostGeneratePayment";
 
 export default function CheckoutPage() {
   const [isDeleteLoadingMap, setIsDeleteLoadingMap] = useState<{
@@ -31,6 +29,28 @@ export default function CheckoutPage() {
     setIsAgreed(!isAgreed);
   };
   const { data } = useGetProfiles();
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [isLoadingButton, setIsLoadingButton] = useState(false);
+
+  const { mutate: postGeneratePaymentMutation } = usePostGeneratePayment({
+    onSuccess: () => {
+      console.log("oke submit");
+    },
+    onError: () => {},
+  });
+
+  const getCurrentDateTime = () => {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const day = String(now.getDate()).padStart(2, "0");
+    const hours = String(now.getHours()).padStart(2, "0");
+    const minutes = String(now.getMinutes()).padStart(2, "0");
+    const seconds = String(now.getSeconds()).padStart(2, "0");
+
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+  };
+
   const validationSchema = Yup.object().shape({
     profile: Yup.object().shape({
       nama: Yup.string().required("Nama harus diisi"),
@@ -67,8 +87,21 @@ export default function CheckoutPage() {
     },
     validationSchema,
     onSubmit: (values) => {
-      // Handle submission logic here
-      console.log(values);
+      console.log("values", values);
+
+      const currentDateTime = getCurrentDateTime();
+      console.log(currentDateTime);
+      postGeneratePaymentMutation({
+        member_id: "",
+        profile: {
+          cp_email: values.profile.cp_email,
+          cp_wa: values.profile.cp_wa,
+          instansi: values.profile.instansi,
+          jenis_kelamin: values.profile.jenis_kelamin,
+          nama: values.profile.nama,
+        },
+        tanggal_invoice: currentDateTime,
+      });
     },
   });
   const {
@@ -120,11 +153,8 @@ export default function CheckoutPage() {
     );
   }
 
-  console.log(data?.data);
-
   const handleProfileChange = (selectedProfile: any) => {
     if (selectedProfile) {
-      // Update formik values manually
       formik.setFieldValue("profile", selectedProfile);
       formik.setFieldValue("nama", selectedProfile.nama);
       formik.setFieldValue("instansi", selectedProfile.instansi || "");
@@ -134,9 +164,18 @@ export default function CheckoutPage() {
         "jenis_kelamin",
         selectedProfile.jenis_kelamin || "laki-laki"
       );
-      console.log("selectedProfile", selectedProfile);
     }
   };
+
+  const closeModal = () => {
+    setModalOpen(false);
+  };
+
+  const confirmAction = () => {
+    setIsLoadingButton(true);
+    formik.submitForm;
+  };
+
   return (
     <>
       {listData.length > 0 ? (
@@ -156,7 +195,6 @@ export default function CheckoutPage() {
                   id="profile"
                   name="profile"
                   onChange={(e) => {
-                    console.log("Selected value:", e.target.value);
                     formik.handleChange(e);
                     if (data?.data) {
                       const selectedProfile = data.data.find(
@@ -293,7 +331,7 @@ export default function CheckoutPage() {
                     <input
                       type="radio"
                       name="jenis_kelamin"
-                      value="laki-laki"
+                      value="Laki-Laki"
                       checked={formik.values.jenis_kelamin === "Laki-Laki"}
                       onChange={formik.handleChange}
                       className="form-radio h-4 w-4 text-indigo-600"
@@ -304,7 +342,7 @@ export default function CheckoutPage() {
                     <input
                       type="radio"
                       name="jenis_kelamin"
-                      value="perempuan"
+                      value="Perempuan"
                       checked={formik.values.jenis_kelamin === "Perempuan"}
                       onChange={formik.handleChange}
                       className="form-radio h-4 w-4 text-indigo-600"
@@ -406,6 +444,13 @@ export default function CheckoutPage() {
                 </p>
               </div>
             </div>
+            <ConfirmationModal
+              cp_wa={formik.values.cp_wa}
+              isOpen={isModalOpen}
+              onClose={closeModal}
+              onConfirm={confirmAction}
+              isLoading={isLoadingButton}
+            />
           </div>
         </form>
       ) : (
