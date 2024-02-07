@@ -14,7 +14,8 @@ import useGetProfiles from "@/features/cabang/useGetProfiles";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import ConfirmationModal from "../components/modal/ConfirmationModal";
-import { usePostGeneratePayment } from "@/features/cabang/usePostGeneratePayment";
+import axiosInstance from "@/lib/axios";
+import { useRouter } from "next/navigation";
 
 export default function CheckoutPage() {
   const [isDeleteLoadingMap, setIsDeleteLoadingMap] = useState<{
@@ -30,14 +31,11 @@ export default function CheckoutPage() {
   };
   const { data } = useGetProfiles();
   const [isModalOpen, setModalOpen] = useState(false);
-  const [isLoadingButton, setIsLoadingButton] = useState(false);
-
-  const { mutate: postGeneratePaymentMutation } = usePostGeneratePayment({
-    onSuccess: () => {
-      console.log("oke submit");
-    },
-    onError: () => {},
-  });
+  const [isLoading, setIsLoading] = useState(false);
+  let prosesBayar = false;
+  let nomorwa = "";
+  let cart: never[] = [];
+  const router = useRouter();
 
   const getCurrentDateTime = () => {
     const now = new Date();
@@ -87,20 +85,15 @@ export default function CheckoutPage() {
     },
     validationSchema,
     onSubmit: (values) => {
-      console.log("values", values);
-
-      const currentDateTime = getCurrentDateTime();
-      console.log(currentDateTime);
-      postGeneratePaymentMutation({
-        member_id: "",
-        profile: {
-          cp_email: values.profile.cp_email,
-          cp_wa: values.profile.cp_wa,
-          instansi: values.profile.instansi,
-          jenis_kelamin: values.profile.jenis_kelamin,
-          nama: values.profile.nama,
-        },
-        tanggal_invoice: currentDateTime,
+      prosesBayar = true;
+      nomorwa = "+62" + values.cp_wa;
+      axiosInstance.post("/booking/validate").then((response) => {
+        if (!response.data.status) {
+          console.log("response", response);
+          if (response.data.status === false) {
+            setModalOpen(true);
+          }
+        }
       });
     },
   });
@@ -114,8 +107,6 @@ export default function CheckoutPage() {
 
   const { refetch: refetchDataRemove, isLoading: isDeleteLoading } =
     useGetRemoveCart(isGetId);
-
-  const isLoading = isGetCart || isDeleteLoading;
 
   const handleDeleteItem = async (id: string) => {
     setIsGetId(id);
@@ -137,7 +128,7 @@ export default function CheckoutPage() {
     }
   };
 
-  if (isLoading) {
+  if (isDeleteLoading || isGetCart) {
     return (
       <div>
         <LoadingPage />
@@ -172,8 +163,38 @@ export default function CheckoutPage() {
   };
 
   const confirmAction = () => {
-    setIsLoadingButton(true);
-    formik.submitForm;
+    setIsLoading(true);
+    axiosInstance
+      .post("/invoice/generate-payment", {
+        member_id: "",
+        profile: {
+          cp_email: formik.values.profile.cp_email,
+          cp_wa: nomorwa,
+          instansi: formik.values.profile.instansi,
+          jenis_kelamin: formik.values.profile.jenis_kelamin,
+          nama: formik.values.profile.nama,
+        },
+        tanggal_invoice: getCurrentDateTime(),
+      })
+      .then((response) => {
+        setIsLoading(true);
+        cart = response.data || [];
+        console.log("cart", cart);
+        if (response.data) {
+          let invoiceid = response.data.uuid;
+          cart = response.data;
+          router.push("/invoice/" + invoiceid);
+        } else {
+          alert(
+            "Anda sudah terdaftar dalam waiting list, kami akan segera menghubungi whatsapp anda untuk kabar terbaru. Terima kasih Waiting List"
+          );
+          router.push(`/`);
+        }
+      })
+      .catch((error: any) => {
+        // Handle error if needed
+        console.error("Error in postGeneratePaymentMutation:", error);
+      });
   };
 
   return (
@@ -200,7 +221,7 @@ export default function CheckoutPage() {
                       const selectedProfile = data.data.find(
                         (profile: any) => profile.nama === e.target.value
                       );
-                      console.log("Selected Profile:", selectedProfile);
+                      // console.log("Selected Profile:", selectedProfile);
                       handleProfileChange(selectedProfile);
                     }
                   }}
@@ -360,10 +381,7 @@ export default function CheckoutPage() {
             </p>
             <div className="my-6 border-b-2 pb-6">
               {listData.map((bookingItem: any) => {
-                const full_name = bookingItem.booking.lapangan.full_name;
-                const pretty_date = bookingItem.booking.pretty_date;
                 const harga_visit = bookingItem.booking.harga_visit;
-                const id = bookingItem.booking_id;
                 const subTotal =
                   (harga_visit * listData.length) / listData.length;
                 const pajak = (0.76 / 100) * subTotal;
@@ -449,7 +467,7 @@ export default function CheckoutPage() {
               isOpen={isModalOpen}
               onClose={closeModal}
               onConfirm={confirmAction}
-              isLoading={isLoadingButton}
+              isLoading={isLoading}
             />
           </div>
         </form>

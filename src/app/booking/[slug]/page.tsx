@@ -215,13 +215,13 @@ export default function ListBookingPage({
           </div>
           <Link
             href="/checkout"
-            className="cursor-pointer mr-4 my-4 border-2 border-primary py-3 text-primary bg-white px-8 rounded-md font-semibold text-sm"
+            className="cursor-pointer mr-4 my-4 border-2 border-primary py-3 md:py-2 md:my-2 text-primary bg-white px-8 rounded-md font-semibold text-sm"
           >
             + Keranjang
           </Link>
           <Link
             href="/checkout"
-            className="cursor-pointer mr-4 my-4 border-2 border-primary py-3 text-white bg-primary px-8 rounded-md font-semibold text-sm"
+            className="cursor-pointer mr-4 my-4 border-2 border-primary py-3 md:py-2 md:my-2 text-white bg-primary px-8 rounded-md font-semibold text-sm"
           >
             Checkout ({totalCart} Items)
           </Link>
