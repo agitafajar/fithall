@@ -164,16 +164,23 @@ export default function ListBookingPage({
                   key={booking.id}
                   className={`py-2 px-6 rounded-xl border-2 mb-8  ${
                     booking.status === "BOOKED"
-                      ? "bg-[#F99C9C]"
+                      ? "bg-[#F99C9C] cursor-not-allowed"
                       : booking.status === "AVAILABLE"
                       ? duplicatedIds.includes(booking.id)
                         ? "bg-[#0C8C6B] cursor-pointer text-white"
                         : "bg-white cursor-pointer"
                       : booking.status === "ORDER"
-                      ? "bg-[#F3DB90]"
+                      ? "bg-[#F3DB90] cursor-not-allowed"
                       : ""
                   }`}
-                  onClick={() => handleToggleToCart(booking.id)}
+                  onClick={() => {
+                    if (
+                      booking.status !== "BOOKED" &&
+                      booking.status !== "ORDER"
+                    ) {
+                      handleToggleToCart(booking.id);
+                    }
+                  }}
                 >
                   {!isLoadingForCard ? (
                     <>
