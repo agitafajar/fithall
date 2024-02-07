@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ErrorPage from "@/app/error";
 import LoadingPage from "@/app/loading";
 import useGetDetailLapangan from "@/features/cabang/useGetDetailLapangan";
@@ -11,6 +11,7 @@ import ClipLoader from "react-spinners/ClipLoader";
 import DateFilter from "@/app/components/cards/BannerDateFilter";
 import Link from "next/link";
 import { formatToCurrency } from "@/lib/formatTimeCurrency";
+import { format, subMinutes, addHours, addMinutes } from "date-fns";
 
 export default function ListBookingPage({
   params,
@@ -27,6 +28,26 @@ export default function ListBookingPage({
   const loggedIds: any[] = [];
   const totalCart = dataCart?.data?.cart.length || "";
   let totalSubTotal = 0;
+
+  const [isTimeBefore, setIsTimeBefore] = useState(false);
+
+  useEffect(() => {
+    const fullBook = new Date("2024-02-07 10:30:00");
+    const thirtyMinutesBeforeStart = subMinutes(fullBook, 30);
+    const thirtyMinutesAfterEnd = addMinutes(addHours(fullBook, 1), -30);
+
+    const currentTime = new Date();
+    console.log("fullBook", fullBook);
+    console.log("thirtyMinutesBeforeStart", thirtyMinutesBeforeStart);
+    console.log("thirtyMinutesAfterEnd", thirtyMinutesAfterEnd);
+    console.log("currentTime", currentTime);
+    console.log("isTimeBefore", isTimeBefore);
+
+    setIsTimeBefore(
+      currentTime >= thirtyMinutesBeforeStart &&
+        currentTime <= thirtyMinutesAfterEnd
+    );
+  }, ["2024-02-07 10:30:00"]);
 
   const handleToggleToCart = async (id: any) => {
     const isIdInLoggedIds = loggedIds.includes(id);
