@@ -45,7 +45,6 @@ export default function Header() {
   };
 
   const { data: dataCart } = useGetCart();
-  //console.log("dataCart?.data.length", dataCart?.data?.cart);
   const totalCart = dataCart?.data?.cart.length || "";
   return (
     <div className="flex font-plus-jakarta-sans justify-between px-24 items-center border-b-2 mb-12 sticky top-0 bg-white z-50">

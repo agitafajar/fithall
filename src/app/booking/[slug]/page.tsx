@@ -29,8 +29,6 @@ export default function ListBookingPage({
   let totalSubTotal = 0;
 
   const handleToggleToCart = async (id: any) => {
-    console.log("Item toggled to cart with id:", id);
-
     const isIdInLoggedIds = loggedIds.includes(id);
     const noIsIdInLoggedIds = duplicatedIds.includes(id);
 

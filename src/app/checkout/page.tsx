@@ -32,8 +32,12 @@ export default function CheckoutPage() {
   const { data } = useGetProfiles();
   const [isModalOpen, setModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [namafield, setNamafield] = useState("");
+  const [emailfield, setEmailfield] = useState("");
+  const [jeniskelamin, setJeniskelamin] = useState("");
+  const [instansifield, setInstansifield] = useState("");
+  const [nomorwa, setNomorwa] = useState("");
   let prosesBayar = false;
-  let nomorwa = "";
   let cart: never[] = [];
   const router = useRouter();
 
@@ -50,15 +54,7 @@ export default function CheckoutPage() {
   };
 
   const validationSchema = Yup.object().shape({
-    profile: Yup.object().shape({
-      nama: Yup.string().required("Nama harus diisi"),
-      instansi: Yup.string().required("Instansi harus diisi"),
-      cp_wa: Yup.string().required("Nomor Telepon harus diisi"),
-      cp_email: Yup.string()
-        .email("Email tidak valid")
-        .required("Email harus diisi"),
-      jenis_kelamin: Yup.string().required("Jenis Kelamin harus diisi"),
-    }),
+    profile: Yup.object(),
     nama: Yup.string().required("Nama harus diisi"),
     instansi: Yup.string().required("Instansi harus diisi"),
     cp_wa: Yup.string().required("Nomor Telepon harus diisi"),
@@ -84,12 +80,17 @@ export default function CheckoutPage() {
       jenis_kelamin: "laki-laki",
     },
     validationSchema,
+
     onSubmit: (values) => {
       prosesBayar = true;
-      nomorwa = "+62" + values.cp_wa;
+      setNamafield(values.nama);
+      setNomorwa(values.cp_wa);
+      setEmailfield(values.cp_email);
+      setJeniskelamin(values.jenis_kelamin);
+      setInstansifield(values.instansi);
+
       axiosInstance.post("/booking/validate").then((response) => {
         if (!response.data.status) {
-          console.log("response", response);
           if (response.data.status === false) {
             setModalOpen(true);
           }
@@ -164,22 +165,22 @@ export default function CheckoutPage() {
 
   const confirmAction = () => {
     setIsLoading(true);
+
     axiosInstance
       .post("/invoice/generate-payment", {
         member_id: "",
         profile: {
-          cp_email: formik.values.profile.cp_email,
+          cp_email: emailfield,
           cp_wa: nomorwa,
-          instansi: formik.values.profile.instansi,
-          jenis_kelamin: formik.values.profile.jenis_kelamin,
-          nama: formik.values.profile.nama,
+          instansi: instansifield,
+          jenis_kelamin: jeniskelamin,
+          nama: namafield,
         },
         tanggal_invoice: getCurrentDateTime(),
       })
       .then((response) => {
         setIsLoading(true);
         cart = response.data || [];
-        console.log("cart", cart);
         if (response.data) {
           let invoiceid = response.data.uuid;
           cart = response.data;
@@ -221,7 +222,6 @@ export default function CheckoutPage() {
                       const selectedProfile = data.data.find(
                         (profile: any) => profile.nama === e.target.value
                       );
-                      // console.log("Selected Profile:", selectedProfile);
                       handleProfileChange(selectedProfile);
                     }
                   }}

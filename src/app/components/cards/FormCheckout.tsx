@@ -43,13 +43,8 @@ const FormCheckout = () => {
       jenis_kelamin: "laki-laki",
     },
     validationSchema,
-    onSubmit: (values) => {
-      // Handle submission logic here
-      console.log(values);
-    },
+    onSubmit: (values) => {},
   });
-
-  console.log(data?.data);
 
   const handleProfileChange = (selectedProfile: any) => {
     if (selectedProfile) {
@@ -63,7 +58,6 @@ const FormCheckout = () => {
         "jenis_kelamin",
         selectedProfile.jenis_kelamin || "laki-laki"
       );
-      console.log("selectedProfile", selectedProfile);
     }
   };
 
@@ -80,13 +74,11 @@ const FormCheckout = () => {
           id="profile"
           name="profile"
           onChange={(e) => {
-            console.log("Selected value:", e.target.value);
             formik.handleChange(e);
             if (data?.data) {
               const selectedProfile = data.data.find(
                 (profile: any) => profile.nama === e.target.value
               );
-              console.log("Selected Profile:", selectedProfile);
               handleProfileChange(selectedProfile);
             }
           }}
