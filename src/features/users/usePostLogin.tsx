@@ -22,8 +22,12 @@ export const usePostLogin = ({
     onSuccess: (data: AxiosResponse) => {
       const { token, user } = data.data;
       onSuccess({ token, user });
-      localStorage.setItem("token", token);
-      localStorage.setItem("is-guest", false.toString());
+
+      if (typeof localStorage !== "undefined") {
+        localStorage.setItem("token", token);
+        localStorage.setItem("is-guest", false.toString());
+      }
+
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     },
     onError: (error) => {

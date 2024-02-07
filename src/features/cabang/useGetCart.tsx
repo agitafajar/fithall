@@ -8,12 +8,16 @@ export const useGetCart = (
   return useQuery({
     queryKey: ["get.cart"],
     queryFn: async () => {
-      const token = localStorage.getItem("token");
-      const headers = token ? { Authorization: `Bearer ${token}` } : {};
-      const cabangResponse = await axiosInstance.get(`/get-cart`, {
-        headers,
-      });
-      return cabangResponse;
+      if (typeof localStorage !== "undefined") {
+        const token = localStorage.getItem("token");
+        const headers = token ? { Authorization: `Bearer ${token}` } : {};
+        const cabangResponse = await axiosInstance.get(`/get-cart`, {
+          headers,
+        });
+        return cabangResponse;
+      } else {
+        throw new Error("localStorage is not defined");
+      }
     },
     ...options,
   });

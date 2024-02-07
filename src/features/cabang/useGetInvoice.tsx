@@ -16,12 +16,19 @@ export const useGetInvoice = (
   return useQuery({
     queryKey: ["get.invoice", slug],
     queryFn: async () => {
-      const token = localStorage.getItem("token");
-      const headers = token ? { Authorization: `Bearer ${token}` } : {};
-      const detailCabangResponse = await axiosInstance.get(`/invoice/${slug}`, {
-        headers,
-      });
-      return detailCabangResponse;
+      if (typeof localStorage !== "undefined") {
+        const token = localStorage.getItem("token");
+        const headers = token ? { Authorization: `Bearer ${token}` } : {};
+        const detailCabangResponse = await axiosInstance.get(
+          `/invoice/${slug}`,
+          {
+            headers,
+          }
+        );
+        return detailCabangResponse;
+      } else {
+        throw new Error("localStorage is not defined");
+      }
     },
     ...options,
   });

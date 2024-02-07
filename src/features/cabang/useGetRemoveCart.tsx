@@ -14,12 +14,16 @@ export const useGetRemoveCart = (
   return useQuery({
     queryKey: ["get.removecart"],
     queryFn: async () => {
-      const token = localStorage.getItem("token");
-      const headers = token ? { Authorization: `Bearer ${token}` } : {};
-      const cabangResponse = await axiosInstance.get(`/remove-cart/${id}`, {
-        headers,
-      });
-      return cabangResponse;
+      if (typeof localStorage !== "undefined") {
+        const token = localStorage.getItem("token");
+        const headers = token ? { Authorization: `Bearer ${token}` } : {};
+        const cabangResponse = await axiosInstance.get(`/remove-cart/${id}`, {
+          headers,
+        });
+        return cabangResponse;
+      } else {
+        throw new Error("localStorage is not defined");
+      }
     },
     ...options,
   });

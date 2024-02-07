@@ -14,15 +14,19 @@ export const useGetDetailLapangan = (
   return useQuery({
     queryKey: ["get.cabangDetailLapangan", slug],
     queryFn: async () => {
-      const token = localStorage.getItem("token");
-      const headers = token ? { Authorization: `Bearer ${token}` } : {};
-      const detailCabangResponse = await axiosInstance.get(
-        `/lapangan/${slug}`,
-        {
-          headers,
-        }
-      );
-      return detailCabangResponse;
+      if (typeof localStorage !== "undefined") {
+        const token = localStorage.getItem("token");
+        const headers = token ? { Authorization: `Bearer ${token}` } : {};
+        const detailCabangResponse = await axiosInstance.get(
+          `/lapangan/${slug}`,
+          {
+            headers,
+          }
+        );
+        return detailCabangResponse;
+      } else {
+        throw new Error("localStorage is not defined");
+      }
     },
     ...options,
   });

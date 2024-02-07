@@ -8,10 +8,14 @@ export const useGetuser = (
   return useQuery({
     queryKey: ["get.me"],
     queryFn: async () => {
-      const token = localStorage.getItem("token");
-      const headers = token ? { Authorization: `Bearer ${token}` } : {};
-      const meResponse = await axiosInstance.get("/me", { headers });
-      return meResponse;
+      if (typeof localStorage !== "undefined") {
+        const token = localStorage.getItem("token");
+        const headers = token ? { Authorization: `Bearer ${token}` } : {};
+        const meResponse = await axiosInstance.get("/me", { headers });
+        return meResponse;
+      } else {
+        throw new Error("localStorage is not defined");
+      }
     },
     ...options,
   });

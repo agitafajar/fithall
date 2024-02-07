@@ -13,12 +13,16 @@ export const useGetProfiles = (
   return useQuery({
     queryKey: ["get.profiles"],
     queryFn: async () => {
-      const token = localStorage.getItem("token");
-      const headers = token ? { Authorization: `Bearer ${token}` } : {};
-      const profilesResponse = await axiosInstance.get("/get-profiles", {
-        headers,
-      });
-      return profilesResponse;
+      if (typeof localStorage !== "undefined") {
+        const token = localStorage.getItem("token");
+        const headers = token ? { Authorization: `Bearer ${token}` } : {};
+        const profilesResponse = await axiosInstance.get("/get-profiles", {
+          headers,
+        });
+        return profilesResponse;
+      } else {
+        throw new Error("localStorage is not defined");
+      }
     },
     ...options,
   });

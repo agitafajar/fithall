@@ -37,20 +37,28 @@ export default function ListBookingPage({
     try {
       if (isIdInLoggedIds && !noIsIdInLoggedIds) {
         setSelectedBookingIds((prevSelectedIds) => [...prevSelectedIds, id]);
-        const token = localStorage.getItem("token");
-        const headers = token ? { Authorization: `Bearer ${token}` } : {};
-        const cabangResponse = await axiosInstance.get(`/add-cart/${id}`, {
-          headers,
-        });
+        if (typeof localStorage !== "undefined") {
+          const token = localStorage.getItem("token");
+          const headers = token ? { Authorization: `Bearer ${token}` } : {};
+          const cabangResponse = await axiosInstance.get(`/add-cart/${id}`, {
+            headers,
+          });
+        } else {
+          throw new Error("localStorage is not defined");
+        }
       } else {
         setSelectedBookingIds((prevSelectedIds) =>
           prevSelectedIds.filter((selectedId) => selectedId !== id)
         );
-        const token = localStorage.getItem("token");
-        const headers = token ? { Authorization: `Bearer ${token}` } : {};
-        const cabangResponse = await axiosInstance.get(`/remove-cart/${id}`, {
-          headers,
-        });
+        if (typeof localStorage !== "undefined") {
+          const token = localStorage.getItem("token");
+          const headers = token ? { Authorization: `Bearer ${token}` } : {};
+          const cabangResponse = await axiosInstance.get(`/remove-cart/${id}`, {
+            headers,
+          });
+        } else {
+          throw new Error("localStorage is not defined");
+        }
       }
     } catch (error) {
       console.error("Error:", error);

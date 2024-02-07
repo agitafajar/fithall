@@ -6,7 +6,7 @@
 import { routeConfig } from "@/routes/routeConfig";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import LoginModal from "../modal/LoginModal";
 import RegisterModal from "../modal/RegisterModal";
 import useGetUser from "@/features/users/useGetUser";
@@ -43,6 +43,12 @@ export default function Header() {
     localStorage.clear();
     window.location.reload();
   };
+
+  useEffect(() => {
+    if (isGuest) {
+      console.log(isGuest);
+    }
+  }, [isGuest]);
 
   const { data: dataCart } = useGetCart();
   const totalCart = dataCart?.data?.cart.length || "";

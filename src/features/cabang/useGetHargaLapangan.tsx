@@ -14,12 +14,16 @@ export const useGetHargaLapangan = (
   return useQuery({
     queryKey: ["get.hargaLapangan"],
     queryFn: async () => {
-      const token = localStorage.getItem("token");
-      const headers = token ? { Authorization: `Bearer ${token}` } : {};
-      const cabangResponse = await axiosInstance.get(`/add-cart/${id}`, {
-        headers,
-      });
-      return cabangResponse;
+      if (typeof localStorage !== "undefined") {
+        const token = localStorage.getItem("token");
+        const headers = token ? { Authorization: `Bearer ${token}` } : {};
+        const cabangResponse = await axiosInstance.get(`/add-cart/${id}`, {
+          headers,
+        });
+        return cabangResponse;
+      } else {
+        throw new Error("localStorage is not defined");
+      }
     },
     ...options,
   });
