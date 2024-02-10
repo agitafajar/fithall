@@ -12,6 +12,7 @@ import DateFilter from "@/app/components/cards/BannerDateFilter";
 import Link from "next/link";
 import { formatToCurrency } from "@/lib/formatTimeCurrency";
 import { format, subMinutes, addHours, addMinutes } from "date-fns";
+import Cookies from "js-cookie";
 
 export default function ListBookingPage({
   params,
@@ -58,28 +59,20 @@ export default function ListBookingPage({
     try {
       if (isIdInLoggedIds && !noIsIdInLoggedIds) {
         setSelectedBookingIds((prevSelectedIds) => [...prevSelectedIds, id]);
-        if (typeof localStorage !== "undefined") {
-          const token = localStorage.getItem("token");
-          const headers = token ? { Authorization: `Bearer ${token}` } : {};
-          const cabangResponse = await axiosInstance.get(`/add-cart/${id}`, {
-            headers,
-          });
-        } else {
-          throw new Error("localStorage is not defined");
-        }
+        const token = Cookies.get("token");
+        const headers = token ? { Authorization: `Bearer ${token}` } : {};
+        const cabangResponse = await axiosInstance.get(`/add-cart/${id}`, {
+          headers,
+        });
       } else {
         setSelectedBookingIds((prevSelectedIds) =>
           prevSelectedIds.filter((selectedId) => selectedId !== id)
         );
-        if (typeof localStorage !== "undefined") {
-          const token = localStorage.getItem("token");
-          const headers = token ? { Authorization: `Bearer ${token}` } : {};
-          const cabangResponse = await axiosInstance.get(`/remove-cart/${id}`, {
-            headers,
-          });
-        } else {
-          throw new Error("localStorage is not defined");
-        }
+        const token = Cookies.get("token");
+        const headers = token ? { Authorization: `Bearer ${token}` } : {};
+        const cabangResponse = await axiosInstance.get(`/remove-cart/${id}`, {
+          headers,
+        });
       }
     } catch (error) {
       console.error("Error:", error);

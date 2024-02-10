@@ -1,6 +1,7 @@
 import axiosInstance from "@/lib/axios";
 import { useQuery, UseQueryOptions } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
+import Cookies from "js-cookie";
 
 export const useGetRemoveCart = (
   id: string,
@@ -14,16 +15,12 @@ export const useGetRemoveCart = (
   return useQuery({
     queryKey: ["get.removecart"],
     queryFn: async () => {
-      if (typeof localStorage !== "undefined") {
-        const token = localStorage.getItem("token");
-        const headers = token ? { Authorization: `Bearer ${token}` } : {};
-        const cabangResponse = await axiosInstance.get(`/remove-cart/${id}`, {
-          headers,
-        });
-        return cabangResponse;
-      } else {
-        throw new Error("localStorage is not defined");
-      }
+      const token = Cookies.get("token");
+      const headers = token ? { Authorization: `Bearer ${token}` } : {};
+      const cabangResponse = await axiosInstance.get(`/remove-cart/${id}`, {
+        headers,
+      });
+      return cabangResponse;
     },
     ...options,
   });

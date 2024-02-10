@@ -13,12 +13,12 @@ import useGetUser from "@/features/users/useGetUser";
 import useGetCart from "@/features/cabang/useGetCart";
 
 export default function Header() {
-  const isGuest = localStorage.getItem("is-guest");
   const currentPath = usePathname();
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
   const [isProfileVisible, setProfileVisibility] = useState(false);
   const { data } = useGetUser();
+  const isGuest = data?.data.id === 2;
 
   const openLoginModal = () => {
     closeRegisterModal();
@@ -92,7 +92,7 @@ export default function Header() {
           )}
         </Link>
 
-        {!isGuest ? (
+        {isGuest ? (
           <div
             className="cursor-pointer mr-4 border-2 border-primary py-2 text-white bg-primary px-8 rounded-md font-semibold text-sm"
             onClick={openLoginModal}

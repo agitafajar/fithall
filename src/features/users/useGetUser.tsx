@@ -1,6 +1,7 @@
 import axiosInstance from "@/lib/axios";
 import { useQuery, UseQueryOptions } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
+import Cookies from "js-cookie";
 
 export const useGetuser = (
   options?: UseQueryOptions<AxiosResponse, unknown, AxiosResponse, ["get.me"]>
@@ -8,14 +9,10 @@ export const useGetuser = (
   return useQuery({
     queryKey: ["get.me"],
     queryFn: async () => {
-      if (typeof localStorage !== "undefined") {
-        const token = localStorage.getItem("token");
-        const headers = token ? { Authorization: `Bearer ${token}` } : {};
-        const meResponse = await axiosInstance.get("/me", { headers });
-        return meResponse;
-      } else {
-        throw new Error("localStorage is not defined");
-      }
+      const token = Cookies.get("token");
+      const headers = token ? { Authorization: `Bearer ${token}` } : {};
+      const meResponse = await axiosInstance.get("/me", { headers });
+      return meResponse;
     },
     ...options,
   });

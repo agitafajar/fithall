@@ -1,6 +1,7 @@
 import axiosInstance from "@/lib/axios";
 import { useQuery, UseQueryOptions } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
+import Cookies from "js-cookie";
 
 export const useGetListHarga = (
   lapanganId: number,
@@ -15,20 +16,16 @@ export const useGetListHarga = (
   return useQuery({
     queryKey: ["get.listHargaLapangan", lapanganId, tanggalAwal],
     queryFn: async () => {
-      if (typeof localStorage !== "undefined") {
-        const token = localStorage.getItem("token");
-        const headers = token ? { Authorization: `Bearer ${token}` } : {};
+      const token = Cookies.get("token");
+      const headers = token ? { Authorization: `Bearer ${token}` } : {};
 
-        const detailCabangResponse = await axiosInstance.get(
-          `/list-harga?lapangan_id=${lapanganId}&tanggal_awal=${tanggalAwal}`,
-          {
-            headers,
-          }
-        );
-        return detailCabangResponse;
-      } else {
-        throw new Error("localStorage is not defined");
-      }
+      const detailCabangResponse = await axiosInstance.get(
+        `/list-harga?lapangan_id=${lapanganId}&tanggal_awal=${tanggalAwal}`,
+        {
+          headers,
+        }
+      );
+      return detailCabangResponse;
     },
     ...options,
   });
