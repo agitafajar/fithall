@@ -48,7 +48,7 @@ export default function ListBookingPage({
       currentTime >= thirtyMinutesBeforeStart &&
         currentTime <= thirtyMinutesAfterEnd
     );
-  }, ["2024-02-07 10:30:00"]);
+  }, [isTimeBefore]);
 
   const handleToggleToCart = async (id: any) => {
     const isIdInLoggedIds = loggedIds.includes(id);
