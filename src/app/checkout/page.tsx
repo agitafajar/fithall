@@ -171,7 +171,7 @@ export default function CheckoutPage() {
         member_id: "",
         profile: {
           cp_email: emailfield,
-          cp_wa: nomorwa,
+          cp_wa: `+62${nomorwa}`,
           instansi: instansifield,
           jenis_kelamin: jeniskelamin,
           nama: namafield,
