@@ -12,7 +12,7 @@ export const usePostTimeslot = ({
   onSuccess,
   onError,
 }: {
-  onSuccess: (data: { error: string; message: string }) => void;
+  onSuccess: (data: any) => void;
   onError?: (error: any) => void;
 }) => {
   return useMutation({
@@ -21,9 +21,7 @@ export const usePostTimeslot = ({
       return productsResponse;
     },
     onSuccess: (data: AxiosResponse) => {
-      const { token, user } = data.data;
-      onSuccess({ error: token, message: user });
-      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      onSuccess(data);
     },
     onError: (error) => {
       if (onError) {

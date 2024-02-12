@@ -17,6 +17,9 @@ export default function MemberPage() {
   const [selectedLapangan, setSelectedLapangan] = useState("");
   const [selectedDays, setSelectedDays] = useState<string[]>([]);
   const [selectTimeslot, setSelectTimeslot] = useState<string[]>([]);
+  const [dataTimeSlot, setDataTimeSlot] = useState<{ [key: string]: string }>(
+    {}
+  );
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedDate(e.target.value);
@@ -39,9 +42,8 @@ export default function MemberPage() {
   );
 
   const { mutate: postTimeslotMutation } = usePostTimeslot({
-    onSuccess: (response) => {
-      console.log("Success:", response);
-      // Do something with the success response
+    onSuccess: (data) => {
+      setDataTimeSlot(data.data); // Do something with the success response
     },
 
     onError: () => {
@@ -73,13 +75,9 @@ export default function MemberPage() {
 
   const handleCheckboxTimeslotChange = (value: string) => {
     if (dataTimeslot) {
-      // Toggle the selected state for the clicked item
       const updatedSelectTimeslot = selectTimeslot.includes(value)
         ? selectTimeslot.filter((day) => day !== value)
         : [...selectTimeslot, value];
-
-      console.log("Updated selectTimeslot:", updatedSelectTimeslot);
-      // Do something with updatedSelectTimeslot
 
       postTimeslotMutation({
         timeslots: dataTimeslot.data
@@ -105,10 +103,6 @@ export default function MemberPage() {
     selectedDays,
     selectTimeslot,
   ]);
-
-  console.log("selectedDate", selectedDate);
-  console.log("selectedDays", selectedDays);
-  console.log("selectTimeslot", selectTimeslot);
 
   if (isLoading) {
     return (
@@ -136,6 +130,7 @@ export default function MemberPage() {
     { value: "6", label: "Hari Sabtu" },
   ];
 
+  console.log("dataTimeSlot", dataTimeSlot);
   return (
     <div>
       member
@@ -210,6 +205,13 @@ export default function MemberPage() {
             </div>
           ))}
         </div>
+      </div>
+      <div className="flex gap-6">
+        {Object.keys(dataTimeSlot).map((date) => (
+          <div key={date}>
+            <p>{date}</p>
+          </div>
+        ))}
       </div>
       {/* <div>
         {dataTimeslot?.data.map((index: any) => {
