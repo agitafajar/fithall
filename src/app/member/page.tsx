@@ -20,6 +20,7 @@ export default function MemberPage() {
   const [dataTimeSlot, setDataTimeSlot] = useState<{ [key: string]: string }>(
     {}
   );
+  const [totalBulan, setTotalBulan] = useState<number>(1);
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedDate(e.target.value);
@@ -84,7 +85,7 @@ export default function MemberPage() {
           .filter((item: any) => updatedSelectTimeslot.includes(item.id))
           .map((item: any) => ({ ...item })),
         tanggal_awal: selectedDate,
-        durasi: 1,
+        durasi: totalBulan,
       });
 
       setSelectTimeslot(updatedSelectTimeslot);
@@ -131,6 +132,25 @@ export default function MemberPage() {
   ];
 
   console.log("dataTimeSlot", dataTimeSlot);
+  const handleTotalBulanChange = (value: number) => {
+    // Lakukan apa pun yang perlu dilakukan ketika radio button berubah
+    setTotalBulan(value);
+
+    if (dataTimeslot && selectTimeslot.length > 0) {
+      const updatedSelectTimeslot = selectTimeslot;
+
+      postTimeslotMutation({
+        timeslots: dataTimeslot.data
+          .filter((item: any) => updatedSelectTimeslot.includes(item.id))
+          .map((item: any) => ({ ...item })),
+        tanggal_awal: selectedDate,
+        durasi: value,
+      });
+
+      refetchTimeslot(); // Untuk melakukan pengiriman ulang timeslot setelah perubahan durasi
+    }
+  };
+
   return (
     <div>
       member
@@ -205,6 +225,32 @@ export default function MemberPage() {
             </div>
           ))}
         </div>
+      </div>
+      <div>
+        <input
+          defaultChecked
+          type="radio"
+          name="bulan"
+          value={1}
+          onChange={() => handleTotalBulanChange(1)}
+        />
+        <label>1 Bulan</label>
+
+        <input
+          type="radio"
+          name="bulan"
+          value={2}
+          onChange={() => handleTotalBulanChange(2)}
+        />
+        <label>2 Bulan</label>
+
+        <input
+          type="radio"
+          name="bulan"
+          value={3}
+          onChange={() => handleTotalBulanChange(3)}
+        />
+        <label>3 Bulan</label>
       </div>
       <div className="flex gap-6">
         {Object.keys(dataTimeSlot).map((date) => (
