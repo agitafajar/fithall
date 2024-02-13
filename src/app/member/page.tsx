@@ -44,7 +44,7 @@ export default function MemberPage() {
 
   const { mutate: postTimeslotMutation } = usePostTimeslot({
     onSuccess: (data) => {
-      setDataTimeSlot(data.data); // Do something with the success response
+      setDataTimeSlot(data.data);
     },
 
     onError: () => {
@@ -122,13 +122,13 @@ export default function MemberPage() {
   }
 
   const daysOptions = [
-    { value: "0", label: "Hari Minggu" },
-    { value: "1", label: "Hari Senin" },
-    { value: "2", label: "Hari Selasa" },
-    { value: "3", label: "Hari Rabu" },
-    { value: "4", label: "Hari Kamis" },
-    { value: "5", label: "Hari Jumat" },
-    { value: "6", label: "Hari Sabtu" },
+    { value: "0", label: "Minggu" },
+    { value: "1", label: "Senin" },
+    { value: "2", label: "Selasa" },
+    { value: "3", label: "Rabu" },
+    { value: "4", label: "Kamis" },
+    { value: "5", label: "Jumat" },
+    { value: "6", label: "Sabtu" },
   ];
 
   console.log("dataTimeSlot", dataTimeSlot);
@@ -152,65 +152,93 @@ export default function MemberPage() {
   };
 
   return (
-    <div>
-      member
-      <div className="text-left">
-        <p className="text-xs mb-2">Pilih Tanggal Booking</p>
-        <input
-          type="date"
-          id="dateFilter"
-          value={selectedDate}
-          onChange={handleDateChange}
-          className="p-3 text-black rounded-lg mb-4 w-[500px]"
-        />
-      </div>
-      <div className="mb-12">
-        <select
-          value={selectedCabang}
-          onChange={handleCabangChange}
-          className="block w-full px-4 py-2 mt-1 text-gray-700 bg-white border border-gray-300 rounded-md focus:border-gray-500 focus:outline-none focus:ring"
-        >
-          <option value="">Pilih Cabang</option>
-          {dataCabang?.data.map((cabang: any) => (
-            <option key={cabang.id} value={cabang.slug}>
-              {cabang.nama}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div>
-        <select
-          value={selectedLapangan}
-          onChange={handleLapanganChange}
-          className="block w-full px-4 py-2 mt-1 text-gray-700 bg-white border border-gray-300 rounded-md focus:border-gray-500 focus:outline-none focus:ring"
-        >
-          <option value="">Pilih Lapangan</option>
-          {dataLapangan?.data?.lapangan?.map((lapangan: any) => (
-            <option key={lapangan.id} value={lapangan.id}>
-              {lapangan.full_name}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div>
-        <div className="mt-6">
-          {daysOptions.map((day) => (
-            <div key={day.value} className="flex items-center">
-              <input
-                type="checkbox"
-                id={`day-${day.value}`}
-                value={day.value}
-                checked={selectedDays.includes(day.value)}
-                onChange={() => handleCheckboxChange(day.value)}
-                className="mr-2"
-              />
-              <label htmlFor={`day-${day.value}`}>{day.label}</label>
-            </div>
-          ))}
+    <div className="flex justify-center w-full">
+      <div className="max-w-3xl ">
+        member
+        <div className="mb-4">
+          <label
+            htmlFor="nama"
+            className="block text-sm font-bold text-gray-700"
+          >
+            Mulai Book
+          </label>
+          <input
+            type="date"
+            id="dateFilter"
+            value={selectedDate}
+            onChange={handleDateChange}
+            className="mt-1 p-2 block w-full border border-gray-300 rounded-md bg-[#F0F1F5]"
+          />
         </div>
-      </div>
-      <div>
-        <div className="mt-6">
+        <div className="mb-4">
+          <label
+            htmlFor="nama"
+            className="block text-sm font-bold text-gray-700"
+          >
+            Cabang
+          </label>
+          <select
+            value={selectedCabang}
+            onChange={handleCabangChange}
+            className="mt-1 p-2 block w-full border border-gray-300 rounded-md bg-[#F0F1F5]"
+          >
+            <option value="">Pilih Cabang</option>
+            {dataCabang?.data.map((cabang: any) => (
+              <option key={cabang.id} value={cabang.slug}>
+                {cabang.nama}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="mb-4">
+          <label
+            htmlFor="nama"
+            className="block text-sm font-bold text-gray-700"
+          >
+            Lapangan
+          </label>
+          <select
+            value={selectedLapangan}
+            onChange={handleLapanganChange}
+            className="mt-1 p-2 block w-full border border-gray-300 rounded-md bg-[#F0F1F5]"
+          >
+            <option value="">Pilih Lapangan</option>
+            {dataLapangan?.data?.lapangan?.map((lapangan: any) => (
+              <option key={lapangan.id} value={lapangan.id}>
+                {lapangan.full_name}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="mb-4">
+          <label
+            htmlFor="nama"
+            className="block text-sm font-bold text-gray-700"
+          >
+            Hari
+          </label>
+          <div className="flex justify-between">
+            {daysOptions.map((day) => (
+              <div
+                key={day.value}
+                id={`day-${day.value}`}
+                onClick={() => handleCheckboxChange(day.value)}
+                className={`cursor-pointer ${
+                  selectedDays.includes(day.value) ? "bg-[#D0FBF0]" : "bg-white"
+                } p-2 mr-2 mt-1 w-[130px] text-center border-2 rounded-xl`}
+              >
+                {day.label}
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="mb-4">
+          <label
+            htmlFor="nama"
+            className="block text-sm font-bold text-gray-700"
+          >
+            Jadwal
+          </label>
           {dataTimeslot?.data.map((day: any) => (
             <div key={day.id} className="flex items-center">
               <input
@@ -219,47 +247,53 @@ export default function MemberPage() {
                 value={day.id}
                 checked={selectTimeslot.includes(day.id)}
                 onChange={() => handleCheckboxTimeslotChange(day.id)}
-                className="mr-2"
               />
-              <label htmlFor={`day-${day.id}`}>{day.full_name}</label>
+              <div className="mt-1 p-2 block w-full border border-gray-300 rounded-md bg-[#F0F1F5]">
+                {day.full_name}
+              </div>
             </div>
           ))}
         </div>
-      </div>
-      <div>
-        <input
-          defaultChecked
-          type="radio"
-          name="bulan"
-          value={1}
-          onChange={() => handleTotalBulanChange(1)}
-        />
-        <label>1 Bulan</label>
+        <div className="mb-4">
+          <label
+            htmlFor="nama"
+            className="block text-sm font-bold text-gray-700"
+          >
+            Total Bulan
+          </label>
+          <input
+            defaultChecked
+            type="radio"
+            name="bulan"
+            value={1}
+            onChange={() => handleTotalBulanChange(1)}
+          />
+          <label>1 Bulan</label>
 
-        <input
-          type="radio"
-          name="bulan"
-          value={2}
-          onChange={() => handleTotalBulanChange(2)}
-        />
-        <label>2 Bulan</label>
+          <input
+            type="radio"
+            name="bulan"
+            value={2}
+            onChange={() => handleTotalBulanChange(2)}
+          />
+          <label>2 Bulan</label>
 
-        <input
-          type="radio"
-          name="bulan"
-          value={3}
-          onChange={() => handleTotalBulanChange(3)}
-        />
-        <label>3 Bulan</label>
-      </div>
-      <div className="flex gap-6">
-        {Object.keys(dataTimeSlot).map((date) => (
-          <div key={date}>
-            <p>{date}</p>
-          </div>
-        ))}
-      </div>
-      {/* <div>
+          <input
+            type="radio"
+            name="bulan"
+            value={3}
+            onChange={() => handleTotalBulanChange(3)}
+          />
+          <label>3 Bulan</label>
+        </div>
+        <div className="flex gap-6">
+          {Object.keys(dataTimeSlot).map((date) => (
+            <div key={date}>
+              <p>{date}</p>
+            </div>
+          ))}
+        </div>
+        {/* <div>
         {dataTimeslot?.data.map((index: any) => {
           return (
             <div key={index.id} className="flex flex-col">
@@ -268,6 +302,7 @@ export default function MemberPage() {
           );
         })}
       </div> */}
+      </div>
     </div>
   );
 }
