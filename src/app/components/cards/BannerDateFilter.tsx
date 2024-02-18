@@ -16,13 +16,13 @@ const DateFilter: React.FC<DateFilterProps> = ({
   title,
 }) => {
   return (
-    <div className="w-full flex flex-col items-center justify-center h-[330px] mb-12  text-white">
+    <div className="w-full flex flex-col items-center justify-center h-[330px] mb-12 text-white">
       <div
         className="flex justify-center relative bg-cover bg-center w-full h-full rounded-3xl items-center p-24 -mb-12"
         style={{ backgroundImage: "url('../assets/png/home-banner.png')" }}
       >
-        <div className="flex flex-col justify-center items-center relative z-10 mt-24">
-          <p className="font-bold text-4xl md:text-4xl text-white mb-6 capitalize">
+        <div className="flex flex-col justify-center items-center relative z-10 mt-24 ">
+          <p className="font-bold sm:text-3xl md:text-4xl lg:text-4xl xl:text-4xl text-4xl text-white mb-6 capitalize">
             {title}
           </p>
           <div className="text-left">
@@ -32,7 +32,7 @@ const DateFilter: React.FC<DateFilterProps> = ({
               id="dateFilter"
               value={selectedDate}
               onChange={onDateChange}
-              className="p-3 text-black rounded-lg mb-4 w-[500px]"
+              className="p-3 text-black rounded-lg mb-4  sm:w-[300px] md:w-[500px] lg:w-[500px] xl:w-[500px]"
             />
           </div>
           <p className="text-sm font-bold">Note - Pilih Jadwal Di Bawah Ini</p>
@@ -40,18 +40,6 @@ const DateFilter: React.FC<DateFilterProps> = ({
         <div className="absolute inset-0 bg-gradient-to-r from-black to-transparent rounded-3xl"></div>
       </div>
     </div>
-
-    // <div className="my-4">
-    //   <label htmlFor="dateFilter" className="mr-2">
-    //     Filter by Date:
-    //   </label>
-    //   <input
-    //     type="date"
-    //     id="dateFilter"
-    //     value={selectedDate}
-    //     onChange={onDateChange}
-    //   />
-    // </div>
   );
 };
 

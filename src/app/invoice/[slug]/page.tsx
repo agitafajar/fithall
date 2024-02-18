@@ -144,7 +144,7 @@ export default function DetailInvoicePage({
         </div>
       </div>
       {data?.data.status === "WAITING FOR PAYMENT" ? (
-        <div className="w-full border-t-2 fixed items-center bottom-0 left-0  px-4 md:px-24 bg-white z-[3000] flex gap-2 justify-end">
+        <div className="w-full border-t-2 fixed items-center bottom-0 left-0 px-4 md:px-24 bg-white z-[3000] flex gap-2 sm:justify-between md:justify-end lg:justify-end xl:justify-end">
           <div className="mr-4">
             <p className="text-xs">Total Amount</p>
             <p className="font-bold text-primary">
@@ -154,7 +154,7 @@ export default function DetailInvoicePage({
 
           <div
             onClick={handleButtonClick}
-            className="cursor-pointer mr-4 my-4 border-2 border-primary md:py-2 text-white bg-primary px-8 rounded-md font-semibold text-sm"
+            className="cursor-pointer sm:py-2 md:py-3 lg:py-3 xl:py-3 mr-4 my-4 border-2 border-primary text-white bg-primary px-8 rounded-md font-semibold text-sm"
           >
             Bayar Sekarang
           </div>

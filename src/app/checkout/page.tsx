@@ -201,7 +201,10 @@ export default function CheckoutPage() {
   return (
     <>
       {listData.length > 0 ? (
-        <form className="grid grid-cols-3 gap-3" onSubmit={formik.handleSubmit}>
+        <form
+          className="gap-3 sm:flex md:grid lg:grid xl:grid sm:flex-col md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3"
+          onSubmit={formik.handleSubmit}
+        >
           <div className="col-span-2 p-6 rounded-lg border-2">
             <p className="mb-4 border-b-2 font-bold text-4xl pb-4">Checkout</p>
             <p className="text-xl font-bold mb-2">Data Perwakilan Pemain</p>

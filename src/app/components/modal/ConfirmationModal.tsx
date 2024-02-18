@@ -37,7 +37,7 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
                 className="bg-primary text-white w-[50%] py-2 px-4 rounded border-2 border-primary"
                 onClick={onConfirm}
               >
-                {isLoading ? <ClipLoader color="white" /> : "Benar"}
+                {isLoading ? "Loading..." : ""}
               </button>
             </div>
           </div>

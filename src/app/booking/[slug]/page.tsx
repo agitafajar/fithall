@@ -148,7 +148,7 @@ export default function ListBookingPage({
         title={cabangDataLapangan?.data.nama}
       />
 
-      <div className="flex gap-4 font-bold text-center justify-between">
+      <div className="flex gap-4 font-bold text-center justify-between overflow-auto overflow-y-auto">
         {Object.keys(groupedBookings).map((date) => (
           <div key={date}>
             <div className="mb-6 pb-6 border-b-2 ">
@@ -233,26 +233,51 @@ export default function ListBookingPage({
       })}
 
       {duplicatedIds.length > 0 ? (
-        <div className="w-full border-t-2 fixed items-center bottom-0 left-0  px-4 md:px-24 bg-white z-[3000] flex gap-2 justify-end">
-          <div className="mr-4">
-            <p className="text-xs">Total Amount</p>
-            <p className="font-bold text-primary">
-              {formatToCurrency(totalSubTotal)}
-            </p>
+        <>
+          <div className="sm:hidden md:flex lg:flex xl:flex w-full border-t-2 fixed items-center bottom-0 left-0  px-4 md:px-24 bg-white z-[3000] flex gap-2 justify-end">
+            <div className="mr-4">
+              <p className="text-xs">Total Amount</p>
+              <p className="font-bold text-primary">
+                {formatToCurrency(totalSubTotal)}
+              </p>
+            </div>
+            <Link
+              href="/checkout"
+              className="cursor-pointer mr-4 my-4 border-2 border-primary py-3 md:py-2 md:my-2 text-primary bg-white px-8 rounded-md font-semibold text-sm"
+            >
+              + Keranjang
+            </Link>
+            <Link
+              href="/checkout"
+              className="cursor-pointer mr-4 my-4 lg:my-4 border-2 border-primary py-3 md:py-2 md:my-2 text-white bg-primary px-8 rounded-md font-semibold text-sm"
+            >
+              Checkout ({totalCart} Items)
+            </Link>
           </div>
-          <Link
-            href="/checkout"
-            className="cursor-pointer mr-4 my-4 border-2 border-primary py-3 md:py-2 md:my-2 text-primary bg-white px-8 rounded-md font-semibold text-sm"
-          >
-            + Keranjang
-          </Link>
-          <Link
-            href="/checkout"
-            className="cursor-pointer mr-4 my-4 lg:my-4 border-2 border-primary py-3 md:py-2 md:my-2 text-white bg-primary px-8 rounded-md font-semibold text-sm"
-          >
-            Checkout ({totalCart} Items)
-          </Link>
-        </div>
+
+          <div className="sm:flex flex-col md:hidden lg:hidden xl:hidden w-full border-t-2 fixed items-start bottom-0 left-0  p-4 bg-white z-[3000] flex gap-2 justify-end">
+            <div className="mr-4">
+              <p className="text-xs">Total Amount</p>
+              <p className="font-bold text-primary">
+                {formatToCurrency(totalSubTotal)}
+              </p>
+            </div>
+            <div className="flex">
+              <Link
+                href="/checkout"
+                className="cursor-pointer mr-4 my-4 border-2 border-primary py-3 md:py-2 md:my-2 text-primary bg-white px-8 rounded-md font-semibold text-sm"
+              >
+                + Keranjang
+              </Link>
+              <Link
+                href="/checkout"
+                className="cursor-pointer mr-4 my-4 lg:my-4 border-2 border-primary py-3 md:py-2 md:my-2 text-white bg-primary px-8 rounded-md font-semibold text-sm"
+              >
+                Checkout ({totalCart} Items)
+              </Link>
+            </div>
+          </div>
+        </>
       ) : null}
     </>
   );
