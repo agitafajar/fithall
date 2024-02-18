@@ -47,9 +47,67 @@ export default function ListLapanganPage({
 
   return (
     <>
-      <BannerCard icon={icon} title={title} />
+      <div className="justify-center mb-6 sm:flex md:hidden lg:hidden xl:hidden">
+        <div className="grid grid-cols-3 px-0 z-10 -mt-2 font-bold bg-white w-full items-center justify-between">
+          <button
+            className={`cursor-pointer focus:outline-none ${
+              activeTab === "list"
+                ? "font-bold text-[#0C8C6B] bg-[#A6C9C0] border-b-2 border-b-primary py-4 "
+                : ""
+            }`}
+            onClick={() => handleTabClick("list")}
+          >
+            <div className="flex items-center gap-1 px-2">
+              <img
+                src="../assets/png/location.png"
+                alt=""
+                width="20px"
+                height="20px"
+              />
+              <p>List</p>
+            </div>
+          </button>
+          <button
+            className={`cursor-pointer focus:outline-none ${
+              activeTab === "detail"
+                ? "font-bold text-[#0C8C6B] bg-[#A6C9C0] border-b-2 border-b-primary py-4"
+                : ""
+            }`}
+            onClick={() => handleTabClick("detail")}
+          >
+            <div className="flex items-center gap-1 px-2">
+              <img
+                src="../assets/png/store.png"
+                alt=""
+                width="20px"
+                height="20px"
+              />
+              <p>About</p>
+            </div>
+          </button>
+          <button
+            className={`cursor-pointer focus:outline-none ${
+              activeTab === "gallery"
+                ? "font-bold text-[#0C8C6B] bg-[#A6C9C0] border-b-2 border-b-primary py-4"
+                : ""
+            }`}
+            onClick={() => handleTabClick("gallery")}
+          >
+            <div className="flex items-center gap-1 px-2">
+              <img
+                src="../assets/png/calendar.png"
+                alt=""
+                width="20px"
+                height="20px"
+              />
+              <p>Galery</p>
+            </div>
+          </button>
+        </div>
+      </div>
 
-      <div className="flex justify-center -mt-12">
+      <BannerCard icon={icon} title={title} />
+      <div className="justify-center -mt-12 sm:hidden md:flex lg:flex xl:flex">
         <div className=" -mt-4 flex justify-between max-w-4xl shadow-md p-6 rounded-lg gap-4 z-10 font-bold bg-white">
           <button
             className={`cursor-pointer focus:outline-none ${
@@ -102,7 +160,6 @@ export default function ListLapanganPage({
         </div>
       </div>
 
-      {/* Tab Content */}
       <div className="my-6 font-bold">
         {activeTab === "list" && "Lapangan Badminton"}
         {activeTab === "detail" && "About Lapangan"}
@@ -110,7 +167,7 @@ export default function ListLapanganPage({
       </div>
 
       {activeTab === "list" && (
-        <div className="grid grid-cols-4 justify-between items-center gap-4">
+        <div className="  justify-between items-center gap-4 sm:flex md:grid lg:grid xl:grid sm:flex-col md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4">
           {cabangDataLapangan?.data.lapangan.map((lapangan: any) => (
             <ListLapanganCard
               key={lapangan.id}
@@ -137,7 +194,7 @@ export default function ListLapanganPage({
       )}
 
       {activeTab === "gallery" && (
-        <div className="flex gap-6">
+        <div className="flex sm:flex-col md:flex-row lg:flex-row xl:flex-row items-center sm:justify-center md:justify-start lg:justify-start xl:justify-start gap-6">
           {cabangDataLapangan?.data.galery.map((lapangan: any) => (
             <>
               <img

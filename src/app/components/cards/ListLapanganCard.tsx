@@ -16,7 +16,7 @@ export default function FilterCard(props: LapanganCardProps) {
   const { size, imageSrc, name, slug, id } = props;
 
   return (
-    <div className="rounded-xl border-2 p-4 gap-3 flex flex-col">
+    <div className="rounded-xl border-2 p-4 gap-3 flex flex-col w-full sm:h-[550px] md:h-[560px] lg:h-[560px] xl:h-[560px] ">
       <img src={imageSrc} alt={name} className="w-full h-[350px] rounded-xl" />
       <p className="text-lg font-bold">{name}</p>
       <p className="font-bold text-sm text-[#7B8794]">{size}</p>

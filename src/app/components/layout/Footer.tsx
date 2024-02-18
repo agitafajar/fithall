@@ -47,7 +47,7 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="sm:flex md:hidden lg:hidden xl:hidden justify-between items-center bg-primary p-4 ">
+      <div className="sm:flex md:hidden lg:hidden xl:hidden justify-between items-center bg-primary p-4 mt-4 ">
         <img src="../assets/png/logo-fithall2.png" width="80px" />
         <img src="../assets/png/ig.png" className="pt-1 cursor-pointer pr-4" />
       </div>
