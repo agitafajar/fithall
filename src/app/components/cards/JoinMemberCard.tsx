@@ -16,7 +16,7 @@ export default function JoinMemberCard() {
             Privilege Penuh di Booking Lapangan!
           </p>
           <Link
-            href="/members"
+            href="/member"
             className="flex w-[40%] gap-2 cursor-pointer mr-4 items-center border-2 border-primary py-4 text-white bg-primary px-12 md:px-8 rounded-md font-semibold text-xs justify-center"
           >
             <p>Join Member</p>

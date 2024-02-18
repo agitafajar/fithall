@@ -151,8 +151,8 @@ export default function ListBookingPage({
       <div className="flex gap-4 font-bold text-center justify-between">
         {Object.keys(groupedBookings).map((date) => (
           <div key={date}>
-            <div className="mb-6 pb-6 border-b-2">
-              <div className="mb-2 border-2 rounded-xl px-4 py-2">
+            <div className="mb-6 pb-6 border-b-2 ">
+              <div className="mb-2 border-2 rounded-xl px-4 py-2 bg-[#CBF1D9]">
                 <p className="mb-4 font-bold text-xl">
                   {groupedBookings[date][0].hari}
                 </p>
@@ -211,7 +211,7 @@ export default function ListBookingPage({
                             : "text-[#0C8868]"
                         }`}
                       >
-                        {booking.harga_visit}
+                        {formatToCurrency(booking.harga_visit)}
                       </p>
                     </>
                   ) : (

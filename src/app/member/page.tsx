@@ -122,16 +122,21 @@ export default function MemberPage() {
   }
 
   const daysOptions = [
-    { value: "0", label: "Minggu" },
-    { value: "1", label: "Senin" },
-    { value: "2", label: "Selasa" },
-    { value: "3", label: "Rabu" },
-    { value: "4", label: "Kamis" },
-    { value: "5", label: "Jumat" },
-    { value: "6", label: "Sabtu" },
+    { value: "0", label: "Hari Minggu" },
+    { value: "1", label: "Hari Senin" },
+    { value: "2", label: "Hari Selasa" },
+    { value: "3", label: "Hari Rabu" },
+    { value: "4", label: "Hari Kamis" },
+    { value: "5", label: "Hari Jumat" },
+    { value: "6", label: "Hari Sabtu" },
   ];
 
-  console.log("dataTimeSlot", dataTimeSlot);
+  const checkoutMember = () => {
+    console.log("durasi", totalBulan);
+    console.log("jadwal", dataTimeslot?.data);
+    console.log("start_member", selectedDate);
+  };
+
   const handleTotalBulanChange = (value: number) => {
     // Lakukan apa pun yang perlu dilakukan ketika radio button berubah
     setTotalBulan(value);
@@ -147,14 +152,16 @@ export default function MemberPage() {
         durasi: value,
       });
 
-      refetchTimeslot(); // Untuk melakukan pengiriman ulang timeslot setelah perubahan durasi
+      refetchTimeslot();
     }
   };
 
   return (
     <div className="flex justify-center w-full">
-      <div className="max-w-3xl ">
-        member
+      <div className="max-w-3xl">
+        <p className="text-2xl font-bold pb-4 border-b-2 mb-4">
+          Pendaftaran Member
+        </p>
         <div className="mb-4">
           <label
             htmlFor="nama"
@@ -210,98 +217,128 @@ export default function MemberPage() {
             ))}
           </select>
         </div>
+
         <div className="mb-4">
           <label
             htmlFor="nama"
             className="block text-sm font-bold text-gray-700"
           >
-            Hari
+            Pilih Hari
           </label>
-          <div className="flex justify-between">
+          <div className="grid grid-cols-4 w-[750px] gap-4">
             {daysOptions.map((day) => (
-              <div
-                key={day.value}
-                id={`day-${day.value}`}
-                onClick={() => handleCheckboxChange(day.value)}
-                className={`cursor-pointer ${
-                  selectedDays.includes(day.value) ? "bg-[#D0FBF0]" : "bg-white"
-                } p-2 mr-2 mt-1 w-[130px] text-center border-2 rounded-xl`}
-              >
-                {day.label}
+              <div key={day.value} className="flex items-center">
+                <input
+                  type="checkbox"
+                  id={`day-${day.value}`}
+                  value={day.value}
+                  checked={selectedDays.includes(day.value)}
+                  onChange={() => handleCheckboxChange(day.value)}
+                  className="mr-2 h-4 w-4"
+                />
+                <label htmlFor={`day-${day.value}`} className="text-gray-700">
+                  {day.label}
+                </label>
               </div>
             ))}
           </div>
         </div>
-        <div className="mb-4">
+
+        <div>
           <label
             htmlFor="nama"
             className="block text-sm font-bold text-gray-700"
           >
-            Jadwal
+            Pilih Jadwal
           </label>
-          {dataTimeslot?.data.map((day: any) => (
-            <div key={day.id} className="flex items-center">
-              <input
-                type="checkbox"
-                id={`day-${day.id}`}
-                value={day.id}
-                checked={selectTimeslot.includes(day.id)}
-                onChange={() => handleCheckboxTimeslotChange(day.id)}
-              />
-              <div className="mt-1 p-2 block w-full border border-gray-300 rounded-md bg-[#F0F1F5]">
-                {day.full_name}
+          <div className="mb-4 bg-[#F0F1F5]">
+            {dataTimeslot?.data.map((day: any) => (
+              <div
+                key={day.id}
+                className="flex items-center justify-center px-2"
+              >
+                <input
+                  type="checkbox"
+                  id={`day-${day.id}`}
+                  value={day.id}
+                  checked={selectTimeslot.includes(day.id)}
+                  onChange={() => handleCheckboxTimeslotChange(day.id)}
+                  className="w-6 h-6"
+                />
+                <div className="p-2 block w-full rounded-md ">
+                  {day.full_name}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-        <div className="mb-4">
+        <div>
           <label
             htmlFor="nama"
             className="block text-sm font-bold text-gray-700"
           >
             Total Bulan
           </label>
-          <input
-            defaultChecked
-            type="radio"
-            name="bulan"
-            value={1}
-            onChange={() => handleTotalBulanChange(1)}
-          />
-          <label>1 Bulan</label>
-
-          <input
-            type="radio"
-            name="bulan"
-            value={2}
-            onChange={() => handleTotalBulanChange(2)}
-          />
-          <label>2 Bulan</label>
-
-          <input
-            type="radio"
-            name="bulan"
-            value={3}
-            onChange={() => handleTotalBulanChange(3)}
-          />
-          <label>3 Bulan</label>
-        </div>
-        <div className="flex gap-6">
-          {Object.keys(dataTimeSlot).map((date) => (
-            <div key={date}>
-              <p>{date}</p>
+          <div className="mb-4 flex gap-6 mt-2">
+            <div className="flex gap-1">
+              <input
+                defaultChecked
+                type="radio"
+                name="bulan"
+                value={1}
+                onChange={() => handleTotalBulanChange(1)}
+              />
+              <label>1 Bulan</label>
             </div>
-          ))}
-        </div>
-        {/* <div>
-        {dataTimeslot?.data.map((index: any) => {
-          return (
-            <div key={index.id} className="flex flex-col">
-              {index.full_name}
+            <div className="flex gap-1">
+              <input
+                type="radio"
+                name="bulan"
+                value={2}
+                onChange={() => handleTotalBulanChange(2)}
+              />
+              <label>2 Bulan</label>
             </div>
-          );
-        })}
-      </div> */}
+            <div className="flex gap-1">
+              <input
+                type="radio"
+                name="bulan"
+                value={3}
+                onChange={() => handleTotalBulanChange(3)}
+              />
+              <label>3 Bulan</label>
+            </div>
+          </div>
+        </div>
+        <div className="grid grid-cols-4 gap-6 mb-6">
+          {Object.keys(dataTimeSlot).map((date) => {
+            const [day, month, year, time] = date.split(" ");
+            const formattedDate = `${day} ${month} ${year}`;
+            const formattedTime = time;
+            const isTrue = dataTimeSlot[date];
+
+            return (
+              <div
+                key={date}
+                className={`py-3 flex flex-col items-center justify-center font-bold border-2 rounded-lg ${
+                  isTrue ? "bg-white" : "bg-[#F79B9B]"
+                }`}
+              >
+                <p className="mb-2">{formattedDate}</p>
+                <p className="text-primary ">{formattedTime}</p>
+              </div>
+            );
+          })}
+        </div>
+
+        <div>
+          <p
+            className="w-full py-4 bg-primary text-white text-center rounded-lg cursor-pointer"
+            onClick={checkoutMember}
+          >
+            Daftar Member
+          </p>
+        </div>
       </div>
     </div>
   );

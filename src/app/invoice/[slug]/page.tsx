@@ -7,6 +7,9 @@ import LoadingPage from "@/app/loading";
 import useGetInvoice from "@/features/cabang/useGetInvoice";
 import { formatToCurrency } from "@/lib/formatTimeCurrency";
 import { formatDate } from "@/lib/formatDate";
+import { useRef, useState } from "react";
+import QRCode from "qrcode.react";
+import html2canvas from "html2canvas";
 
 export default function DetailInvoicePage({
   params,
@@ -14,6 +17,47 @@ export default function DetailInvoicePage({
   params: { slug: string };
 }) {
   const { data, isLoading, error } = useGetInvoice(params.slug);
+  const [showModal, setShowModal] = useState(false);
+  const paymentString = data?.data.qr_string;
+  const qrCodeRef = useRef(data?.data.qr_string);
+
+  const handleButtonClick = () => {
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
+  const convertToQRCode = (data: any) => {
+    return new Promise((resolve, reject) => {
+      try {
+        const qrCodeData = "data";
+        resolve(qrCodeData);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  };
+
+  const handleDownloadQR = async () => {
+    try {
+      const qrCodeData = await convertToQRCode(paymentString);
+
+      if (qrCodeData) {
+        html2canvas(qrCodeRef.current).then((canvas) => {
+          const downloadLink = document.createElement("a");
+          downloadLink.href = canvas.toDataURL("image/png");
+          downloadLink.download = "QR_Code.png";
+          document.body.appendChild(downloadLink);
+          downloadLink.click();
+          document.body.removeChild(downloadLink);
+        });
+      }
+    } catch (error) {
+      console.error("Failed to convert QR Code:", error);
+    }
+  };
 
   if (isLoading) {
     return (
@@ -108,9 +152,42 @@ export default function DetailInvoicePage({
             </p>
           </div>
 
-          <div className="cursor-pointer mr-4 my-4 border-2 border-primary md:py-2 text-white bg-primary px-8 rounded-md font-semibold text-sm">
+          <div
+            onClick={handleButtonClick}
+            className="cursor-pointer mr-4 my-4 border-2 border-primary md:py-2 text-white bg-primary px-8 rounded-md font-semibold text-sm"
+          >
             Bayar Sekarang
           </div>
+          {showModal && (
+            <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+              <div className="bg-white p-4 rounded-md">
+                <div className="w-full justify-between flex font-semibold mb-4">
+                  <p>Pembayaran</p>
+                  <img
+                    src="../assets/png/close-icon.png"
+                    onClick={handleCloseModal}
+                    className="cursor-pointer"
+                  />
+                </div>
+                <div ref={qrCodeRef} className="p-4">
+                  <div className="flex items-center justify-between mb-6">
+                    <img
+                      src="../assets/png/QRIS_logo.png"
+                      className="w-[200px]"
+                    />
+                    <img src="../assets/png/gpn.png" className="w-[30px] " />
+                  </div>
+                  <QRCode value={paymentString} size={300} />
+                </div>
+                <button
+                  className="mt-12 px-4 py-2 bg-primary text-white rounded-md w-full"
+                  onClick={handleDownloadQR}
+                >
+                  Download QR
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       ) : data?.data.status === "EXPIRED" ? (
         <div className="w-full border-t-2 fixed items-center bottom-0 left-0 p-4 font-bold md:px-24 bg-[#FBCBD0] text-[#E02B2B] z-[3000] flex gap-2 justify-center">

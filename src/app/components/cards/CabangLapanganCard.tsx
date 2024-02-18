@@ -20,7 +20,7 @@ export default function CabangLapanganCard(props: Props) {
       <Link
         href={`/lapangan/${slug}`}
         passHref
-        className="flex flex-col p-4 border-2 rounded-xl gap-4 cursor-pointer w-[320px]"
+        className="flex flex-col p-4 border-2 rounded-xl gap-4 cursor-pointer w-[320px] h-[400px]"
       >
         <img src={pic} alt="" className=" w-full h-[200px] rounded-lg" />
         <p className="font-bold">{label}</p>
