@@ -24,7 +24,7 @@ export default function RootLayout({
         <TanstackProvider>
           <Toaster position="top-right" richColors closeButton />
           <Header />
-          <div className="px-24 font-plus-jakarta-sans min-h-screen">
+          <div className="sm:px-4 md:px-24 lg:px-24 xl:px-24 font-plus-jakarta-sans min-h-screen">
             {children}
           </div>
           <Footer />

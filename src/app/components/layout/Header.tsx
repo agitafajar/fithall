@@ -53,15 +53,36 @@ export default function Header() {
   const { data: dataCart } = useGetCart();
   const totalCart = dataCart?.data?.cart.length || "";
   return (
-    <div className="flex font-plus-jakarta-sans justify-between px-24 items-center border-b-2 mb-12 sticky top-0 bg-white z-50">
+    <div className="flex font-plus-jakarta-sans justify-between sm:px-4 md:px-24 lg:px-24 xl:px-24 items-center border-b-2 sm:mb-2 md:mb-12 lg:mb-12 xl:mb-12 sticky top-0 bg-white z-50">
       <Link href="/">
         <img
           src="../assets/png/fithall-logo.png"
-          className="w-[125px] md:w-[100px]"
+          className="sm:w-[80px] md:w-[100px] lg:w-[125px] xl:w-[125px] sm:my-2 md:my-4 lg:my-4 xl:my-4"
           alt="fithall-logo"
         />
       </Link>
-      <div className="flex items-center">
+
+      <div className="sm:flex md:hidden lg:hidden xl:hidden">
+        <Link href="/checkout" className="relative mr-2 pr-2 border-r-2 ">
+          <img src="../assets/png/carts.png" className="w-10" />
+          {totalCart && totalCart > 0 && (
+            <div className="absolute text-xs w-[20px] h-[20px] text-center top-0 right-4 bg-red-500 text-white rounded-full p-1">
+              {totalCart}
+            </div>
+          )}
+        </Link>
+
+        <Link href="/checkout" className="relative">
+          <img src="../assets/png/hamburger.png" className="w-10" />
+          {totalCart && totalCart > 0 && (
+            <div className="absolute text-xs w-[20px] h-[20px] text-center top-0 right-4 bg-red-500 text-white rounded-full p-1">
+              {totalCart}
+            </div>
+          )}
+        </Link>
+      </div>
+
+      <div className="items-center sm:hidden md:flex lg:flex xl:flex">
         {routeConfig.map((route, key) => {
           const isActive =
             currentPath === route.path ||
@@ -81,7 +102,7 @@ export default function Header() {
           );
         })}
 
-        <Link href="/checkout" className="relative mr-4">
+        <Link href="/checkout" className="relative mr-4 ">
           <div className="p-3 bg-[#F5F7FA] rounded-full mr-4 cursor-pointer">
             <img src="../assets/png/shopping-cart.png" />
           </div>

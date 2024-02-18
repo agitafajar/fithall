@@ -69,7 +69,7 @@ export default function Home() {
 
   return (
     <main>
-      <div className="w-full flex flex-col items-center justify-center h-[450px] mb-12">
+      <div className="w-full flex-col items-center justify-center h-[450px] mb-12 sm:hidden md:hidden lg:hidden xl:hidden">
         <div
           className="relative bg-cover bg-center w-full h-full rounded-3xl items-center p-24 -mb-12"
           style={{ backgroundImage: "url('../assets/png/home-banner.png')" }}
@@ -104,10 +104,11 @@ export default function Home() {
           </div>
         </div>
       </div>
+      <JoinMemberCard />
       <div>
         <div className="flex justify-between items-center mb-4">
-          <p className="font-bold flex text-[22px]">
-            Sport Training
+          <div className="font-bold flex text-[22px] sm:justify-between md:justify-start w-full lg:justify-start xl:justify-start">
+            Cabang Fithall
             <span className="text-primary flex items-center pl-8 text-sm cursor-pointer">
               Lihat Semua
               <img
@@ -116,8 +117,8 @@ export default function Home() {
                 className="ml-1 pt-1"
               />
             </span>
-          </p>
-          <div className="flex gap-4">
+          </div>
+          <div className="sm:hidden md:flex lg:flex xl:flex gap-4">
             <img
               src="../assets/png/back-icon.png"
               width="40px"
@@ -138,7 +139,6 @@ export default function Home() {
         </div>
         <LapanganCard dataList={visibleDataSport} />
       </div>
-      <JoinMemberCard />
       <KeunggulanFitcallCard />
     </main>
   );

@@ -20,7 +20,7 @@ interface SportTrainingSectionProps {
 const LapanganCard: React.FC<SportTrainingSectionProps> = ({ dataList }) => {
   return (
     <div>
-      <div className="flex gap-6 mb-12">
+      <div className="flex gap-6 mb-12 overflow-auto overflow-y-auto ">
         {dataList.map((dataList, key) => (
           <div key={key}>
             <CabangLapanganCard

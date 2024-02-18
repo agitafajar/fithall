@@ -3,8 +3,8 @@
 export default function KeunggulanFitcallCard() {
   return (
     <div className="mb-12">
-      <p className="font-bold flex mb-4">Keunggulan Fithall</p>
-      <div className="grid grid-cols-4 text-center gap-6">
+      <p className="font-bold flex mb-4 text-2xl">Keunggulan Fithall</p>
+      <div className=" text-center gap-6 sm:flex sm:flex-col md:grid lg:grid xl:grid md:grid-cols-4  lg:grid-cols-4  xl:grid-cols-4 ">
         <div className="p-4 flex flex-col gap-6 px-8 rounded-xl justify-center items-center border-2">
           <img src="../assets/png/keunggulan1.png" className="ml-1 pt-1" />
           <p className="font-bold text-xl">Fasilitas Pilihan</p>
