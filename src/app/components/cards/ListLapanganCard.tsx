@@ -21,7 +21,7 @@ export default function FilterCard(props: LapanganCardProps) {
       <p className="text-lg font-bold">{name}</p>
       <p className="font-bold text-sm text-[#7B8794]">{size}</p>
       <Link
-        href={`/booking/${slug}?id=${id}`}
+        href={`/booking/${slug}?id=${id}&nama=${name}`}
         className="bg-primary rounded-lg text-center text-white py-4 md:py-3 md:text-sm md:mt-2 cursor-pointer"
       >
         Book Jadwal

@@ -1,54 +1,50 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import ErrorPage from "@/app/error";
 import LoadingPage from "@/app/loading";
-import useGetDetailLapangan from "@/features/cabang/useGetDetailLapangan";
 import useGetListHarga from "@/features/cabang/useGetListHarga";
 import useGetCart from "@/features/cabang/useGetCart";
 import axiosInstance from "@/lib/axios";
 import ClipLoader from "react-spinners/ClipLoader";
 import DateFilter from "@/app/components/cards/BannerDateFilter";
-import Link from "next/link";
 import { formatToCurrency } from "@/lib/formatTimeCurrency";
-import { format, subMinutes, addHours, addMinutes } from "date-fns";
 import Cookies from "js-cookie";
+import { useSearchParams } from "next/navigation";
+import CartActions from "@/app/components/cards/CartActions";
 
-export default function ListBookingPage({
-  params,
-}: {
-  params: { slug: string };
-}) {
-  const [selectedBookingIds, setSelectedBookingIds] = useState<string[]>([]);
-  const { data: dataCart, refetch: refetchCart } = useGetCart();
+export default function ListBookingPage() {
+  const [_, setSelectedBookingIds] = useState<string[]>([]);
   const [isLoadingMap, setIsLoadingMap] = useState<{ [id: string]: boolean }>(
     {}
   );
-  const listData = dataCart?.data?.cart;
   const duplicatedIds: any[] = [];
   const loggedIds: any[] = [];
-  const totalCart = dataCart?.data?.cart.length || "";
   let totalSubTotal = 0;
+  const [selectedDate, setSelectedDate] = useState(() => {
+    const currentDate = new Date();
+    return currentDate.toISOString().split("T")[0];
+  });
 
-  const [isTimeBefore, setIsTimeBefore] = useState(false);
+  const urlSearchParams = useSearchParams();
+  const ids = urlSearchParams.get("id");
+  const namas = urlSearchParams.get("nama") || "";
 
-  useEffect(() => {
-    const fullBook = new Date("2024-02-07 10:30:00");
-    const thirtyMinutesBeforeStart = subMinutes(fullBook, 30);
-    const thirtyMinutesAfterEnd = addMinutes(addHours(fullBook, 1), -30);
+  const {
+    data: dataCart,
+    isLoading: loadingCart,
+    isError: errorCart,
+    refetch: refetchCart,
+  } = useGetCart();
+  const listData = dataCart?.data?.cart;
+  const totalCart = dataCart?.data?.cart.length || "";
 
-    const currentTime = new Date();
-    console.log("fullBook", fullBook);
-    console.log("thirtyMinutesBeforeStart", thirtyMinutesBeforeStart);
-    console.log("thirtyMinutesAfterEnd", thirtyMinutesAfterEnd);
-    console.log("currentTime", currentTime);
-    console.log("isTimeBefore", isTimeBefore);
-
-    setIsTimeBefore(
-      currentTime >= thirtyMinutesBeforeStart &&
-        currentTime <= thirtyMinutesAfterEnd
-    );
-  }, [isTimeBefore]);
+  const {
+    data: listHarga,
+    isLoading: loadingListHarga,
+    isError: errorListHarga,
+    refetch: refetchListHarga,
+  } = useGetListHarga(Number(ids), selectedDate);
 
   const handleToggleToCart = async (id: any) => {
     const isIdInLoggedIds = loggedIds.includes(id);
@@ -61,7 +57,7 @@ export default function ListBookingPage({
         setSelectedBookingIds((prevSelectedIds) => [...prevSelectedIds, id]);
         const token = Cookies.get("token");
         const headers = token ? { Authorization: `Bearer ${token}` } : {};
-        const cabangResponse = await axiosInstance.get(`/add-cart/${id}`, {
+        await axiosInstance.get(`/add-cart/${id}`, {
           headers,
         });
       } else {
@@ -70,7 +66,7 @@ export default function ListBookingPage({
         );
         const token = Cookies.get("token");
         const headers = token ? { Authorization: `Bearer ${token}` } : {};
-        const cabangResponse = await axiosInstance.get(`/remove-cart/${id}`, {
+        await axiosInstance.get(`/remove-cart/${id}`, {
           headers,
         });
       }
@@ -82,47 +78,19 @@ export default function ListBookingPage({
     }
   };
 
-  const {
-    data: cabangDataLapangan,
-    isLoading: lapanganLoading,
-    isError: lapanganError,
-  } = useGetDetailLapangan(params.slug);
-
-  const [selectedDate, setSelectedDate] = useState(() => {
-    const currentDate = new Date();
-    return currentDate.toISOString().split("T")[0];
-  });
-
-  const {
-    data: listHarga,
-    isLoading: hargaLoading,
-    isError: hargaError,
-    refetch: refetchListHarga,
-  } = useGetListHarga(cabangDataLapangan?.data?.id, selectedDate);
-
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedDate(e.target.value);
     refetchListHarga();
   };
 
-  if (lapanganLoading || hargaLoading) {
-    return <LoadingPage />;
-  }
-
-  if (lapanganError || hargaError) {
-    return <ErrorPage />;
-  }
-
   const groupedBookings: { [date: string]: any[] } = {};
+
   listHarga?.data.forEach((listDataHarga: any) => {
     const date = listDataHarga.tanggal;
     const tanggal = new Date(date);
     const hari = tanggal.toLocaleDateString("id-ID", { weekday: "long" });
-
     listDataHarga.hari = hari;
-
     const dateString = new Date(date);
-
     const timeFormat: Intl.DateTimeFormatOptions = {
       month: "numeric",
       day: "2-digit",
@@ -140,12 +108,20 @@ export default function ListBookingPage({
     }
   });
 
+  if (loadingCart || loadingListHarga) {
+    return <LoadingPage />;
+  }
+
+  if (errorCart || errorListHarga) {
+    return <ErrorPage />;
+  }
+
   return (
     <>
       <DateFilter
         selectedDate={selectedDate}
         onDateChange={handleDateChange}
-        title={cabangDataLapangan?.data.nama}
+        title={namas}
       />
 
       <div className="flex gap-4 font-bold text-center justify-between overflow-auto overflow-y-auto">
@@ -177,20 +153,23 @@ export default function ListBookingPage({
                 <div
                   key={booking.id}
                   className={`py-2 px-6 rounded-xl border-2 mb-8  ${
-                    booking.status === "BOOKED"
+                    booking.is_expired === true
+                      ? "bg-[#323F4B] text-white cursor-not-allowed"
+                      : booking.status === "BOOKED"
                       ? "bg-[#F99C9C] cursor-not-allowed"
                       : booking.status === "AVAILABLE"
                       ? duplicatedIds.includes(booking.id)
                         ? "bg-[#0C8C6B] cursor-pointer text-white"
                         : "bg-white cursor-pointer"
-                      : booking.status === "ORDER"
-                      ? "bg-[#F3DB90] cursor-not-allowed"
-                      : ""
+                      : booking.status === "ORDER" &&
+                        duplicatedIds.includes(booking.id)
+                      ? "bg-[#0C8C6B] cursor-pointer text-white"
+                      : "bg-[#F3DB90] cursor-pointer"
                   }`}
                   onClick={() => {
                     if (
                       booking.status !== "BOOKED" &&
-                      booking.status !== "ORDER"
+                      booking.is_expired !== true
                     ) {
                       handleToggleToCart(booking.id);
                     }
@@ -203,7 +182,13 @@ export default function ListBookingPage({
                         <p>-</p>
                         <p>{booking.jam_akhir}</p>
                       </div>
-                      <p className="text-xs">{booking.status}</p>
+                      <p className="text-xs">
+                        {booking.status === "ORDER"
+                          ? "WAITING LIST"
+                          : booking.is_expired
+                          ? "EXPIRED"
+                          : booking.status}
+                      </p>
                       <p
                         className={`${
                           duplicatedIds.includes(booking.id)
@@ -234,49 +219,7 @@ export default function ListBookingPage({
 
       {duplicatedIds.length > 0 ? (
         <>
-          <div className="sm:hidden md:flex lg:flex xl:flex w-full border-t-2 fixed items-center bottom-0 left-0  px-4 md:px-24 bg-white z-[3000] flex gap-2 justify-end">
-            <div className="mr-4">
-              <p className="text-xs">Total Amount</p>
-              <p className="font-bold text-primary">
-                {formatToCurrency(totalSubTotal)}
-              </p>
-            </div>
-            <Link
-              href="/checkout"
-              className="cursor-pointer mr-4 my-4 border-2 border-primary py-3 md:py-2 md:my-2 text-primary bg-white px-8 rounded-md font-semibold text-sm"
-            >
-              + Keranjang
-            </Link>
-            <Link
-              href="/checkout"
-              className="cursor-pointer mr-4 my-4 lg:my-4 border-2 border-primary py-3 md:py-2 md:my-2 text-white bg-primary px-8 rounded-md font-semibold text-sm"
-            >
-              Checkout ({totalCart} Items)
-            </Link>
-          </div>
-
-          <div className="sm:flex flex-col md:hidden lg:hidden xl:hidden w-full border-t-2 fixed items-start bottom-0 left-0  p-4 bg-white z-[3000] flex gap-2 justify-end">
-            <div className="mr-4">
-              <p className="text-xs">Total Amount</p>
-              <p className="font-bold text-primary">
-                {formatToCurrency(totalSubTotal)}
-              </p>
-            </div>
-            <div className="flex">
-              <Link
-                href="/checkout"
-                className="cursor-pointer mr-4 my-4 border-2 border-primary py-3 md:py-2 md:my-2 text-primary bg-white px-8 rounded-md font-semibold text-sm"
-              >
-                + Keranjang
-              </Link>
-              <Link
-                href="/checkout"
-                className="cursor-pointer mr-4 my-4 lg:my-4 border-2 border-primary py-3 md:py-2 md:my-2 text-white bg-primary px-8 rounded-md font-semibold text-sm"
-              >
-                Checkout ({totalCart} Items)
-              </Link>
-            </div>
-          </div>
+          <CartActions totalSubTotal={totalSubTotal} totalCart={totalCart} />
         </>
       ) : null}
     </>
