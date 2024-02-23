@@ -11,14 +11,20 @@ import LoginModal from "../modal/LoginModal";
 import RegisterModal from "../modal/RegisterModal";
 import useGetUser from "@/features/users/useGetUser";
 import useGetCart from "@/features/cabang/useGetCart";
+import Sidebar from "./Sidebar";
 
 export default function Header() {
   const currentPath = usePathname();
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
   const [isProfileVisible, setProfileVisibility] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const { data } = useGetUser();
   const isGuest = data?.data.id === 2;
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
 
   const openLoginModal = () => {
     closeRegisterModal();
@@ -72,15 +78,16 @@ export default function Header() {
           )}
         </Link>
 
-        <Link href="/checkout" className="relative">
+        <div className="relative" onClick={toggleSidebar}>
           <img src="../assets/png/hamburger.png" className="w-10" />
           {totalCart && totalCart > 0 && (
             <div className="absolute text-xs w-[20px] h-[20px] text-center top-0 right-4 bg-red-500 text-white rounded-full p-1">
               {totalCart}
             </div>
           )}
-        </Link>
+        </div>
       </div>
+      {isSidebarOpen && <Sidebar onClose={() => setIsSidebarOpen(false)} />}
 
       <div className="items-center sm:hidden md:flex lg:flex xl:flex">
         {routeConfig.map((route, key) => {
