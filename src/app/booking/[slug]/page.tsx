@@ -66,7 +66,8 @@ export default function ListBookingPage() {
   } = useGetCart();
   const listData = dataCart?.data?.cart;
   const totalCart = dataCart?.data?.cart.length || "";
-  const idInCart = dataCart?.data?.cart?.[0]?.booking.lapangan.cabang_id | 0;
+  const idInCart =
+    dataCart?.data?.cart?.[0]?.booking.lapangan.cabang_id | Number(cabangId);
   const [idx, setIdx] = useState<number>(Number(cabangId));
 
   const {
