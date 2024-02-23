@@ -8,6 +8,7 @@ import { formatToCurrency } from "../../../lib/formatTimeCurrency";
 interface BookingDetailProps {
   full_name: string;
   pretty_date: string;
+  status?: string;
   harga_visit: number;
   id: string;
   isDeleteLoading: boolean;
@@ -20,6 +21,7 @@ const BookingDetailCard: React.FC<BookingDetailProps> = ({
   harga_visit,
   id,
   isDeleteLoading,
+  status,
   onDelete,
 }) => (
   <div className="mb-4 flex justify-between items-center w-full">
@@ -27,6 +29,9 @@ const BookingDetailCard: React.FC<BookingDetailProps> = ({
       <p className="font-bold text-sm mb-1">{full_name}</p>
       <p>{pretty_date}</p>
       <p>{formatToCurrency(harga_visit)}</p>
+      <p className="px-4 bg-[#F3DB90] text-sm font-semibold text-center rounded-lg">
+        {status}
+      </p>
     </div>
     <div>
       <div>

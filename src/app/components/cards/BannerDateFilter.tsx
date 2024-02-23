@@ -5,14 +5,14 @@
 import React from "react";
 
 interface DateFilterProps {
-  selectedDate: string;
-  onDateChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  selectedWeek: string;
+  onWeekChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   title: string;
 }
 
 const DateFilter: React.FC<DateFilterProps> = ({
-  selectedDate,
-  onDateChange,
+  selectedWeek,
+  onWeekChange,
   title,
 }) => {
   return (
@@ -28,11 +28,12 @@ const DateFilter: React.FC<DateFilterProps> = ({
           <div className="text-left">
             <p className="text-xs mb-2">Pilih Tanggal Booking</p>
             <input
-              type="date"
-              id="dateFilter"
-              value={selectedDate}
-              onChange={onDateChange}
-              className="p-3 text-black rounded-lg mb-4  sm:w-[300px] md:w-[500px] lg:w-[500px] xl:w-[500px]"
+              type="week"
+              id="weekInput"
+              name="weekInput"
+              value={selectedWeek}
+              onChange={onWeekChange}
+              className="p-3 text-black rounded-lg mb-4 sm:w-[300px] md:w-[500px] lg:w-[500px] xl:w-[500px]"
             />
           </div>
           <p className="text-sm font-bold">Note - Pilih Jadwal Di Bawah Ini</p>

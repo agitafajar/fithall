@@ -16,6 +16,7 @@ import * as Yup from "yup";
 import ConfirmationModal from "../components/modal/ConfirmationModal";
 import axiosInstance from "@/lib/axios";
 import { useRouter } from "next/navigation";
+import useGetUser from "@/features/users/useGetUser";
 
 export default function CheckoutPage() {
   const [isDeleteLoadingMap, setIsDeleteLoadingMap] = useState<{
@@ -40,6 +41,8 @@ export default function CheckoutPage() {
   let prosesBayar = false;
   let cart: never[] = [];
   const router = useRouter();
+  const { data: dataUser } = useGetUser();
+  const isGuest = dataUser?.data.id === 2;
 
   const getCurrentDateTime = () => {
     const now = new Date();
@@ -209,39 +212,43 @@ export default function CheckoutPage() {
             <p className="mb-4 border-b-2 font-bold text-4xl pb-4">Checkout</p>
             <p className="text-xl font-bold mb-2">Data Perwakilan Pemain</p>
             <div className="rounded-md">
-              <div className="mb-4">
-                <label
-                  htmlFor="profile"
-                  className="block text-sm font-medium text-gray-600"
-                >
-                  Profile
-                </label>
-                <select
-                  id="profile"
-                  name="profile"
-                  onChange={(e) => {
-                    formik.handleChange(e);
-                    if (data?.data) {
-                      const selectedProfile = data.data.find(
-                        (profile: any) => profile.nama === e.target.value
-                      );
-                      handleProfileChange(selectedProfile);
-                    }
-                  }}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.profile?.nama || ""}
-                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md bg-[#F0F1F5]"
-                >
-                  <option value="" disabled>
-                    Pilih Profile
-                  </option>
-                  {data?.data.map((profile: any) => (
-                    <option key={profile.id} value={profile.nama}>
-                      {profile.nama}
+              {isGuest ? (
+                ""
+              ) : (
+                <div className="mb-4">
+                  <label
+                    htmlFor="profile"
+                    className="block text-sm font-medium text-gray-600"
+                  >
+                    Profile
+                  </label>
+                  <select
+                    id="profile"
+                    name="profile"
+                    onChange={(e) => {
+                      formik.handleChange(e);
+                      if (data?.data) {
+                        const selectedProfile = data.data.find(
+                          (profile: any) => profile.nama === e.target.value
+                        );
+                        handleProfileChange(selectedProfile);
+                      }
+                    }}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.profile?.nama || ""}
+                    className="mt-1 p-2 block w-full border border-gray-300 rounded-md bg-[#F0F1F5]"
+                  >
+                    <option value="" disabled>
+                      Pilih Profile
                     </option>
-                  ))}
-                </select>
-              </div>
+                    {data?.data.map((profile: any) => (
+                      <option key={profile.id} value={profile.nama}>
+                        {profile.nama}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
 
               <div className="mb-4">
                 <label
@@ -405,6 +412,11 @@ export default function CheckoutPage() {
                       pretty_date={bookingItem.booking.pretty_date}
                       harga_visit={bookingItem.booking.harga_visit}
                       id={bookingItem.booking_id}
+                      status={
+                        bookingItem.booking.status === "ORDER"
+                          ? "WAITING LIST"
+                          : ""
+                      }
                       isDeleteLoading={
                         isDeleteLoadingMap[bookingItem.booking_id]
                       }
@@ -448,16 +460,28 @@ export default function CheckoutPage() {
               </label>
             </div>
             <div className="my-6 pb-2">
-              <button
-                type="submit"
-                className={`bg-primary mb-4 text-white py-2 md:py-3 rounded-md text-sm border-2 border-primary w-full font-semibold ${
-                  (!formik.isValid || !isAgreed) &&
-                  "opacity-50 cursor-not-allowed"
-                }`}
-                disabled={!formik.isValid || !isAgreed}
-              >
-                {isLoading ? "Submitting..." : "Proses Pembayaran"}
-              </button>
+              {isGuest ? (
+                <button
+                  className={`bg-white mb-4 text-primary py-2 md:py-3 rounded-md text-sm border-2 border-primary w-full font-semibold `}
+                  onClick={() => {
+                    alert("Silahkan Login Dulu");
+                  }}
+                >
+                  {isLoading ? "Submitting..." : "Login First"}
+                </button>
+              ) : (
+                <button
+                  type="submit"
+                  className={`bg-primary mb-4 text-white py-2 md:py-3 rounded-md text-sm border-2 border-primary w-full font-semibold ${
+                    (!formik.isValid || !isAgreed) &&
+                    "opacity-50 cursor-not-allowed"
+                  }`}
+                  disabled={!formik.isValid || !isAgreed}
+                >
+                  {isLoading ? "Submitting..." : "Proses Pembayaran"}
+                </button>
+              )}
+
               <div className="flex gap-2 items-center mt-4 text-sm">
                 <img src="../assets/png/info-checkout.png" />
                 <p>
@@ -472,6 +496,9 @@ export default function CheckoutPage() {
               onClose={closeModal}
               onConfirm={confirmAction}
               isLoading={isLoading}
+              cancelButtonText="Batalkan"
+              confirmButtonText="Konfirmasi"
+              message={"Apakah Anda yakin nomor Whatsapp Anda sudah benar"}
             />
           </div>
         </form>

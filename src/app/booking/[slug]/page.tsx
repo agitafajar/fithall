@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ErrorPage from "@/app/error";
 import LoadingPage from "@/app/loading";
 import useGetListHarga from "@/features/cabang/useGetListHarga";
@@ -12,23 +12,51 @@ import { formatToCurrency } from "@/lib/formatTimeCurrency";
 import Cookies from "js-cookie";
 import { useSearchParams } from "next/navigation";
 import CartActions from "@/app/components/cards/CartActions";
+import ConfirmationModal from "@/app/components/modal/ConfirmationModal";
+import { getISOWeek } from "date-fns";
 
 export default function ListBookingPage() {
   const [_, setSelectedBookingIds] = useState<string[]>([]);
   const [isLoadingMap, setIsLoadingMap] = useState<{ [id: string]: boolean }>(
     {}
   );
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [bookingID, setBookingID] = useState("");
   const duplicatedIds: any[] = [];
   const loggedIds: any[] = [];
   let totalSubTotal = 0;
-  const [selectedDate, setSelectedDate] = useState(() => {
+
+  const [selectedWeek, setSelectedWeek] = useState(() => {
     const currentDate = new Date();
-    return currentDate.toISOString().split("T")[0];
+    const weekNumber = getISOWeek(currentDate);
+    return `${currentDate.getFullYear()}-W${weekNumber}`;
   });
+
+  const handleWeekChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectedWeek(e.target.value);
+    refetchListHarga();
+  };
+
+  const getStartDateOfWeek = (isoWeek: string): string => {
+    const [year, week] = isoWeek.split("-W");
+    const januaryFourth = new Date(Number(year), 0, 4);
+    const firstSaturday = new Date(januaryFourth.getTime());
+    firstSaturday.setDate(
+      januaryFourth.getDate() - ((januaryFourth.getDay() + 6) % 7)
+    );
+    const startDate = new Date(firstSaturday.getTime());
+    startDate.setDate(startDate.getDate() + (Number(week) - 1) * 7);
+    const formattedStartDate = startDate.toISOString().split("T")[0];
+
+    return formattedStartDate;
+  };
+
+  const startDateOfSelectedWeek = getStartDateOfWeek(selectedWeek);
 
   const urlSearchParams = useSearchParams();
   const ids = urlSearchParams.get("id");
   const namas = urlSearchParams.get("nama") || "";
+  const cabangId = urlSearchParams.get("cabang_id") || "";
 
   const {
     data: dataCart,
@@ -38,13 +66,15 @@ export default function ListBookingPage() {
   } = useGetCart();
   const listData = dataCart?.data?.cart;
   const totalCart = dataCart?.data?.cart.length || "";
+  const idInCart = dataCart?.data?.cart?.[0]?.booking.lapangan.cabang_id | 0;
+  const [idx, setIdx] = useState<number>(Number(cabangId));
 
   const {
     data: listHarga,
     isLoading: loadingListHarga,
     isError: errorListHarga,
     refetch: refetchListHarga,
-  } = useGetListHarga(Number(ids), selectedDate);
+  } = useGetListHarga(Number(ids), startDateOfSelectedWeek);
 
   const handleToggleToCart = async (id: any) => {
     const isIdInLoggedIds = loggedIds.includes(id);
@@ -52,35 +82,87 @@ export default function ListBookingPage() {
 
     setIsLoadingMap((prevLoadingMap) => ({ ...prevLoadingMap, [id]: true }));
 
+    if (idInCart === idx) {
+      try {
+        if (isIdInLoggedIds && !noIsIdInLoggedIds) {
+          setSelectedBookingIds((prevSelectedIds) => [...prevSelectedIds, id]);
+          const token = Cookies.get("token");
+          const headers = token ? { Authorization: `Bearer ${token}` } : {};
+          await axiosInstance.get(`/add-cart/${id}`, {
+            headers,
+          });
+        } else {
+          setSelectedBookingIds((prevSelectedIds) =>
+            prevSelectedIds.filter((selectedId) => selectedId !== id)
+          );
+          const token = Cookies.get("token");
+          const headers = token ? { Authorization: `Bearer ${token}` } : {};
+          await axiosInstance.get(`/remove-cart/${id}`, {
+            headers,
+          });
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      } finally {
+        setIsLoadingMap((prevLoadingMap) => ({
+          ...prevLoadingMap,
+          [id]: false,
+        }));
+        refetchCart();
+      }
+    }
+    if (idInCart !== idx) {
+      setModalOpen(true);
+    }
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+    setIsLoadingMap((prevLoadingMap) => ({
+      ...prevLoadingMap,
+      [bookingID]: false,
+    }));
+  };
+
+  const confirmAction = async () => {
+    setModalOpen(false);
+    const isIdInLoggedIds = loggedIds.includes(bookingID);
+    const noIsIdInLoggedIds = duplicatedIds.includes(bookingID);
+
+    setIsLoadingMap((prevLoadingMap) => ({
+      ...prevLoadingMap,
+      [bookingID]: true,
+    }));
     try {
       if (isIdInLoggedIds && !noIsIdInLoggedIds) {
-        setSelectedBookingIds((prevSelectedIds) => [...prevSelectedIds, id]);
+        setSelectedBookingIds((prevSelectedIds) => [
+          ...prevSelectedIds,
+          bookingID,
+        ]);
         const token = Cookies.get("token");
         const headers = token ? { Authorization: `Bearer ${token}` } : {};
-        await axiosInstance.get(`/add-cart/${id}`, {
+        await axiosInstance.get(`/add-cart/${bookingID}`, {
           headers,
         });
       } else {
         setSelectedBookingIds((prevSelectedIds) =>
-          prevSelectedIds.filter((selectedId) => selectedId !== id)
+          prevSelectedIds.filter((selectedId) => selectedId !== bookingID)
         );
         const token = Cookies.get("token");
         const headers = token ? { Authorization: `Bearer ${token}` } : {};
-        await axiosInstance.get(`/remove-cart/${id}`, {
+        await axiosInstance.get(`/remove-cart/${bookingID}`, {
           headers,
         });
       }
     } catch (error) {
       console.error("Error:", error);
     } finally {
-      setIsLoadingMap((prevLoadingMap) => ({ ...prevLoadingMap, [id]: false }));
+      setIsLoadingMap((prevLoadingMap) => ({
+        ...prevLoadingMap,
+        [bookingID]: false,
+      }));
       refetchCart();
     }
-  };
-
-  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedDate(e.target.value);
-    refetchListHarga();
   };
 
   const groupedBookings: { [date: string]: any[] } = {};
@@ -119,8 +201,8 @@ export default function ListBookingPage() {
   return (
     <>
       <DateFilter
-        selectedDate={selectedDate}
-        onDateChange={handleDateChange}
+        selectedWeek={selectedWeek}
+        onWeekChange={handleWeekChange}
         title={namas}
       />
 
@@ -171,7 +253,9 @@ export default function ListBookingPage() {
                       booking.status !== "BOOKED" &&
                       booking.is_expired !== true
                     ) {
+                      setIdx(booking.lapangan.cabang_id);
                       handleToggleToCart(booking.id);
+                      setBookingID(booking.id);
                     }
                   }}
                 >
@@ -222,6 +306,17 @@ export default function ListBookingPage() {
           <CartActions totalSubTotal={totalSubTotal} totalCart={totalCart} />
         </>
       ) : null}
+
+      <ConfirmationModal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        onConfirm={confirmAction}
+        cancelButtonText="Batalkan"
+        confirmButtonText="Konfirmasi"
+        message={
+          "Anda sudah memasukkan jadwal cabang lain pada cart, ingin cancel pilihan anda sebelumnya?"
+        }
+      />
     </>
   );
 }

@@ -10,10 +10,11 @@ type LapanganCardProps = {
   name: string;
   size: string;
   slug: string;
+  cabang_id: string;
 };
 
 export default function FilterCard(props: LapanganCardProps) {
-  const { size, imageSrc, name, slug, id } = props;
+  const { size, imageSrc, name, slug, id, cabang_id } = props;
 
   return (
     <div className="rounded-xl border-2 p-4 gap-3 flex flex-col w-full sm:h-[550px] md:h-[560px] lg:h-[560px] xl:h-[560px] ">
@@ -21,7 +22,7 @@ export default function FilterCard(props: LapanganCardProps) {
       <p className="text-lg font-bold">{name}</p>
       <p className="font-bold text-sm text-[#7B8794]">{size}</p>
       <Link
-        href={`/booking/${slug}?id=${id}&nama=${name}`}
+        href={`/booking/${slug}?id=${id}&nama=${name}&cabang_id=${cabang_id}`}
         className="bg-primary rounded-lg text-center text-white py-4 md:py-3 md:text-sm md:mt-2 cursor-pointer"
       >
         Book Jadwal

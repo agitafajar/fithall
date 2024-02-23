@@ -176,6 +176,7 @@ export default function ListLapanganPage({
               name={lapangan.full_name}
               size={lapangan.ukuran}
               slug={lapangan.slug}
+              cabang_id={lapangan.cabang_id}
             />
           ))}
         </div>
