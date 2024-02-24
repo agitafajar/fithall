@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import useGetCabang from "@/features/cabang/useGetCabang";
@@ -15,8 +16,8 @@ export default function MemberPage() {
     const currentDate = new Date();
     return currentDate.toISOString().split("T")[0];
   });
-  const [selectedCabang, setSelectedCabang] = useState("");
-  const [selectedLapangan, setSelectedLapangan] = useState("");
+  const [selectedCabang, setSelectedCabang] = useState<string>("");
+  const [selectedLapangan, setSelectedLapangan] = useState<string>("");
   const [selectedDays, setSelectedDays] = useState<string[]>([]);
   const [selectTimeslot, setSelectTimeslot] = useState<string[]>([]);
   const [JadwalTimeSlot, setJadwalTimeSlot] = useState<[]>([]);
@@ -24,27 +25,41 @@ export default function MemberPage() {
     {}
   );
   const [totalBulan, setTotalBulan] = useState<number>(1);
+  const [isLoading, setIsLoading] = useState(false);
+
   const router = useRouter();
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedDate(e.target.value);
+    setSelectedCabang("");
+    setSelectedLapangan("");
+    setSelectedDays([]);
+    setSelectTimeslot([]);
+    setJadwalTimeSlot([]);
+    setDataTimeSlot({});
     refetchCabang();
   };
 
   const {
     data: dataCabang,
     refetch: refetchCabang,
-    isLoading,
+    isLoading: isLoadingCabang,
     error,
   } = useGetCabang();
 
-  const { data: dataLapangan, refetch: refetchDataLapangan } =
-    useGetLapangan(selectedCabang);
+  const {
+    data: dataLapangan,
+    refetch: refetchDataLapangan,
+    isLoading: isLoadingLapangan,
+  } = useGetLapangan(selectedCabang);
 
-  const { data: dataTimeslot, refetch: refetchTimeslot } = useGetTimeslot(
-    selectedLapangan,
-    selectedDays
-  );
+  const {
+    data: dataTimeslot,
+    refetch: refetchTimeslot,
+    isLoading: isLoadingTimeslot,
+  } = useGetTimeslot(selectedLapangan, selectedDays);
+
+  const isLoadings = isLoadingCabang || isLoadingLapangan || isLoadingTimeslot;
 
   const { mutate: postTimeslotMutation } = usePostTimeslot({
     onSuccess: (data) => {
@@ -57,7 +72,7 @@ export default function MemberPage() {
   });
 
   const { mutate: postMember } = usePostMember({
-    onSuccess: (data) => {
+    onSuccess: () => {
       router.push("/checkout");
     },
 
@@ -66,22 +81,12 @@ export default function MemberPage() {
     },
   });
 
-  const handleCabangChange = (e: any) => {
-    setSelectedCabang(e.target.value);
-    refetchDataLapangan();
-  };
-
-  const handleLapanganChange = (e: any) => {
-    setSelectedLapangan(e.target.value);
-  };
-
   const handleCheckboxChange = (value: string) => {
     const updatedSelectedDays = selectedDays.includes(value)
       ? selectedDays.filter((day) => day !== value)
       : [...selectedDays, value];
 
     setSelectedDays(updatedSelectedDays);
-    refetchTimeslot();
   };
 
   const handleCheckboxTimeslotChange = (value: string) => {
@@ -108,20 +113,13 @@ export default function MemberPage() {
       refetchTimeslot();
     }
   };
-  console.log("JadwalTimeSlot", JadwalTimeSlot);
+
   useEffect(() => {
     refetchDataLapangan();
     refetchTimeslot();
-  }, [
-    refetchDataLapangan,
-    refetchTimeslot,
-    selectedCabang,
-    selectedLapangan,
-    selectedDays,
-    selectTimeslot,
-  ]);
+  }, [selectedCabang, selectedDays, selectedLapangan]);
 
-  if (isLoading) {
+  if (isLoadings) {
     return (
       <div>
         <LoadingPage />
@@ -147,9 +145,8 @@ export default function MemberPage() {
     { value: "6", label: "Hari Sabtu" },
   ];
 
-  console.log("dataTimeslot?.data", dataTimeslot?.data);
-
   const checkoutMember = async () => {
+    setIsLoading(true);
     try {
       postMember({
         durasi: totalBulan,
@@ -184,7 +181,6 @@ export default function MemberPage() {
       refetchTimeslot();
     }
   };
-
   return (
     <div className="flex justify-center w-full">
       <div className="max-w-3xl">
@@ -192,10 +188,7 @@ export default function MemberPage() {
           Pendaftaran Member
         </p>
         <div className="mb-4">
-          <label
-            htmlFor="nama"
-            className="block text-sm font-bold text-gray-700"
-          >
+          <label className="block text-sm font-bold text-gray-700">
             Mulai Book
           </label>
           <input
@@ -207,35 +200,37 @@ export default function MemberPage() {
           />
         </div>
         <div className="mb-4">
-          <label
-            htmlFor="nama"
-            className="block text-sm font-bold text-gray-700"
-          >
+          <label className="block text-sm font-bold text-gray-700">
             Cabang
           </label>
           <select
+            id="cabang"
             value={selectedCabang}
-            onChange={handleCabangChange}
+            onChange={(e) => {
+              const selectedSlug = e.target.value;
+              setSelectedCabang(selectedSlug);
+            }}
             className="mt-1 p-2 block w-full border border-gray-300 rounded-md bg-[#F0F1F5]"
           >
             <option value="">Pilih Cabang</option>
             {dataCabang?.data.map((cabang: any) => (
               <option key={cabang.id} value={cabang.slug}>
-                {cabang.nama}
+                {cabang.slug === selectedCabang ? cabang.nama : cabang.nama}
               </option>
             ))}
           </select>
         </div>
         <div className="mb-4">
-          <label
-            htmlFor="nama"
-            className="block text-sm font-bold text-gray-700"
-          >
+          <label className="block text-sm font-bold text-gray-700">
             Lapangan
           </label>
           <select
+            id="lapangan"
             value={selectedLapangan}
-            onChange={handleLapanganChange}
+            onChange={(e) => {
+              const selectedSlug = e.target.value;
+              setSelectedLapangan(selectedSlug);
+            }}
             className="mt-1 p-2 block w-full border border-gray-300 rounded-md bg-[#F0F1F5]"
           >
             <option value="">Pilih Lapangan</option>
@@ -248,10 +243,7 @@ export default function MemberPage() {
         </div>
 
         <div className="mb-4">
-          <label
-            htmlFor="nama"
-            className="block text-sm font-bold text-gray-700"
-          >
+          <label className="block text-sm font-bold text-gray-700">
             Pilih Hari
           </label>
           <div className="grid grid-cols-4 w-[750px] gap-4">
@@ -264,8 +256,14 @@ export default function MemberPage() {
                   checked={selectedDays.includes(day.value)}
                   onChange={() => handleCheckboxChange(day.value)}
                   className="mr-2 h-4 w-4"
+                  disabled={!selectedCabang || selectedLapangan.length === 0}
                 />
-                <label htmlFor={`day-${day.value}`} className="text-gray-700">
+                <label
+                  htmlFor={`day-${day.value}`}
+                  className={`text-gray-700 ${
+                    !selectedCabang ? "text-gray-400" : ""
+                  }`}
+                >
                   {day.label}
                 </label>
               </div>
@@ -274,36 +272,44 @@ export default function MemberPage() {
         </div>
 
         <div>
-          <label
-            htmlFor="nama"
-            className="block text-sm font-bold text-gray-700"
-          >
+          <label className="block text-sm font-bold text-gray-700">
             Pilih Jadwal
           </label>
           <div className="mb-4 bg-[#F0F1F5]">
-            {dataTimeslot?.data.map((day: any) => (
-              <div
-                key={day.id}
-                className="flex items-center justify-center px-2"
-              >
-                <input
-                  type="checkbox"
-                  id={`day-${day.id}`}
-                  value={day.id}
-                  checked={selectTimeslot.includes(day.id)}
-                  onChange={() => handleCheckboxTimeslotChange(day.id)}
-                  className="w-6 h-6"
-                />
-                <div className="p-2 block w-full rounded-md ">
-                  {day.full_name}
-                </div>
-              </div>
-            ))}
+            {!selectedCabang ||
+            !selectedLapangan ||
+            selectedDays.length === 0 ? (
+              <>
+                <p className="p-2 rounded-xl font-bold">
+                  Silahkan pilih hari terlebih dahulu
+                </p>
+              </>
+            ) : (
+              <>
+                {dataTimeslot?.data.map((day: any) => (
+                  <div
+                    key={day.id}
+                    className="flex items-center justify-center px-2"
+                  >
+                    <input
+                      type="checkbox"
+                      value={day.id}
+                      checked={selectTimeslot.includes(day.id)}
+                      onChange={() => handleCheckboxTimeslotChange(day.id)}
+                      className="w-6 h-6"
+                    />
+                    <div className="p-2 block w-full rounded-md">
+                      {day.full_name}
+                    </div>
+                  </div>
+                ))}
+              </>
+            )}
           </div>
         </div>
         <div>
           <label
-            htmlFor="nama"
+            htmlFor="bulan"
             className="block text-sm font-bold text-gray-700"
           >
             Total Bulan
@@ -311,6 +317,7 @@ export default function MemberPage() {
           <div className="mb-4 flex gap-6 mt-2">
             <div className="flex gap-1">
               <input
+                id="bulan"
                 defaultChecked
                 type="radio"
                 name="bulan"
@@ -365,7 +372,7 @@ export default function MemberPage() {
             className="w-full py-4 bg-primary text-white text-center rounded-lg cursor-pointer"
             onClick={checkoutMember}
           >
-            Daftar Member
+            {isLoading ? "Submitting..." : "Daftar Member"}
           </p>
         </div>
       </div>
