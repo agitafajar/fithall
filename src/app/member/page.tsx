@@ -10,6 +10,7 @@ import useGetLapangan from "@/features/cabang/useGetLapangan";
 import { usePostTimeslot } from "@/features/cabang/usePostTimeslot";
 import { usePostMember } from "@/features/cabang/usePostMember";
 import { useRouter } from "next/navigation";
+import useGetUser from "@/features/users/useGetUser";
 
 export default function MemberPage() {
   const [selectedDate, setSelectedDate] = useState(() => {
@@ -26,8 +27,14 @@ export default function MemberPage() {
   );
   const [totalBulan, setTotalBulan] = useState<number>(1);
   const [isLoading, setIsLoading] = useState(false);
-
+  const { data } = useGetUser();
+  const isGuest = data?.data.id === 2;
   const router = useRouter();
+
+  if (isGuest) {
+    alert("Harap login terlebih dahulu");
+    router.push("/");
+  }
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedDate(e.target.value);

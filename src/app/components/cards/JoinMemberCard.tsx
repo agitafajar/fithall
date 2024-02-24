@@ -1,9 +1,34 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable @next/next/no-img-element */
 
+import useGetUser from "@/features/users/useGetUser";
 import Link from "next/link";
+import { useState } from "react";
+import LoginModal from "../modal/LoginModal";
+import RegisterModal from "../modal/RegisterModal";
 
 export default function JoinMemberCard() {
+  const { data } = useGetUser();
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
+
+  const isGuest = data?.data.id === 2;
+
+  const openLoginModal = () => {
+    closeRegisterModal();
+    setIsLoginModalOpen(true);
+  };
+  const closeLoginModal = () => {
+    setIsLoginModalOpen(false);
+  };
+  const openRegisterModal = () => {
+    closeLoginModal();
+    setIsRegisterModalOpen(true);
+  };
+  const closeRegisterModal = () => {
+    setIsRegisterModalOpen(false);
+  };
+
   return (
     <>
       <div
@@ -26,11 +51,13 @@ export default function JoinMemberCard() {
             kedepan kamu juga bisa bergabung dengan beragam komunitas olahraga
             untuk bermain bersama! Nantikan
           </p>
-          <Link
-            href="/member"
-            className="flex w-[40%] gap-2 cursor-pointer mr-4 items-center border-2 border-primary py-4 text-white bg-primary px-12 md:px-8 rounded-md font-semibold justify-center"
-          >
-            <p>Join Member</p>
+          <Link href={isGuest ? "#" : "/member"}>
+            <p
+              onClick={() => isGuest && setIsLoginModalOpen(true)}
+              className="flex w-[40%] gap-2 cursor-pointer mr-4 items-center border-2 border-primary py-4 text-white bg-primary px-12 md:px-8 rounded-md font-semibold justify-center"
+            >
+              Join Member
+            </p>
           </Link>
         </div>
       </div>
@@ -61,6 +88,19 @@ export default function JoinMemberCard() {
           <p>Join Member</p>
         </Link>
       </div>
+      {isLoginModalOpen && (
+        <LoginModal
+          closeModal={closeLoginModal}
+          registerModal={openRegisterModal}
+        />
+      )}
+
+      {isRegisterModalOpen && (
+        <RegisterModal
+          closeModal={closeRegisterModal}
+          loginModal={openLoginModal}
+        />
+      )}
     </>
   );
 }
