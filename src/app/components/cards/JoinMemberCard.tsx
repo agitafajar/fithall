@@ -32,7 +32,7 @@ export default function JoinMemberCard() {
   return (
     <>
       <div
-        className="text-white -mx-24 mb-4 -mt-8 sm:hidden hidden-col bg-red-300 gap-8 px-4 md:flex lg:flex xl:flex items-center justify-start"
+        className="text-white -mx-24 mb-4 -mt-12 sm:hidden hidden-col bg-red-300 gap-8 px-4 md:flex lg:flex xl:flex items-center justify-start"
         style={{
           backgroundImage: "url('../assets/png/joinmember.png')",
           backgroundSize: "cover",
