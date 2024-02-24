@@ -7,6 +7,8 @@ import { useEffect, useState } from "react";
 import useGetTimeslot from "@/features/cabang/useGetTimeslot";
 import useGetLapangan from "@/features/cabang/useGetLapangan";
 import { usePostTimeslot } from "@/features/cabang/usePostTimeslot";
+import { usePostMember } from "@/features/cabang/usePostMember";
+import { useRouter } from "next/navigation";
 
 export default function MemberPage() {
   const [selectedDate, setSelectedDate] = useState(() => {
@@ -17,10 +19,12 @@ export default function MemberPage() {
   const [selectedLapangan, setSelectedLapangan] = useState("");
   const [selectedDays, setSelectedDays] = useState<string[]>([]);
   const [selectTimeslot, setSelectTimeslot] = useState<string[]>([]);
+  const [JadwalTimeSlot, setJadwalTimeSlot] = useState<[]>([]);
   const [dataTimeSlot, setDataTimeSlot] = useState<{ [key: string]: string }>(
     {}
   );
   const [totalBulan, setTotalBulan] = useState<number>(1);
+  const router = useRouter();
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedDate(e.target.value);
@@ -52,9 +56,15 @@ export default function MemberPage() {
     },
   });
 
-  const selectedCabangData = dataTimeslot?.data.find(
-    (lapangan: any) => lapangan.id === selectedLapangan
-  );
+  const { mutate: postMember } = usePostMember({
+    onSuccess: (data) => {
+      router.push("/checkout");
+    },
+
+    onError: () => {
+      console.log("error");
+    },
+  });
 
   const handleCabangChange = (e: any) => {
     setSelectedCabang(e.target.value);
@@ -80,6 +90,12 @@ export default function MemberPage() {
         ? selectTimeslot.filter((day) => day !== value)
         : [...selectTimeslot, value];
 
+      setJadwalTimeSlot(
+        dataTimeslot.data
+          .filter((item: any) => updatedSelectTimeslot.includes(item.id))
+          .map((item: any) => ({ ...item }))
+      );
+
       postTimeslotMutation({
         timeslots: dataTimeslot.data
           .filter((item: any) => updatedSelectTimeslot.includes(item.id))
@@ -92,7 +108,7 @@ export default function MemberPage() {
       refetchTimeslot();
     }
   };
-
+  console.log("JadwalTimeSlot", JadwalTimeSlot);
   useEffect(() => {
     refetchDataLapangan();
     refetchTimeslot();
@@ -131,14 +147,27 @@ export default function MemberPage() {
     { value: "6", label: "Hari Sabtu" },
   ];
 
-  const checkoutMember = () => {
-    console.log("durasi", totalBulan);
-    console.log("jadwal", dataTimeslot?.data);
-    console.log("start_member", selectedDate);
+  console.log("dataTimeslot?.data", dataTimeslot?.data);
+
+  const checkoutMember = async () => {
+    try {
+      postMember({
+        durasi: totalBulan,
+        jadwal: Array.isArray(JadwalTimeSlot)
+          ? JadwalTimeSlot.map((item: any) => ({
+              hari: item.hari,
+              jam: item.jam,
+              lapangan_id: item.lapangan_id,
+            }))
+          : [],
+        start_member: selectedDate,
+      });
+    } catch (error) {
+      console.error("Error during checkout:", error);
+    }
   };
 
   const handleTotalBulanChange = (value: number) => {
-    // Lakukan apa pun yang perlu dilakukan ketika radio button berubah
     setTotalBulan(value);
 
     if (dataTimeslot && selectTimeslot.length > 0) {

@@ -17,6 +17,7 @@ import axiosInstance from "@/lib/axios";
 import { useRouter } from "next/navigation";
 import useGetUser from "@/features/users/useGetUser";
 import Cookies from "js-cookie";
+import MemberBookingDetailCard from "../components/cards/MemberBookingDetailCard";
 
 export default function CheckoutPage() {
   const [isDeleteLoadingMap, setIsDeleteLoadingMap] = useState<{
@@ -409,22 +410,46 @@ export default function CheckoutPage() {
                     key={bookingItem.booking.id}
                     className="mb-4 flex justify-between items-center"
                   >
-                    <BookingDetailCard
-                      key={bookingItem.booking.id}
-                      full_name={bookingItem.booking.lapangan.full_name}
-                      pretty_date={bookingItem.booking.pretty_date}
-                      harga_visit={bookingItem.booking.harga_visit}
-                      id={bookingItem.booking_id}
-                      status={
-                        bookingItem.booking.status === "ORDER"
-                          ? "WAITING LIST"
-                          : ""
-                      }
-                      isDeleteLoading={
-                        isDeleteLoadingMap[bookingItem.booking_id]
-                      }
-                      onDelete={handleDeleteItem}
-                    />
+                    {!dataCart?.data?.member ? (
+                      <BookingDetailCard
+                        key={bookingItem.booking.id}
+                        full_name={bookingItem.booking.lapangan.full_name}
+                        pretty_date={bookingItem.booking.pretty_date}
+                        harga_visit={bookingItem.booking.harga_visit}
+                        id={bookingItem.booking_id}
+                        status={
+                          bookingItem.booking.status === "ORDER"
+                            ? "WAITING LIST"
+                            : ""
+                        }
+                        isDeleteLoading={
+                          isDeleteLoadingMap[bookingItem.booking_id]
+                        }
+                        onDelete={handleDeleteItem}
+                      />
+                    ) : (
+                      <MemberBookingDetailCard
+                        key={bookingItem.booking.id}
+                        full_name={bookingItem.booking.lapangan.full_name}
+                        pretty_date={bookingItem.booking.pretty_date}
+                        harga_visit={bookingItem.booking.harga_visit}
+                        harga_member={
+                          bookingItem.booking.harga_member
+                            ? bookingItem.booking.harga_member
+                            : ""
+                        }
+                        id={bookingItem.booking_id}
+                        status={
+                          bookingItem.booking.status === "ORDER"
+                            ? "WAITING LIST"
+                            : ""
+                        }
+                        isDeleteLoading={
+                          isDeleteLoadingMap[bookingItem.booking_id]
+                        }
+                        onDelete={handleDeleteItem}
+                      />
+                    )}
                   </div>
                 );
               })}
