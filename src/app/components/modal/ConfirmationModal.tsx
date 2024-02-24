@@ -28,9 +28,11 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
         <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center">
           <div className="absolute w-full h-full bg-gray-900 opacity-50"></div>
           <div className="bg-white p-8 rounded shadow-md z-10">
-            <p className="mb-4 font-bold text-lg">Konfirmasi</p>
+            <p className="mb-6 font-bold text-3xl text-center w-full">
+              Konfirmasi
+            </p>
             <p className="mb-8">
-              {cp_wa} {message}
+              <span className="font-bold">{"+62" + cp_wa + ","}</span> {message}
             </p>
             <div className="flex justify-between gap-12">
               <button

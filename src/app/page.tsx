@@ -6,14 +6,16 @@ import FilterCard from "./components/cards/FilterCards";
 import JoinMemberCard from "./components/cards/JoinMemberCard";
 import KeunggulanFitcallCard from "./components/cards/KeunggulanFitcallCard";
 import LapanganCard from "./components/cards/LapanganCard";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import React from "react";
 import LoadingPage from "./loading";
 import ErrorPage from "./error";
+import useGetCart from "@/features/cabang/useGetCart";
 
 export default function Home() {
   const { data, isLoading, error } = useGetCabang();
   const [startIndex, setStartIndex] = useState(0);
+  const { refetch: refetchDataCart } = useGetCart();
   const cardsPerPage = 4;
   const cabangData = data?.data || [];
 
@@ -50,6 +52,10 @@ export default function Home() {
     startIndex + cardsPerPage
   );
   const isNextDisabled = startIndex + cardsPerPage >= cabangData.length;
+
+  useEffect(() => {
+    refetchDataCart();
+  }, [refetchDataCart]);
 
   if (isLoading) {
     return (
