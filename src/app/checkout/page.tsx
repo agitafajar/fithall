@@ -5,8 +5,7 @@
 import useGetCart from "@/features/cabang/useGetCart";
 import ErrorPage from "../error";
 import LoadingPage from "../loading";
-import useGetRemoveCart from "@/features/cabang/useGetRemoveCart";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import BookingDetailCard from "../components/cards/BookingDetailCard";
 import { formatToCurrency } from "@/lib/formatTimeCurrency";
 import EmptyStatePage from "../components/cards/EmptyStateCard";
@@ -17,12 +16,12 @@ import ConfirmationModal from "../components/modal/ConfirmationModal";
 import axiosInstance from "@/lib/axios";
 import { useRouter } from "next/navigation";
 import useGetUser from "@/features/users/useGetUser";
+import Cookies from "js-cookie";
 
 export default function CheckoutPage() {
   const [isDeleteLoadingMap, setIsDeleteLoadingMap] = useState<{
     [id: string]: boolean;
   }>({});
-  const [isGetId, setIsGetId] = useState<string>("");
   const [isAgreed, setIsAgreed] = useState(false);
   let totalSubTotal = 0;
   let totalPajak = 0;
@@ -104,23 +103,27 @@ export default function CheckoutPage() {
   const {
     data: dataCart,
     isLoading: isGetCart,
-    error,
     refetch: refetchCart,
+    error,
   } = useGetCart();
   const listData = dataCart?.data?.cart;
 
-  const { refetch: refetchDataRemove, isLoading: isDeleteLoading } =
-    useGetRemoveCart(isGetId);
+  useEffect(() => {
+    refetchCart();
+  }, [refetchCart]);
 
   const handleDeleteItem = async (id: string) => {
-    setIsGetId(id);
     setIsDeleteLoadingMap((prevLoadingMap) => ({
       ...prevLoadingMap,
       [id]: true,
     }));
 
     try {
-      await refetchDataRemove();
+      const token = Cookies.get("token");
+      const headers = token ? { Authorization: `Bearer ${token}` } : {};
+      await axiosInstance.get(`/remove-cart/${id}`, {
+        headers,
+      });
     } catch (error) {
       console.error("Error:", error);
     } finally {
@@ -132,7 +135,7 @@ export default function CheckoutPage() {
     }
   };
 
-  if (isDeleteLoading || isGetCart) {
+  if (isGetCart) {
     return (
       <div>
         <LoadingPage />

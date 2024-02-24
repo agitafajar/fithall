@@ -19,8 +19,12 @@ export default function Header() {
   const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
   const [isProfileVisible, setProfileVisibility] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const { data: dataCart, refetch: refetchDataCart } = useGetCart();
   const { data } = useGetUser();
+
   const isGuest = data?.data.id === 2;
+
+  const totalCart = dataCart?.data?.cart.length || "";
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -51,13 +55,12 @@ export default function Header() {
   };
 
   useEffect(() => {
+    refetchDataCart();
     if (isGuest) {
       console.log(isGuest);
     }
-  }, [isGuest]);
+  }, [isGuest, refetchDataCart]);
 
-  const { data: dataCart } = useGetCart();
-  const totalCart = dataCart?.data?.cart.length || "";
   return (
     <div className="flex font-plus-jakarta-sans justify-between sm:px-4 md:px-24 lg:px-24 xl:px-24 items-center border-b-2 sm:mb-2 md:mb-12 lg:mb-12 xl:mb-12 sticky top-0 bg-white z-50">
       <Link href="/">
