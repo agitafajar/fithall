@@ -11,6 +11,7 @@ import { usePostTimeslot } from "@/features/cabang/usePostTimeslot";
 import { usePostMember } from "@/features/cabang/usePostMember";
 import { useRouter } from "next/navigation";
 import useGetUser from "@/features/users/useGetUser";
+import { MemberRulesCard } from "../components/cards/MemberRulesCard";
 
 export default function MemberPage() {
   const [selectedDate, setSelectedDate] = useState(() => {
@@ -189,7 +190,8 @@ export default function MemberPage() {
     }
   };
   return (
-    <div className="flex justify-center w-full">
+    <div className="flex justify-center w-full flex-col items-center">
+      <MemberRulesCard />
       <div className="max-w-3xl">
         <p className="text-2xl font-bold pb-4 border-b-2 mb-4">
           Pendaftaran Member

@@ -18,6 +18,7 @@ import { useRouter } from "next/navigation";
 import useGetUser from "@/features/users/useGetUser";
 import Cookies from "js-cookie";
 import MemberBookingDetailCard from "../components/cards/MemberBookingDetailCard";
+import TncCheckoutModal from "../components/modal/TncCheckoutModal";
 
 export default function CheckoutPage() {
   const [isDeleteLoadingMap, setIsDeleteLoadingMap] = useState<{
@@ -32,6 +33,7 @@ export default function CheckoutPage() {
   };
   const { data } = useGetProfiles();
   const [isModalOpen, setModalOpen] = useState(false);
+  const [isTncModalOpen, setTncModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [namafield, setNamafield] = useState("");
   const [emailfield, setEmailfield] = useState("");
@@ -87,7 +89,6 @@ export default function CheckoutPage() {
     onSubmit: (values) => {
       prosesBayar = true;
       setNamafield(values.nama);
-      setNomorwa(values.cp_wa);
       setEmailfield(values.cp_email);
       setJeniskelamin(values.jenis_kelamin);
       setInstansifield(values.instansi);
@@ -95,6 +96,8 @@ export default function CheckoutPage() {
       axiosInstance.post("/booking/validate").then((response) => {
         if (!response.data.status) {
           if (response.data.status === false) {
+            const formattedNumber = formik.values.cp_wa.replace(/^\+62/, "");
+            setNomorwa(formattedNumber);
             setModalOpen(true);
           }
         }
@@ -170,15 +173,19 @@ export default function CheckoutPage() {
     setModalOpen(false);
   };
 
+  const closeTncModal = () => {
+    setTncModalOpen(false);
+  };
+
   const confirmAction = () => {
     setIsLoading(true);
-
+    const formattedNumber = formik.values.cp_wa.replace(/^\+62/, "");
     axiosInstance
       .post("/invoice/generate-payment", {
         member_id: "",
         profile: {
           cp_email: emailfield,
-          cp_wa: `+62${nomorwa}`,
+          cp_wa: `+62${formattedNumber}`,
           instansi: instansifield,
           jenis_kelamin: jeniskelamin,
           nama: namafield,
@@ -484,7 +491,14 @@ export default function CheckoutPage() {
                 className=" text-gray-700 flex flex-col"
               >
                 Saya setuju dengan tata tertib yang berlaku
-                <p className="text-xs text-[#7B8794]">Detail Tata Tertib</p>
+                <p
+                  className="text-xs text-[#7B8794] cursor-pointer"
+                  onClick={() => {
+                    setTncModalOpen(true);
+                  }}
+                >
+                  Detail Tata Tertib
+                </p>
               </label>
             </div>
             <div className="my-6 pb-2">
@@ -519,7 +533,7 @@ export default function CheckoutPage() {
               </div>
             </div>
             <ConfirmationModal
-              cp_wa={formik.values.cp_wa}
+              cp_wa={nomorwa}
               isOpen={isModalOpen}
               onClose={closeModal}
               onConfirm={confirmAction}
@@ -528,6 +542,7 @@ export default function CheckoutPage() {
               confirmButtonText="Konfirmasi"
               message={"Apakah Anda yakin nomor Whatsapp Anda sudah benar"}
             />
+            <TncCheckoutModal isOpen={isTncModalOpen} onClose={closeTncModal} />
           </div>
         </form>
       ) : (

@@ -123,23 +123,35 @@ export default function DetailInvoicePage({
               return (
                 <div
                   key={listDetail.booking_id}
-                  className="flex flex-col gap-4"
+                  className="flex flex-col gap-6"
                 >
-                  <div className="flex justify-between">
+                  <div className="flex justify-between pb-4">
                     <p className="w-[50%]">{listDetail.deskripsi}</p>
-                    <p>{formatToCurrency(listDetail.subtotal)}</p>
+                    <p className="font-bold">
+                      {formatToCurrency(listDetail.subtotal)}
+                    </p>
                   </div>
-                  <div className="flex justify-between border-b-2 pb-4">
+                  {/* <div className="flex justify-between border-b-2 pb-4">
                     <p>Biaya Transaksi</p>
                     <p>{formatToCurrency(data?.data.biaya_transaksi)}</p>
                   </div>
                   <div className="flex justify-between mt-4">
                     <p>Total Harga</p>
                     <p>{formatToCurrency(data?.data.total)}</p>
-                  </div>
+                  </div> */}
                 </div>
               );
             })}
+            <div className="flex justify-between my-2 border-b-2 pb-4">
+              <p>Biaya Transaksi</p>
+              <p className="font-bold">
+                {formatToCurrency(data?.data.biaya_transaksi)}
+              </p>
+            </div>
+            <div className="flex justify-between mt-6">
+              <p>Total Harga</p>
+              <p className="font-bold">{formatToCurrency(data?.data.total)}</p>
+            </div>
           </div>
         </div>
       </div>

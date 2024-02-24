@@ -32,7 +32,7 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
               Konfirmasi
             </p>
             <p className="mb-8">
-              <span className="font-bold">{cp_wa}</span> {message}
+              <span className="font-bold">+62 {cp_wa}</span> {message}
             </p>
             <div className="flex justify-between gap-12">
               <button
