@@ -410,7 +410,7 @@ export default function CheckoutPage() {
                     key={bookingItem.booking.id}
                     className="mb-4 flex justify-between items-center"
                   >
-                    {!dataCart?.data?.member ? (
+                    {!dataCart?.data?.member || isGuest ? (
                       <BookingDetailCard
                         key={bookingItem.booking.id}
                         full_name={bookingItem.booking.lapangan.full_name}
