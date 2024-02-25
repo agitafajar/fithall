@@ -6,7 +6,7 @@ export const MemberRulesCard = () => {
       <p className="text-2xl font-bold pb-4 border-b-2 mb-4">
         Peraturan Member
       </p>
-      <div className="mb-4">
+      <div className="mb-4 leading-6">
         <ol className="list-decimal pl-6">
           <li>
             Jadwal akan ter-book selama x bulan sesuai yang di inputkan pada
@@ -25,9 +25,10 @@ export const MemberRulesCard = () => {
             Di bulan ke-4 akan dikenakan tarif progresif sebesar banyaknya
             waiting list yang booking di hari dan jam yang sama.
           </li>
-          <h3 className="text-xl font-bold mt-4">
-            Tarif Progresif (Bulan ke-4)
-          </h3>
+          <p>
+            {">"} 3 bulan tarif akan berlaku progresif sesuai jumlah waiting
+            list:
+          </p>
           <ul className="list-disc pl-6 mt-2">
             <li>Waiting list 1 - 5: Kenaikan 10%</li>
             <li>Waiting list 6 - 8: Kenaikan 15%</li>

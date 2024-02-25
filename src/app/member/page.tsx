@@ -255,7 +255,7 @@ export default function MemberPage() {
           <label className="block text-sm font-bold text-gray-700">
             Pilih Hari
           </label>
-          <div className="grid grid-cols-4 w-[750px] gap-4">
+          <div className="grid grid-cols-4 sm:w-full md:w-[750px] lg:w-[750px] xl:w-[750px] gap-4">
             {daysOptions.map((day) => (
               <div key={day.value} className="flex items-center">
                 <input
@@ -355,7 +355,7 @@ export default function MemberPage() {
             </div>
           </div>
         </div>
-        <div className="grid grid-cols-4 gap-6 mb-6">
+        <div className="grid  sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4 gap-6 mb-6">
           {Object.keys(dataTimeSlot).map((date) => {
             const [day, month, year, time] = date.split(" ");
             const formattedDate = `${day} ${month} ${year}`;
