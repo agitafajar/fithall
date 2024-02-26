@@ -1,19 +1,20 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import ErrorPage from "@/app/error";
 import LoadingPage from "@/app/loading";
 import useGetListHarga from "@/features/cabang/useGetListHarga";
 import useGetCart from "@/features/cabang/useGetCart";
 import axiosInstance from "@/lib/axios";
 import ClipLoader from "react-spinners/ClipLoader";
-import DateFilter from "@/app/components/cards/BannerDateFilter";
 import { formatToCurrency } from "@/lib/formatTimeCurrency";
 import Cookies from "js-cookie";
 import { useSearchParams } from "next/navigation";
 import CartActions from "@/app/components/cards/CartActions";
 import ConfirmationModal from "@/app/components/modal/ConfirmationModal";
-import { getISOWeek } from "date-fns";
+import DatePicker from "react-datepicker";
+import { isSameISOWeek, startOfWeek } from "date-fns";
+import "react-datepicker/dist/react-datepicker.css";
 
 export default function ListBookingPage() {
   const [_, setSelectedBookingIds] = useState<string[]>([]);
@@ -26,37 +27,21 @@ export default function ListBookingPage() {
   const loggedIds: any[] = [];
   let totalSubTotal = 0;
 
-  const [selectedWeek, setSelectedWeek] = useState(() => {
-    const currentDate = new Date();
-    const weekNumber = getISOWeek(currentDate);
-    return `${currentDate.getFullYear()}-W${weekNumber}`;
-  });
-
-  const handleWeekChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedWeek(e.target.value);
-    refetchListHarga();
-  };
-
-  const getStartDateOfWeek = (isoWeek: string): string => {
-    const [year, week] = isoWeek.split("-W");
-    const januaryFourth = new Date(Number(year), 0, 4);
-    const firstSaturday = new Date(januaryFourth.getTime());
-    firstSaturday.setDate(
-      januaryFourth.getDate() - ((januaryFourth.getDay() + 6) % 7)
-    );
-    const startDate = new Date(firstSaturday.getTime());
-    startDate.setDate(startDate.getDate() + (Number(week) - 1) * 7);
-    const formattedStartDate = startDate.toISOString().split("T")[0];
-
-    return formattedStartDate;
-  };
-
-  const startDateOfSelectedWeek = getStartDateOfWeek(selectedWeek);
-
   const urlSearchParams = useSearchParams();
   const ids = urlSearchParams.get("id");
   const namas = urlSearchParams.get("nama") || "";
   const cabangId = urlSearchParams.get("cabang_id") || "";
+
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
+
+  const convertDate = (date: any) => {
+    let dt = new Date(date);
+    return `${dt.getFullYear()}-${dt.getMonth() + 1}-${dt.getDate()}`;
+  };
+
+  const firstDayOfWeek = startOfWeek(selectedDate || new Date(), {
+    weekStartsOn: 0,
+  });
 
   const {
     data: dataCart,
@@ -74,8 +59,7 @@ export default function ListBookingPage() {
     data: listHarga,
     isLoading: loadingListHarga,
     isError: errorListHarga,
-    refetch: refetchListHarga,
-  } = useGetListHarga(Number(ids), startDateOfSelectedWeek);
+  } = useGetListHarga(Number(ids), convertDate(firstDayOfWeek));
 
   const handleToggleToCart = async (id: any) => {
     const isIdInLoggedIds = loggedIds.includes(id);
@@ -166,30 +150,37 @@ export default function ListBookingPage() {
     }
   };
 
-  const groupedBookings: { [date: string]: any[] } = {};
+  const formatAndGroupBookings = (data: any) => {
+    const groupedBookings: { [date: string]: any[] } = {};
 
-  listHarga?.data.forEach((listDataHarga: any) => {
-    const date = listDataHarga.tanggal;
-    const tanggal = new Date(date);
-    const hari = tanggal.toLocaleDateString("id-ID", { weekday: "long" });
-    listDataHarga.hari = hari;
-    const dateString = new Date(date);
-    const timeFormat: Intl.DateTimeFormatOptions = {
-      month: "numeric",
-      day: "2-digit",
-      year: "numeric",
-      timeZone: "Asia/Jakarta",
-    };
+    data?.forEach((listDataHarga: any) => {
+      const date = listDataHarga.tanggal;
+      const tanggal = new Date(date);
+      const hari = tanggal.toLocaleDateString("id-ID", { weekday: "long" });
+      listDataHarga.hari = hari;
 
-    const formattedDate = dateString.toLocaleDateString("id-ID", timeFormat);
-    listDataHarga.formattedDate = formattedDate;
+      const dateString = new Date(date);
+      const timeFormat: Intl.DateTimeFormatOptions = {
+        month: "numeric",
+        day: "2-digit",
+        year: "numeric",
+        timeZone: "Asia/Jakarta",
+      };
 
-    if (!groupedBookings[date]) {
-      groupedBookings[date] = [listDataHarga];
-    } else {
-      groupedBookings[date].push(listDataHarga);
-    }
-  });
+      const formattedDate = dateString.toLocaleDateString("id-ID", timeFormat);
+      listDataHarga.formattedDate = formattedDate;
+
+      if (!groupedBookings[date]) {
+        groupedBookings[date] = [listDataHarga];
+      } else {
+        groupedBookings[date].push(listDataHarga);
+      }
+    });
+
+    return groupedBookings;
+  };
+
+  const groupedBookings = formatAndGroupBookings(listHarga?.data);
 
   if (loadingCart || loadingListHarga) {
     return <LoadingPage />;
@@ -201,11 +192,39 @@ export default function ListBookingPage() {
 
   return (
     <>
-      <DateFilter
-        selectedWeek={selectedWeek}
-        onWeekChange={handleWeekChange}
-        title={namas}
-      />
+      <div className="w-full flex flex-col items-center justify-center h-[330px] mb-12 text-white">
+        <div
+          className="flex justify-center relative bg-cover bg-center w-full h-full rounded-3xl items-center p-24 -mb-12"
+          style={{ backgroundImage: "url('../assets/png/home-banner.png')" }}
+        >
+          <div className="flex flex-col justify-center items-center relative z-10 mt-24 ">
+            <p className="font-bold sm:text-3xl md:text-4xl lg:text-4xl xl:text-4xl text-4xl text-white mb-6 capitalize">
+              {namas}
+            </p>
+            <div className="text-left">
+              <p className="text-xs mb-2">Pilih Tanggal Booking</p>
+              <DatePicker
+                selected={selectedDate}
+                onChange={(date) => setSelectedDate(date as Date | undefined)}
+                showWeekNumbers
+                dayClassName={(date: Date) =>
+                  isSameISOWeek(date, selectedDate || new Date())
+                    ? "react-datepicker__day--selected"
+                    : ""
+                }
+                calendarStartDay={0}
+                onWeekSelect={(...obj) => {
+                  console.log(obj);
+                }}
+              />
+            </div>
+            <p className="text-sm font-bold">
+              Note - Pilih Jadwal Di Bawah Ini
+            </p>
+          </div>
+          <div className="absolute inset-0 bg-gradient-to-r from-black to-transparent rounded-3xl"></div>
+        </div>
+      </div>
 
       <div className="flex gap-4 font-bold text-center justify-between overflow-auto overflow-y-auto">
         {Object.keys(groupedBookings).map((date) => (
