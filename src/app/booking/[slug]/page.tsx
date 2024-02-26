@@ -216,9 +216,10 @@ export default function ListBookingPage() {
                 onWeekSelect={(...obj) => {
                   console.log(obj);
                 }}
+                className=" text-black py-2 px-6 rounded-xl"
               />
             </div>
-            <p className="text-sm font-bold">
+            <p className="text-sm font-bold mt-2">
               Note - Pilih Jadwal Di Bawah Ini
             </p>
           </div>
