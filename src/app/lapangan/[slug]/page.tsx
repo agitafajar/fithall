@@ -59,7 +59,7 @@ export default function ListLapanganPage({
           >
             <div className="flex items-center gap-1 px-2">
               <img
-                src="../assets/png/location.png"
+                src="../assets/svg/icon_black_location.svg"
                 alt=""
                 width="20px"
                 height="20px"
@@ -77,7 +77,7 @@ export default function ListLapanganPage({
           >
             <div className="flex items-center gap-1 px-2">
               <img
-                src="../assets/png/store.png"
+                src="../assets/svg/icon_black_store.svg"
                 alt=""
                 width="20px"
                 height="20px"
@@ -95,7 +95,7 @@ export default function ListLapanganPage({
           >
             <div className="flex items-center gap-1 px-2">
               <img
-                src="../assets/png/calendar.png"
+                src="../assets/svg/icon_black_calendar.svg"
                 alt=""
                 width="20px"
                 height="20px"
@@ -117,7 +117,7 @@ export default function ListLapanganPage({
           >
             <div className="flex items-center gap-1 px-12">
               <img
-                src="../assets/png/location.png"
+                src="../assets/svg/icon_black_location.svg"
                 alt=""
                 width="20px"
                 height="20px"
@@ -133,7 +133,7 @@ export default function ListLapanganPage({
           >
             <div className="flex items-center gap-1 border-x-2 px-12">
               <img
-                src="../assets/png/store.png"
+                src="../assets/svg/icon_black_store.svg"
                 alt=""
                 width="20px"
                 height="20px"
@@ -149,7 +149,7 @@ export default function ListLapanganPage({
           >
             <div className="flex items-center gap-1 px-12">
               <img
-                src="../assets/png/calendar.png"
+                src="../assets/svg/icon_black_calendar.svg"
                 alt=""
                 width="20px"
                 height="20px"
@@ -185,7 +185,7 @@ export default function ListLapanganPage({
       {activeTab === "detail" && (
         <div>
           <EmptyStatePage
-            imageUrl="../assets/png/empty-state.png"
+            imageUrl="../assets/svg/img_under-maintenance.svg"
             title="This page is under development"
             text="This page is under development"
             linkTo="/"

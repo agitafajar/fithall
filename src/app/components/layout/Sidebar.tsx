@@ -57,7 +57,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
         ) : (
           <div className="flex gap-1 w-full mb-4">
             <div className="p-3 bg-[#F5F7FA] rounded-full mr-4">
-              <img src="../assets/png/profile.png" />
+              <img src="../assets/svg/icon_black_profile.svg" />
             </div>
             <div className="flex flex-col gap cursor-pointer">
               <p className="-mb-1 text-sm">Hello</p>
