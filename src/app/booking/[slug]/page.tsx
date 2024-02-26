@@ -209,14 +209,16 @@ export default function ListBookingPage() {
                 showWeekNumbers
                 dayClassName={(date: Date) =>
                   isSameISOWeek(date, selectedDate || new Date())
-                    ? "react-datepicker__day--selected"
+                    ? date.getDay() === 0
+                      ? "react-datepicker__day--selected-sunday"
+                      : "react-datepicker__day--selected"
                     : ""
                 }
                 calendarStartDay={0}
                 onWeekSelect={(...obj) => {
                   console.log(obj);
                 }}
-                className=" text-black py-2 px-6 rounded-xl"
+                className="text-black py-2 px-6 rounded-xl"
               />
             </div>
             <p className="text-sm font-bold mt-2">
