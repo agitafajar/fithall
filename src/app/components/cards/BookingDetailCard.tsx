@@ -39,7 +39,7 @@ const BookingDetailCard: React.FC<BookingDetailProps> = ({
           <ClipLoader color="red" />
         ) : (
           <img
-            src="../assets/png/trash.png"
+            src="../assets/svg/icon_red_trash-solid.svg"
             className="cursor-pointer"
             onClick={() => onDelete(id)}
           />

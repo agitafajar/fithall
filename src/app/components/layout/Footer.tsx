@@ -12,10 +12,10 @@ export default function Footer() {
             muvåning, och pesask vyfisat. Viktiga poddradio har un mad och inde.
           </p>
           <div className="flex gap-6">
-            <img src="../assets/png/fb.png" className="pt-1 cursor-pointer" />
-            <img src="../assets/png/tw.png" className="pt-1 cursor-pointer" />
-            <img src="../assets/png/ln.png" className="pt-1 cursor-pointer" />
-            <img src="../assets/png/ig.png" className="pt-1 cursor-pointer" />
+            <img src="../assets/svg/icon_white_facebook.svg" className="pt-1 cursor-pointer" />
+            <img src="../assets/svg/icon_white_twitter.svg" className="pt-1 cursor-pointer" />
+            <img src="../assets/svg/icon_white_linkedin.svg" className="pt-1 cursor-pointer" />
+            <img src="../assets/svg/icon_white_instagram.svg" className="pt-1 cursor-pointer" />
           </div>
         </div>
         <div className="col-span-1 flex flex-col gap-6">
@@ -33,15 +33,15 @@ export default function Footer() {
         <div className="col-span-1 flex flex-col gap-6">
           <p className="font-bold text-lg">Contact</p>
           <div className="flex gap-2 items-center cursor-pointer">
-            <img src="../assets/png/call.png" />
+            <img src="../assets/svg/icon_white_phone-call.svg" />
             <p>(021) 555-0120</p>
           </div>
           <div className="flex gap-2 items-center cursor-pointer">
-            <img src="../assets/png/mail.png" />
+            <img src="../assets/svg/icon_white_mail.svg" />
             <p>fithall@gmail.com</p>
           </div>
           <div className="flex gap-2 items-start cursor-pointer">
-            <img src="../assets/png/white-location.png" className="pt-1" />
+            <img src="../assets/svg/icon_white_location.svg" className="pt-1" />
             <p>2972 Westheimer Rd. Santa Ana, Illinois 85486 </p>
           </div>
         </div>

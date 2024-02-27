@@ -66,14 +66,16 @@ export default function Header() {
       <Link href="/">
         <img
           src="../assets/png/fithall-logo.png"
-          className="sm:w-[80px] md:w-[100px] lg:w-[125px] xl:w-[125px] sm:my-2 md:my-4 lg:my-4 xl:my-4"
+          className="sm:w-[80px] md:w-[100px] lg:w-[100px] xl:w-[100px] sm:my-2 md:my-4 lg:my-4 xl:my-4"
           alt="fithall-logo"
         />
       </Link>
 
       <div className="sm:flex md:hidden lg:hidden xl:hidden">
         <Link href="/checkout" className="relative mr-2 pr-2 border-r-2 ">
-          <img src="../assets/png/carts.png" className="w-10" />
+          <div className="p-3 bg-[#F5F7FA] rounded-full mr-4 cursor-pointer">
+            <img src="../assets/svg/icon_black_shopping-cart.svg" />
+          </div>
           {totalCart && totalCart > 0 && (
             <div className="absolute text-xs w-[20px] h-[20px] text-center top-0 right-4 bg-red-500 text-white rounded-full p-1">
               {totalCart}
@@ -82,12 +84,10 @@ export default function Header() {
         </Link>
 
         <div className="relative" onClick={toggleSidebar}>
-          <img src="../assets/png/hamburger.png" className="w-10" />
-          {totalCart && totalCart > 0 && (
-            <div className="absolute text-xs w-[20px] h-[20px] text-center top-0 right-4 bg-red-500 text-white rounded-full p-1">
-              {totalCart}
-            </div>
-          )}
+          <img
+            src="../assets/svg/icon_button_hamburger-menu.svg"
+            className="w-10"
+          />
         </div>
       </div>
       {isSidebarOpen && <Sidebar onClose={() => setIsSidebarOpen(false)} />}
@@ -112,9 +112,9 @@ export default function Header() {
           );
         })}
 
-        <Link href="/checkout" className="relative mr-4 ">
+        <Link href="/checkout" className="relative mr-4 border-r-2">
           <div className="p-3 bg-[#F5F7FA] rounded-full mr-4 cursor-pointer">
-            <img src="../assets/png/shopping-cart.png" />
+            <img src="../assets/svg/icon_black_shopping-cart.svg" />
           </div>
           {totalCart && totalCart > 0 && (
             <div className="absolute text-xs w-[20px] h-[20px] text-center top-0 right-4 bg-red-500 text-white rounded-full p-1">
@@ -132,8 +132,8 @@ export default function Header() {
           </div>
         ) : (
           <div className="flex gap-1">
-            <div className="p-3 bg-[#F5F7FA] rounded-full mr-4">
-              <img src="../assets/png/profile.png" />
+            <div className="p-3 bg-[#F5F7FA] rounded-full mr-4 border-r-2">
+              <img src="../assets/svg/icon_black_profile.svg" />
             </div>
             <div
               className="flex flex-col gap cursor-pointer"

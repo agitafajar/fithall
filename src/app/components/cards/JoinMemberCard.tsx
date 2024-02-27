@@ -34,8 +34,10 @@ export default function JoinMemberCard() {
       <div
         className="text-white -mx-24 mb-4 -mt-12 sm:hidden hidden-col bg-red-300 gap-8 px-4 md:flex lg:flex xl:flex items-center justify-start"
         style={{
-          backgroundImage: "url('../assets/png/joinmember.png')",
+          background: "linear-gradient(to top, rgba(3, 3, 3, 0.647), rgba(0, 0, 0, 0.11)), url('../assets/png/img_join-member.webp')",
+          // backgroundImage: "url('../assets/png/img_join-member.webp')",
           backgroundSize: "cover",
+          width: "auto",
           height: "100vh",
           backgroundColor: "rgba(0, 0, 0, 0.1)",
         }}
@@ -65,9 +67,10 @@ export default function JoinMemberCard() {
       <div
         className="text-white mb-4 text-center sm:flex flex-col bg-red-300 -mx-4 gap-8 px-4 md:hidden lg:hidden xl:hidden items-center justify-center"
         style={{
-          backgroundImage: "url('../assets/png/joinmembermobile.png')",
+          background: "linear-gradient(to top, rgba(3, 3, 3, 0.647), rgba(0, 0, 0, 0.11)), url('../assets/png/img_join-member_mobile.webp')",
+          // backgroundImage: "url('../assets/png/joinmembermobile.png')",
           backgroundSize: "cover",
-          height: "70vh",
+          height: "80vh",
           backgroundColor: "rgba(0, 0, 0, 0.1)",
         }}
       >
