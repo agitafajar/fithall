@@ -72,6 +72,11 @@ export default function Header() {
       </Link>
 
       <div className="sm:flex md:hidden lg:hidden xl:hidden">
+        <Link href="/pesanan" className="relative">
+          <div className="p-3 bg-[#F5F7FA] rounded-full mr-4 cursor-pointer size-11 flex items-center justify-center">
+            <img src="../assets/svg/Icon_pesanan.svg" />
+          </div>
+        </Link>
         <Link href="/checkout" className="relative mr-2 pr-2 border-r-2 ">
           <div className="p-3 bg-[#F5F7FA] rounded-full mr-4 cursor-pointer">
             <img src="../assets/svg/icon_black_shopping-cart.svg" />
@@ -112,8 +117,14 @@ export default function Header() {
           );
         })}
 
+        <Link href="/pesanan" className="relative">
+          <div className="p-3 bg-[#F5F7FA] rounded-full mr-4 cursor-pointer size-11 flex items-center justify-center">
+            <img src="../assets/svg/Icon_pesanan.svg" />
+          </div>
+        </Link>
+
         <Link href="/checkout" className="relative mr-4 border-r-2">
-          <div className="p-3 bg-[#F5F7FA] rounded-full mr-4 cursor-pointer">
+          <div className="p-3 bg-[#F5F7FA] rounded-full mr-4 cursor-pointer size-11 flex items-center justify-center">
             <img src="../assets/svg/icon_black_shopping-cart.svg" />
           </div>
           {totalCart && totalCart > 0 && (
