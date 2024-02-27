@@ -143,7 +143,7 @@ export default function Header() {
           </div>
         ) : (
           <div className="flex gap-1">
-            <div className="p-3 bg-[#F5F7FA] rounded-full mr-4 border-r-2">
+            <div className="p-3 bg-[#F5F7FA] rounded-full mr-4">
               <img src="../assets/svg/icon_black_profile.svg" />
             </div>
             <div

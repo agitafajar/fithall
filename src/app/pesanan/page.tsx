@@ -62,7 +62,7 @@ export default function PesananPage({ params }: { params: { slug: string } }) {
                 <p className="text-[#323F4B] text-sm">Total Harga</p>
                 <p className="font-bold text-primary">Rp. 151.132</p>
               </div>
-              <div className="ring-2 ring-[#0C8C6B] text-[#0C8C6B] font-bold py-2 px-6 rounded-full">
+              <div className="ring-1 ring-[#0C8C6B] text-[#0C8C6B] font-bold py-2 px-6 rounded-full">
                 Lihat Detail
               </div>
             </div>
@@ -96,7 +96,7 @@ export default function PesananPage({ params }: { params: { slug: string } }) {
                 <p className="text-[#323F4B] text-sm">Total Harga</p>
                 <p className="font-bold text-primary">Rp. 151.132</p>
               </div>
-              <div className="ring-2 ring-[#0C8C6B] text-[#0C8C6B] font-bold py-2 px-6 rounded-full">
+              <div className="ring-1 ring-[#0C8C6B] text-[#0C8C6B] font-bold py-2 px-6 rounded-full">
                 Lihat Detail
               </div>
             </div>
