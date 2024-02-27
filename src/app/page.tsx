@@ -11,6 +11,7 @@ import React from "react";
 import LoadingPage from "./loading";
 import ErrorPage from "./error";
 import useGetCart from "@/features/cabang/useGetCart";
+import Link from "next/link";
 
 export default function Home() {
   const { data, isLoading, error } = useGetCabang();
@@ -115,14 +116,17 @@ export default function Home() {
         <div className="flex justify-between items-center mb-4">
           <div className="font-bold flex text-[22px] sm:justify-between md:justify-start w-full lg:justify-start xl:justify-start">
             Cabang Fithall
-            <span className="text-primary flex items-center pl-8 text-sm cursor-pointer">
+            <Link
+              href="/lapangan"
+              className="text-primary flex items-center pl-8 text-sm cursor-pointer"
+            >
               Lihat Semua
               <img
                 src="../assets/png/next.png"
                 width="6px"
                 className="ml-1 pt-1"
               />
-            </span>
+            </Link>
           </div>
           <div className="sm:hidden md:flex lg:flex xl:flex gap-4">
             <img

@@ -1,15 +1,32 @@
-import EmptyStatePage from "../components/cards/EmptyStateCard";
+"use client";
+
+import useGetCabang from "@/features/cabang/useGetCabang";
+import LapanganCard from "../components/cards/LapanganCard";
+import ErrorPage from "../error";
+import LoadingPage from "../loading";
 
 export default function LapanganPage() {
+  const { data, isLoading, error } = useGetCabang();
+  const cabangData = data?.data || [];
+
+  if (isLoading) {
+    return (
+      <div>
+        <LoadingPage />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div>
+        <ErrorPage />
+      </div>
+    );
+  }
   return (
     <div>
-      <EmptyStatePage
-        imageUrl="../assets/svg/img_under-maintenance.svg"
-        title="We'll be back soon!"
-        text="This page is under development"
-        linkTo="/"
-        linkText="Back to Home"
-      />
+      <LapanganCard dataList={cabangData} />
     </div>
   );
 }
