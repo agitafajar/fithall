@@ -192,16 +192,16 @@ export default function ListBookingPage() {
 
   return (
     <>
-      <div className="w-full flex flex-col items-center justify-center h-[330px] mb-12 text-white">
+      <div className="w-full flex flex-col items-center justify-center sm:mt-0 sm:h-[250px] md:h-[330px] mb-12 text-white">
         <div
-          className="flex justify-center relative bg-cover bg-center w-full h-full rounded-3xl items-center p-24 -mb-12"
+          className="flex justify-center relative bg-cover bg-center w-full h-full rounded-3xl items-center sm:p-12 md:p-24 -mb-12"
           style={{ backgroundImage: "url('../assets/png/home-banner.png')" }}
         >
-          <div className="flex flex-col justify-center items-center relative z-10 mt-24 ">
-            <p className="font-bold sm:text-3xl md:text-4xl lg:text-4xl xl:text-4xl text-4xl text-white mb-6 capitalize">
+          <div className="flex flex-col justify-center items-center relative z-10 sm:mt-5 md:mt-24 ">
+            <p className="font-bold text-center sm:text-2xl md:text-4xl lg:text-4xl xl:text-4xl text-4xl text-white mb-6 capitalize">
               {namas}
             </p>
-            <div className="text-left">
+            <div className="text-center">
               <p className="text-xs mb-2">Pilih Tanggal Booking</p>
               <DatePicker
                 selected={selectedDate}
@@ -218,11 +218,11 @@ export default function ListBookingPage() {
                 onWeekSelect={(...obj) => {
                   console.log(obj);
                 }}
-                className="text-black py-2 px-6 rounded-xl"
+                className="customDatePickerWidth text-black py-2 px-6 rounded-xl"
               />
             </div>
             <p className="text-sm font-bold mt-2">
-              Note - Pilih Jadwal Di Bawah Ini
+              Note : Pilih Jadwal Di Bawah Ini
             </p>
           </div>
           <div className="absolute inset-0 bg-gradient-to-r from-black to-transparent rounded-3xl"></div>

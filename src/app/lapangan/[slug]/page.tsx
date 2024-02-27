@@ -47,17 +47,20 @@ export default function ListLapanganPage({
 
   return (
     <>
+      <BannerCard icon={icon} title={title} />
+
+      {/* Mobile Tabview */}
       <div className="justify-center mb-6 sm:flex md:hidden lg:hidden xl:hidden">
         <div className="grid grid-cols-3 px-0 z-10 -mt-2 font-bold bg-white w-full items-center justify-between">
           <button
             className={`cursor-pointer focus:outline-none ${
               activeTab === "list"
-                ? "font-bold text-[#0C8C6B] bg-[#A6C9C0] border-b-2 border-b-primary py-4 "
+                ? "font-bold text-[#0C8C6B] border-b-2 border-b-primary py-4 "
                 : ""
             }`}
             onClick={() => handleTabClick("list")}
           >
-            <div className="flex items-center gap-1 px-2">
+            <div className="flex justify-center gap-1 px-2">
               <img
                 src="../assets/svg/icon_black_location.svg"
                 alt=""
@@ -70,12 +73,12 @@ export default function ListLapanganPage({
           <button
             className={`cursor-pointer focus:outline-none ${
               activeTab === "detail"
-                ? "font-bold text-[#0C8C6B] bg-[#A6C9C0] border-b-2 border-b-primary py-4"
+                ? "font-bold text-[#0C8C6B] border-b-2 border-b-primary py-4"
                 : ""
             }`}
             onClick={() => handleTabClick("detail")}
           >
-            <div className="flex items-center gap-1 px-2">
+            <div className="flex justify-center gap-1 px-2">
               <img
                 src="../assets/svg/icon_black_store.svg"
                 alt=""
@@ -88,12 +91,12 @@ export default function ListLapanganPage({
           <button
             className={`cursor-pointer focus:outline-none ${
               activeTab === "gallery"
-                ? "font-bold text-[#0C8C6B] bg-[#A6C9C0] border-b-2 border-b-primary py-4"
+                ? "font-bold text-[#0C8C6B] border-b-2 border-b-primary py-4"
                 : ""
             }`}
             onClick={() => handleTabClick("gallery")}
           >
-            <div className="flex items-center gap-1 px-2">
+            <div className="flex justify-center gap-1 px-2">
               <img
                 src="../assets/svg/icon_black_calendar.svg"
                 alt=""
@@ -106,7 +109,7 @@ export default function ListLapanganPage({
         </div>
       </div>
 
-      <BannerCard icon={icon} title={title} />
+      {/* Desktop Tabview */}
       <div className="justify-center -mt-12 sm:hidden md:flex lg:flex xl:flex">
         <div className=" -mt-4 flex justify-between max-w-4xl shadow-md p-6 rounded-lg gap-4 z-10 font-bold bg-white">
           <button
