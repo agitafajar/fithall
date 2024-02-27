@@ -20,7 +20,7 @@ export default function CabangLapanganCard(props: Props) {
       <Link
         href={`/lapangan/${slug}`}
         passHref
-        className="flex flex-col p-4 border-2 rounded-xl gap-4 cursor-pointer w-[320px] h-[400px]"
+        className="flex flex-col p-4 border-2 rounded-xl gap-4 cursor-pointer w-[320px] h-[400px] justify-between"
       >
         <img src={pic} alt="" className=" w-full h-[200px] rounded-lg" />
         <p className="font-bold">{label}</p>
@@ -31,7 +31,9 @@ export default function CabangLapanganCard(props: Props) {
         <div className="flex justify-between items-end">
           <div>
             <p className="text-xs">Mulai dari</p>
-            <p className="text-md font-bold text-primary">{price}</p>
+            <p className="text-md font-bold text-primary">
+              {price || "Rp. 35.000"}
+            </p>
           </div>
           <div className="text-xs text-[#808080] flex">
             <p className="mr-1">{openTime}</p> -

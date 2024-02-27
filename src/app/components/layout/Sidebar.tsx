@@ -71,19 +71,19 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
         )}
 
         <div className="w-full">
-          <Link href="/login">
+          <Link href="/">
             <p className="text-black mb-4 text-left border-b-2 pb-3">Home</p>
           </Link>
         </div>
         <div className="w-full">
-          <Link href="/login">
+          <Link href="/lapangan">
             <p className="text-black mb-4 text-left border-b-2 pb-3">
               Lapangan
             </p>
           </Link>
         </div>
         <div className="w-full">
-          <Link href="/login">
+          <Link href="/about-us">
             <p className="text-black mb-4 text-left border-b-2 pb-3">
               About Us
             </p>
