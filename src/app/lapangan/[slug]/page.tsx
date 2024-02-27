@@ -50,7 +50,7 @@ export default function ListLapanganPage({
       <BannerCard icon={icon} title={title} />
 
       {/* Mobile Tabview */}
-      <div className="justify-center mb-6 sm:flex md:hidden lg:hidden xl:hidden">
+      <div className="justify-center mb-6 sm:flex md:hidden lg:hidden xl:hidden border-b-2">
         <div className="grid grid-cols-3 px-0 z-10 -mt-2 font-bold bg-white w-full items-center justify-between">
           <button
             className={`cursor-pointer focus:outline-none ${
