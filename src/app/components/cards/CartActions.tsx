@@ -10,7 +10,7 @@ interface CartActionsProps {
 const CartActions: FC<CartActionsProps> = ({ totalSubTotal, totalCart }) => {
   return (
     <>
-      <div className="sm:hidden md:flex lg:flex xl:flex w-full border-t-2 fixed items-center bottom-0 left-0 px-4 md:px-24 bg-white z-[3000] flex gap-2 justify-end">
+      <div className="sm:hidden md:flex lg:flex xl:flex w-full border-t-2 fixed items-center bottom-0 left-0 px-4 md:px-12 bg-white z-[3000] flex gap-2 justify-end">
         <div className="mr-4">
           <p className="text-xs">Total Amount</p>
           <p className="font-bold text-primary">
@@ -19,13 +19,13 @@ const CartActions: FC<CartActionsProps> = ({ totalSubTotal, totalCart }) => {
         </div>
         <Link
           href="/checkout"
-          className="cursor-pointer mr-4 my-4 bg-white border-2 border-primary xl:py-3 lg:py-3 md:py-2 sm:py-2 md:my-2 text-primary   sm:px-2 md:px-8 lg:px-8 xl:px-8 rounded-md font-semibold text-sm"
+          className="cursor-pointer mr-4 my-4 bg-white border-2 border-primary xl:py-3 lg:py-3 md:py-2 sm:py-2 md:my-4 text-primary   sm:px-2 md:px-8 lg:px-8 xl:px-8 rounded-md font-semibold text-sm"
         >
           + Keranjang
         </Link>
         <Link
           href="/checkout"
-          className="cursor-pointer mr-4 my-4 lg:my-4 border-2 border-primary py-3 md:py-2 md:my-2 text-white bg-primary px-8 rounded-md font-semibold text-sm"
+          className="cursor-pointer mr-4 my-4 lg:my-4 border-2 border-primary py-3 md:py-2 lg:py-3 md:my-4 text-white bg-primary px-8 rounded-md font-semibold text-sm"
         >
           Checkout ({totalCart} Items)
         </Link>
@@ -41,13 +41,13 @@ const CartActions: FC<CartActionsProps> = ({ totalSubTotal, totalCart }) => {
         <div className="flex justify-between">
           <Link
             href="/checkout"
-            className="cursor-pointer mr-4 my-4 border-2 border-primary py-3 md:py-2 md:my-2 text-primary bg-white px-4 rounded-md font-semibold text-sm"
+            className="cursor-pointer mr-4 my-4 border-2 border-primary py-3 md:py-2 md:my-4 text-primary bg-white px-4 rounded-md font-semibold text-sm"
           >
             + Keranjang
           </Link>
           <Link
             href="/checkout"
-            className="cursor-pointer mr-4 my-4 lg:my-4 border-2 border-primary py-3 md:py-2 md:my-2 text-white bg-primary px-8 rounded-md font-semibold text-sm"
+            className="cursor-pointer mr-4 my-4 lg:my-4 border-2 border-primary py-3 md:py-2 md:my-4 text-white bg-primary px-8 rounded-md font-semibold text-sm"
           >
             Checkout ({totalCart} Items)
           </Link>

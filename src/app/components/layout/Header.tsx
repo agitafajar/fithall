@@ -62,7 +62,7 @@ export default function Header() {
   }, [isGuest, refetchDataCart]);
 
   return (
-    <div className="flex font-plus-jakarta-sans justify-between sm:px-4 md:px-24 lg:px-24 xl:px-24 items-center border-b-2 sm:mb-2 md:mb-12 lg:mb-12 xl:mb-12 sticky top-0 bg-white z-50">
+    <div className="flex font-plus-jakarta-sans justify-between sm:px-4 md:px-12 lg:px-18 xl:px-24 items-center border-b-2 sm:mb-2 md:mb-12 lg:mb-12 xl:mb-12 sticky top-0 bg-white z-50">
       <Link href="/">
         <img
           src="../assets/png/fithall-logo.png"
@@ -136,7 +136,7 @@ export default function Header() {
 
         {isGuest ? (
           <div
-            className="cursor-pointer mr-4 border-2 border-primary py-2 text-white bg-primary px-8 rounded-md font-semibold text-sm"
+            className="cursor-pointer border-2 border-primary py-2 text-white bg-primary px-8 rounded-md font-semibold text-sm"
             onClick={openLoginModal}
           >
             Login

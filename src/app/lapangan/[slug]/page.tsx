@@ -167,7 +167,7 @@ export default function ListLapanganPage({
       </div>
 
       {activeTab === "list" && (
-        <div className="  justify-between items-center gap-4 sm:flex md:grid lg:grid xl:grid sm:flex-col md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4">
+        <div className="  justify-between items-center gap-4 sm:flex md:grid lg:grid xl:grid sm:flex-col md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4">
           {cabangDataLapangan?.data.lapangan.map((lapangan: any) => (
             <ListLapanganCard
               key={lapangan.id}
