@@ -84,12 +84,10 @@ export default function Header() {
         </Link>
 
         <div className="relative" onClick={toggleSidebar}>
-          <img src="../assets/svg/icon_button_hamburger-menu.svg" className="w-10" />
-          {totalCart && totalCart > 0 && (
-            <div className="absolute text-xs w-[20px] h-[20px] text-center top-0 right-4 bg-red-500 text-white rounded-full p-1">
-              {totalCart}
-            </div>
-          )}
+          <img
+            src="../assets/svg/icon_button_hamburger-menu.svg"
+            className="w-10"
+          />
         </div>
       </div>
       {isSidebarOpen && <Sidebar onClose={() => setIsSidebarOpen(false)} />}
@@ -114,7 +112,7 @@ export default function Header() {
           );
         })}
 
-        <Link href="/checkout" className="relative mr-4 ">
+        <Link href="/checkout" className="relative mr-4 border-r-2">
           <div className="p-3 bg-[#F5F7FA] rounded-full mr-4 cursor-pointer">
             <img src="../assets/svg/icon_black_shopping-cart.svg" />
           </div>
@@ -134,7 +132,7 @@ export default function Header() {
           </div>
         ) : (
           <div className="flex gap-1">
-            <div className="p-3 bg-[#F5F7FA] rounded-full mr-4">
+            <div className="p-3 bg-[#F5F7FA] rounded-full mr-4 border-r-2">
               <img src="../assets/svg/icon_black_profile.svg" />
             </div>
             <div

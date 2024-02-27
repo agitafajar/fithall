@@ -19,7 +19,7 @@ const CartActions: FC<CartActionsProps> = ({ totalSubTotal, totalCart }) => {
         </div>
         <Link
           href="/checkout"
-          className="cursor-pointer mr-4 my-4 border-2 border-primary py-3 md:py-2 md:my-2 text-primary bg-white px-8 rounded-md font-semibold text-sm"
+          className="cursor-pointer mr-4 my-4 bg-white border-2 border-primary xl:py-3 lg:py-3 md:py-2 sm:py-2 md:my-2 text-primary   sm:px-2 md:px-8 lg:px-8 xl:px-8 rounded-md font-semibold text-sm"
         >
           + Keranjang
         </Link>
@@ -38,12 +38,12 @@ const CartActions: FC<CartActionsProps> = ({ totalSubTotal, totalCart }) => {
             {formatToCurrency(totalSubTotal)}
           </p>
         </div>
-        <div className="flex">
+        <div className="flex justify-between">
           <Link
             href="/checkout"
-            className="cursor-pointer mr-4 my-4 border-2 border-primary py-3 md:py-2 md:my-2 text-primary bg-white px-8 rounded-md font-semibold text-sm"
+            className="cursor-pointer mr-4 my-4 border-2 border-primary py-3 md:py-2 md:my-2 text-primary bg-white px-4 rounded-md font-semibold text-sm"
           >
-            m + Keranjang
+            + Keranjang
           </Link>
           <Link
             href="/checkout"
