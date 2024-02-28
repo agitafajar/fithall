@@ -229,6 +229,11 @@ export default function ListBookingPage() {
         </div>
       </div>
 
+      <div className="flex w-full items-center justify-center px-4 py-4 gap-2 bg-gray-100 mb-4 rounded-xl sm:flex md:flex lg:hidden xl:hidden">
+        <img src="../assets/svg/img_swipe-gestur.svg" alt="" width="auto" height="30px"/>
+        <p className="font-medium text-sm">Swipe Left & Right to see Schedule</p>
+      </div>
+
       <div className="flex gap-4 font-bold text-center justify-between overflow-auto overflow-y-auto">
         {Object.keys(groupedBookings).map((date) => (
           <div key={date}>
