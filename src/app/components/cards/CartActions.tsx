@@ -41,7 +41,7 @@ const CartActions: FC<CartActionsProps> = ({ totalSubTotal, totalCart }) => {
         <div className="flex w-full justify-between">
           <Link
             href="/checkout"
-            className="w-full flex cursor-pointer mr-4 my-4 border-2 border-primary py-3 md:py-2 md:my-4 text-primary items-center justify-center text-center bg-white px-4 rounded-md font-semibold sm:text-sm xs:text-xs"
+            className="w-52 flex cursor-pointer mr-4 my-4 border-2 border-primary py-3 md:py-2 md:my-4 text-primary items-center justify-center text-center bg-white px-4 rounded-md font-semibold sm:text-sm xs:text-xs"
           >
             + Keranjang
           </Link>
